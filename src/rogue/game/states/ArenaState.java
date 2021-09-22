@@ -1,6 +1,8 @@
 package rogue.game.states;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
@@ -9,30 +11,28 @@ import rogue.framework.states.State;
 import rogue.game.world.World;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.graphics.CharacterInformationContainer;
-import rogue.graphics.InformationContainer;
 
-public class DungeonState extends State{
+public class ArenaState extends State{
 
 	private World world;
-	private PlayableCharacter player;
+	private List<PlayableCharacter> team = new ArrayList<PlayableCharacter>();
+	private PlayableCharacter activeCharacter;
 	
 	private CharacterInformationContainer activeCharacterCanvas;
-	private boolean characterHasChanges = true;
 	
-	
-	
-	public DungeonState(Connector connector) {
+	public ArenaState(Connector connector) {
 		super(connector);
-		player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Resources.KNIGHTMALE,this.connector);
-		player.setPlayer();
-		this.world = new World(player,connector);
-		this.activeCharacterCanvas = new CharacterInformationContainer(player,connector);
-		//this.hud = new HUD();
+		
+		team.add(new PlayableCharacter(1,1,Resources.KNIGHT,"knight",Resources.KNIGHTMALE,this.connector));
+		team.add(new PlayableCharacter(1,2,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,this.connector));
+		this.activeCharacter = team.get(0);
+		this.world = new World(team,connector);
+		this.activeCharacterCanvas = new CharacterInformationContainer(team.get(0),connector);
 	}
-	
+
 	@Override
 	protected void update() {
-		this.activeCharacterCanvas.checkUdate(player);
+		this.activeCharacterCanvas.checkUdate(activeCharacter);
 	}
 
 	@Override
@@ -58,7 +58,14 @@ public class DungeonState extends State{
 		
 		return pixels;
 	}
-	
+	private PlayableCharacter getCharacter(String name) {
+		for(PlayableCharacter p : team) {
+			if(p.getName().equals(name)) {
+				return p;
+			}
+		}
+		return null;
+	}
 	private int[] backGround(int[] pixels) {
 		for(int i = 0; i < 1080; i++) {
 			for(int j = 420; j < 1500; j++) {
@@ -71,7 +78,11 @@ public class DungeonState extends State{
 	@Override
 	protected void mouseClicked(Event e) {
 		if(e.getEventId().equals("tabChange")) {
-			this.player.setActiveTab(e.getTab());
+			this.activeCharacter.setActiveTab(e.getTab());
+		}
+		if(e.getEventId().equals("selectPlayerEvent")) {
+			System.out.println(e.getObject().getName());
+			activeCharacter = getCharacter(e.getObject().getName());
 		}
 		this.world.getRoom().mouseClicked(e);
 		
@@ -80,5 +91,7 @@ public class DungeonState extends State{
 	@Override
 	protected void keyPressed(KeyEvent e) {
 		world.getRoom().keyPressed(e);
+		
 	}
- }
+
+}

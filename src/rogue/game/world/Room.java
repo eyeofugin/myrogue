@@ -38,6 +38,7 @@ public class Room {
 	
 	private final static int xPlayerStart = 2;
 	private final static int yPlayerStart = 2;
+	
 	private int xOffset = 0;
 	private int yOffset = 0;
 	
@@ -57,6 +58,17 @@ public class Room {
 		entities.add(player);
 		objects[xPlayerStart][yPlayerStart] = player;
 		setSelectPlayerEvent(player,xPlayerStart,yPlayerStart);
+	}
+	public void initiallyPlacePlayer(List<PlayableCharacter> team) {
+		int i = 0;
+		for(PlayableCharacter p : team) {
+			p.setX(xPlayerStart+i);
+			p.setY(yPlayerStart);
+			entities.add(p);
+			objects[xPlayerStart+i][yPlayerStart] = p;
+			setSelectPlayerEvent(p,xPlayerStart+i,yPlayerStart);
+			i+=4;
+		}
 	}
 	public void initEnemies() {
 		Enemy enemy = new Enemy(10,10,(byte)4,"skeleton",(byte)1,this.connector);
@@ -204,9 +216,9 @@ public class Room {
 		//result += yOffset*tileSize;
 		return result;
 	}
-	private Entity getPlayer() {
+	private Entity getPlayer(String name) {
 		for(Entity e: entities) {
-			if(e.isPlayer()) {
+			if(e.getName().equals(name)) {
 				return e;
 			}
 		}
@@ -257,14 +269,16 @@ public class Room {
 	}
 	public void mouseClicked(Event e) {
 		if(e.getEventId().equals("selectPlayerEvent")) {
-			activeCharacter = getPlayer();
+			
+			activeCharacter = getPlayer(e.getObject().getName());
 			if(activeCharacter==null) {
 				return;
 			}
 			showMovementOptions(activeCharacter);
 		}
 		if(e.getEventId().equals("characterMovement")) {
-			this.connector.cleanMap(); //TODO do not clear everything obviously
+			//this.connector.cleanMap(); //TODO do not clear everything obviously
+			this.connector.clearMovement(activeCharacter.getName());
 			moveObject(e.getObject(),e.getX(),e.getY());
 		}
 	}

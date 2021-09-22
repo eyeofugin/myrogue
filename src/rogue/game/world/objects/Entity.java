@@ -6,7 +6,6 @@ public class Entity extends SecondLayerObject{
 
 	private boolean isPlayer = false;
 	
-	protected String name = "";
 	protected int level = 0;
 //Stats
 	private short maxLife;
@@ -41,8 +40,7 @@ public class Entity extends SecondLayerObject{
 	}
 	
 	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, boolean isPlayer) {
-		super(id,x,y,portraitId,connector);
-		this.name = name;
+		super(id,x,y,portraitId,name,connector);
 		this.isPlayer = isPlayer;
 		this.currentLife = 700;
 		this.maxLife = 1000;
@@ -214,12 +212,6 @@ public class Entity extends SecondLayerObject{
 	}
 	public boolean isPlayer() {
 		return this.isPlayer;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public int getLevel() {
 		return level;

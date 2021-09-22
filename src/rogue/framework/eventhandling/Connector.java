@@ -47,6 +47,17 @@ public class Connector {
 			}
 		}
 	}
+	public void clearMovement(String name) {
+		for(int i = mapXFrom; i <= mapXUntil; i++ ) {
+			for(int j = 0; j < y; j++) {
+				if(this.events[i][j] != null &&
+						this.events[i][j].getEventId().equals("selectPlayerEvent") &&
+						this.events[i][j].getObject().getName().equals(name)) {
+					this.events[i][j] = null;	
+				}
+			}
+		}
+	}
 	
 	//getters Setters
 

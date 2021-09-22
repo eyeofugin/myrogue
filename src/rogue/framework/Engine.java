@@ -28,7 +28,8 @@ public class Engine {
 	public static void init() {	
 		stateManager = new StateManager(X,Y,MAP_X_FROM,MAP_X_UNTIL);
 //ToDo write main menu
-		stateManager.stackDungeonState();
+		//stateManager.stackDungeonState();
+		stateManager.stackArenaState();
 		//running  = true;
 		windowManager = new WindowManager(X,Y);
 		windowManager.addMouse(new Mouse());

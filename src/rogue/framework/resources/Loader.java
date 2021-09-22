@@ -15,6 +15,7 @@ public class Loader {
 		Resources.TEXTURES.add(Resources.SKELETON,new Sprite("res/textures/skeleton.png",32,32).getPixels());
 
 		Resources.PORTRAITSx64.add(Resources.KNIGHTMALE,new Sprite("res/textures/knightPortraitMale.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.SKELETONMALE,new Sprite("res/textures/skeletonPortraitMale.png",64,64).getPixels());
 		
 		Resources.PORTRAITSx32.add(Resources.LOCKED_SKILL,new Sprite("res/textures/lockedskill.png",32,32).getPixels());
 	}

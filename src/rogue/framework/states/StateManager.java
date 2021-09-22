@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
+import rogue.game.states.ArenaState;
 import rogue.game.states.DungeonState;
 
 
@@ -21,6 +22,10 @@ public class StateManager {
 	}
 	public void stackDungeonState() {
 		DungeonState state = new DungeonState(this.connector);
+		states.add(state);
+	}
+	public void stackArenaState() {
+		ArenaState state = new ArenaState(this.connector);
 		states.add(state);
 	}
 	
