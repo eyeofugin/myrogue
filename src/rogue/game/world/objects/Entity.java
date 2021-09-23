@@ -42,9 +42,9 @@ public class Entity extends SecondLayerObject{
 	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, boolean isPlayer) {
 		super(id,x,y,portraitId,name,connector);
 		this.isPlayer = isPlayer;
-		this.currentLife = 700;
+		this.currentLife = 1000;
 		this.maxLife = 1000;
-		this.currentMana = 20;
+		this.currentMana = 100;
 		this.maxMana = 100;
 	}
 	

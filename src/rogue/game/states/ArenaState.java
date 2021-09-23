@@ -81,7 +81,6 @@ public class ArenaState extends State{
 			this.activeCharacter.setActiveTab(e.getTab());
 		}
 		if(e.getEventId().equals("selectPlayerEvent")) {
-			System.out.println(e.getObject().getName());
 			activeCharacter = getCharacter(e.getObject().getName());
 		}
 		this.world.getRoom().mouseClicked(e);

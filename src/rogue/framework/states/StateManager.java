@@ -47,6 +47,7 @@ public class StateManager {
 		}
 		Event event = this.connector.getEvent(e);
 		if(event!=null && event.getEventId()!=null) {
+			
 			this.states.peek().mouseClicked(event);
 		}
 	}

@@ -30,13 +30,15 @@ public class IconRow extends InformationContainer{
 		
 		int xOffset=hMargin;
 		int yOffset=vMargin;
-		
+		int eventCtr = 0;
 		for(byte b : icons) {
 			int[] iconPixels = Resources.PORTRAITSx32.get(b);
 			//print(iconPixels,32,32);
 			fillWithGraphics(xOffset, xOffset+ICON_SIZE-1, yOffset, yOffset+ICON_SIZE-1, iconPixels, true);
+			this.connector.addEvent(xOffset, yOffset, ICON_SIZE, ICON_SIZE, this.onClickEvents[eventCtr]);
 			xOffset+=hMargin;
 			xOffset+=ICON_SIZE;
+			eventCtr++;
 		}
 	}
 	private int round(int i) {

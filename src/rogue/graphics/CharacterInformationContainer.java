@@ -103,7 +103,7 @@ public class CharacterInformationContainer extends InformationContainer{
 		green();
 		printPortrait();
 		printHeader();
-		printTabs(CharacterTab.STATS);
+		printTabs(CharacterTab.SKILLS);
 	}
 	private void green() {
 		for(int i = 0; i < this.pixels.length; i++) {
