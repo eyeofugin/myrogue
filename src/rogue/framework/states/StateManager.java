@@ -14,6 +14,9 @@ import rogue.game.states.DungeonState;
 
 public class StateManager {
 
+	private static final int MOUSE_BUTTON_L = 1;
+	private static final int MOUSE_BUTTON_R = 3;
+	
 	private Stack<State> states;
 	private Connector connector;
 	
@@ -44,9 +47,15 @@ public class StateManager {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		for(Event ev : this.connector.getEventsList()) {
+		Event event = new Event();
+
+		if(e.getButton()== MOUSE_BUTTON_L) {
+			event = this.connector.getEvent(e);
 		}
-		Event event = this.connector.getEvent(e);
+		if(e.getButton() == MOUSE_BUTTON_R) {
+			event = this.connector.getContext(e);
+		}
+		
 		if(event!=null && event.getEventId()!=null) {
 			
 			this.states.peek().mouseClicked(event);

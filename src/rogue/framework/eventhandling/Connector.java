@@ -12,6 +12,7 @@ public class Connector {
 	public final String SHOW_MOVEMENT = "SMV";
 	public final String ATTACK = "ATK";
 	public final String SELECT_PLAYER = "SCT";
+	public final String INFO_ENTITY = "IEN";
 
 	private int mapXFrom,mapXUntil;
 	

@@ -26,6 +26,12 @@ public class Property {
 	public static final int START_OF_ACTIVE_CHAR_X = 1500;
 	public static final int END_OF_ACTIVE_CHAR_X = 1920;
 	
+	public static final int START_OF_ACTIVE_NPC_Y = 660;
+	public static final int END_OF_ACTIVE_NPC_Y = 1080;
+	public static final int START_OF_ACTIVE_NPC_X = 1500;
+	public static final int END_OF_ACTIVE_NPC_X = 1920;
+	
+	
 	public static final int ROOM_VIEW_TILE_COUNT = 16;
 	
 	public static final int MARKING_START = 1;

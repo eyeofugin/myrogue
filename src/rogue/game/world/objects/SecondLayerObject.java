@@ -6,11 +6,11 @@ import util.MovementOption;
 public abstract class SecondLayerObject extends Tile{
 
 	private Connector connector;
-	private String name;
+	private String name = "dummy";
 	private MovementOption movement;
-	private byte portraitId;
-	private int x;
-	private int y;
+	private byte portraitId = 0;
+	private int x = -1;
+	private int y = -1;
 	
 	public SecondLayerObject() {
 		super();

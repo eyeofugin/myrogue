@@ -12,8 +12,9 @@ public class Resources {
 	public static final byte ENDWALL = 5;
 	public static final ArrayList<int[]> TEXTURES = new ArrayList<>();
 	
-	public static final byte KNIGHTMALE = 0;
-	public static final byte SKELETONMALE = 1;
+	public static final byte NONE = 0;
+	public static final byte KNIGHTMALE = 1;
+	public static final byte SKELETONMALE = 2;
 	public static final ArrayList<int[]> PORTRAITSx64 = new ArrayList<>();
 	
 	public static final byte LOCKED_SKILL = 0;

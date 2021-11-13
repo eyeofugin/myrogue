@@ -86,11 +86,10 @@ public class EntityInformationContainer extends InformationContainer{
 	
 	public EntityInformationContainer(Entity original,Connector connector) {
 		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),getDimensions(original),connector);
-		
 		setActiveCharacter(original);
 		initialPrint();
 	}
-	public void checkUdate(PlayableCharacter currentActive) {
+	public void checkUdate(Entity currentActive) {
 		if(!copy.getName().equals(currentActive.getName())) {
 			setActiveCharacter(currentActive);
 			initialPrint();

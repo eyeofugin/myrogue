@@ -24,6 +24,7 @@ public class World {
 		this.rooms[0][0].initiallyPlacePlayer(team);
 	}
 	
+	
 	public Room getRoom() {
 		return rooms[0][0];
 	}

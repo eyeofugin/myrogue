@@ -14,19 +14,19 @@ import rogue.game.world.objects.Entity;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
 import rogue.game.world.objects.Tile;
-import rogue.graphics.InformationContainer;
+import rogue.graphics.EntityInformationContainer;
 import util.Highlight;
 import util.MovementOption;
 
 public class Room {
 	
 	private RoomData data;
-	private InformationContainer activeNpcCanvas;
+	private EntityInformationContainer activeNpcCanvas;
 	
 	private Connector connector;
 
 	private SecondLayerObject activeCharacter;
-	private SecondLayerObject activeNpc;
+	private Entity activeNpc;
 	
 	private ArrayList<Entity> entities;
 	private SecondLayerObject[][] objects;
@@ -44,7 +44,14 @@ public class Room {
 		this.entities = new ArrayList<Entity>();
 		this.objects = new SecondLayerObject[data.getTileData().length][data.getTileData()[0].length];
 		this.highlights = new Highlight[data.getTileData().length][data.getTileData()[0].length];
+		this.activeNpcCanvas = new EntityInformationContainer(new Entity(), connector);
 		initEnemies();
+	}
+	
+	public void update() {
+		if(activeNpc!=null) {
+			this.activeNpcCanvas.checkUdate(activeNpc);
+		}
 	}
 	
 	//init
@@ -74,7 +81,19 @@ public class Room {
 		entities.add(enemy);
 		objects[enemy.getX()][enemy.getY()] = enemy;
 		
+		initEntityInformationEvents();
 		
+		
+	}
+	private void initEntityInformationEvents() {
+		for(Entity e: this.entities) {
+			Event event = new Event();
+			event.setObject(e);
+			event.setEventId(this.connector.INFO_ENTITY);
+			event.setX(e.getX());
+			event.setY(e.getY());
+			this.connector.addContext(getRelationalX(e.getX()), getRelationalY(e.getY()), Property.TILE_SIZE, Property.TILE_SIZE, event);			
+		}
 	}
  
 	
@@ -89,9 +108,9 @@ public class Room {
 		map=renderHighlights(map);
 		compartments.add(map);
 		
-//		int[] npcInfo = new int[420*420];
-//		npcInfo = activeNpcCanvas.getPixels();
-//		compartments.add(npcInfo);
+		int[] npcInfo = new int[420*420];
+		npcInfo = activeNpcCanvas.getPixels();
+		compartments.add(npcInfo);
 		
 		return compartments;
 	}
@@ -267,6 +286,12 @@ public class Room {
 			}
 		}
 	}
+	private void selectEntity(SecondLayerObject obj) {
+		if(Entity.class.isInstance(obj)) {
+			Entity e = Entity.class.cast(obj);
+			this.activeNpc = e;
+		}
+	}
 	private void setSelectPlayerEvent(SecondLayerObject o, int x, int y) {
 
 		Event selectPlayerEvent = new Event();
@@ -313,10 +338,12 @@ public class Room {
 			moveObject(e.getObject(),e.getX(),e.getY());
 		}
 		if(e.getEventId().equals(this.connector.ATTACK)) {
-			
 			CombatManager.normalMelee(this.activeCharacter,e.getObject());
 			removeMovements();
 			removeTheDead();
+		}
+		if(e.getEventId().equals(this.connector.INFO_ENTITY)) {
+			selectEntity(e.getObject());
 		}
 	}
 }
