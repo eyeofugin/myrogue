@@ -6,35 +6,31 @@ import java.util.List;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
+import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
+import rogue.game.combat.CombatManager;
 import rogue.game.world.generation.RoomData;
-import rogue.game.world.objects.PlayableCharacter;
-import rogue.game.world.objects.Enemy;
 import rogue.game.world.objects.Entity;
+import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
 import rogue.game.world.objects.Tile;
 import rogue.graphics.InformationContainer;
+import util.Highlight;
+import util.MovementOption;
 
 public class Room {
-
-	//constants
-	private final static int tileSize = 32;
-	private final static int marginLeft = 431;
-	private final static int marginTop = 12;
-
 	
 	private RoomData data;
 	private InformationContainer activeNpcCanvas;
 	
 	private Connector connector;
-	
 
 	private SecondLayerObject activeCharacter;
 	private SecondLayerObject activeNpc;
 	
 	private ArrayList<Entity> entities;
 	private SecondLayerObject[][] objects;
-	private boolean[][] highlights;
+	private Highlight[][] highlights;
 	
 	private final static int xPlayerStart = 2;
 	private final static int yPlayerStart = 2;
@@ -47,7 +43,7 @@ public class Room {
 		this.connector = connector;
 		this.entities = new ArrayList<Entity>();
 		this.objects = new SecondLayerObject[data.getTileData().length][data.getTileData()[0].length];
-		this.highlights = new boolean[data.getTileData().length][data.getTileData()[0].length];
+		this.highlights = new Highlight[data.getTileData().length][data.getTileData()[0].length];
 		initEnemies();
 	}
 	
@@ -57,6 +53,7 @@ public class Room {
 		player.setY(yPlayerStart);
 		entities.add(player);
 		objects[xPlayerStart][yPlayerStart] = player;
+		activeCharacter = player;
 		setSelectPlayerEvent(player,xPlayerStart,yPlayerStart);
 	}
 	public void initiallyPlacePlayer(List<PlayableCharacter> team) {
@@ -69,19 +66,24 @@ public class Room {
 			setSelectPlayerEvent(p,xPlayerStart+i,yPlayerStart);
 			i+=4;
 		}
+		activeCharacter = team.get(0);
 	}
 	public void initEnemies() {
-		Enemy enemy = new Enemy(10,10,(byte)4,"skeleton",(byte)1,this.connector);
+		Entity enemy = new Entity(4,5,Resources.SKELETON,this.connector,"skeleton",Resources.SKELETONMALE,false,MovementOption.ENEMY);
+		enemy.setMeeleeDef1(5);
 		entities.add(enemy);
-		objects[10][10] = enemy;
+		objects[enemy.getX()][enemy.getY()] = enemy;
+		
+		
 	}
+ 
 	
 	//rendering
 	public List<int[]> render() {
 		
 		List<int[]> compartments = new ArrayList<int[]>();
 		
-		int[] map = new int[1056*1056];
+		int[] map = new int[Property.ROOM_SIZE*Property.ROOM_SIZE];
 		map=renderRoom(map);
 		map=renderEntities(map);
 		map=renderHighlights(map);
@@ -94,14 +96,14 @@ public class Room {
 		return compartments;
 	}
 	private int[] renderRoom(int[]p) {
-		for(int y = 0; y < 1056; y++) {
-			for(int x = 0; x < 1056; x++) {
-				int tileX = x/32;
-				int tileY = y/32;
-				int xInTile = x%32;
-				int yInTile = y%32;
+		for(int y = 0; y < Property.ROOM_SIZE; y++) {
+			for(int x = 0; x < Property.ROOM_SIZE; x++) {
+				int tileX = x/Property.TILE_SIZE;
+				int tileY = y/Property.TILE_SIZE;
+				int xInTile = x%Property.TILE_SIZE;
+				int yInTile = y%Property.TILE_SIZE;
 				Tile t = data.getTileData()[tileY+yOffset][tileX+xOffset];
-				p[x + y*1056] = Resources.TEXTURES.get(t.getId())[xInTile+yInTile*32];
+				p[x + y*Property.ROOM_SIZE] = Resources.TEXTURES.get(t.getId())[xInTile+yInTile*Property.TILE_SIZE];
 			}
 		}
 		
@@ -110,16 +112,16 @@ public class Room {
 	private int[] renderEntities(int[] p) {
 		
 		for(Entity e : entities) {
-			if((e.getX()+xOffset>0)&&(e.getX()+xOffset<33) &&
-				(e.getY()+yOffset>0)&&(e.getY()+yOffset<33)) {
-				for(int y = 0; y < 32; y++) {
-					for(int x = 0; x < 32; x++) {
-						int relX = ((e.getX()+(-1)*xOffset)*32)+x;
-						int relY = ((e.getY()+(-1)*yOffset)*32)+y;
+			if((e.getX()>=xOffset)&&(e.getX()<=xOffset+Property.ROOM_VIEW_TILE_COUNT) &&
+				(e.getY()>=yOffset)&&(e.getY()<=yOffset+Property.ROOM_VIEW_TILE_COUNT)) {
+				for(int y = 0; y < Property.TILE_SIZE; y++) {
+					for(int x = 0; x < Property.TILE_SIZE; x++) {
+						int relX = ((e.getX()+(-1)*xOffset)*Property.TILE_SIZE)+x;
+						int relY = ((e.getY()+(-1)*yOffset)*Property.TILE_SIZE)+y;
 						
-						int color = Resources.TEXTURES.get(e.getId())[x+y*32];
+						int color = Resources.TEXTURES.get(e.getId())[x+y*Property.TILE_SIZE];
 						if(color!=-12450784) {
-							p[relX+relY*1056] = color;	
+							p[relX+relY*Property.ROOM_SIZE] = color;	
 						}
 					}
 				}
@@ -131,18 +133,26 @@ public class Room {
 	private int[] renderHighlights(int[] p) {
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y =0; y < highlights[0].length; y++) {
-				if(highlights[x][y]) {
-					for(int i = 1; i < 31; i++) {
-						
-						p[((x*32)+i+(-1)*xOffset*32)+((y*32)+1+(-1)*yOffset*32)*1056] = 342415;
-						p[((x*32)+i+(-1)*xOffset*32)+((y*32)+30+(-1)*yOffset*32)*1056] = 342415;
-						p[((x*32)+1+(-1)*xOffset*32)+((y*32)+i+(-1)*yOffset*32)*1056] = 342415;
-						p[((x*32)+30+(-1)*xOffset*32)+((y*32)+i+(-1)*yOffset*32)*1056] = 342415;
-					}
+				if(highlights[x][y]!=null) {
+					highlights[x][y].printHighlight(p, x, y, xOffset, yOffset);
+
 				}
 			}
 		}
 		return p;
+	}
+	
+	private void removeTheDead() {
+		this.entities.removeIf(e -> e.getCurrentLife() < 1);
+		for(int x  = 0; x < this.objects.length; x++) {
+			for(int y = 0; y < this.objects[0].length; y++) {
+				if(this.objects[x][y] != null &&
+						Entity.class.isInstance(this.objects[x][y]) &&
+						Entity.class.cast(this.objects[x][y]).getCurrentLife() < 1) {
+					this.objects[x][y] = null;
+				}
+			}
+		}
 	}
 	
 	//movement
@@ -154,17 +164,27 @@ public class Room {
 			for(int y = yGridPos-1; y <= yGridPos+1;y++) {
 				if(!(x==xGridPos&&y==yGridPos)) {
 					
-					boolean isViableMovement = getMovementViability(x,y);
+					MovementOption move = getMovementViability(x,y);
 					
-					if(isViableMovement) {
-						highlightTile(x,y);
+					if(move.equals(MovementOption.VALID)) {
+						highlightTile(x,y,Highlight.MVMNT_BLUE);
 						Event e = new Event();
 						e.setX(x);
 						e.setY(y);
 						e.setObject(o);
-						e.setEventId("characterMovement");
+						e.setEventId(this.connector.MOVE_PLAYER);
 						
-						this.connector.addEvent(getRelationalX(x), getRelationalY(y), tileSize, tileSize, e);					
+						this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);					
+					}
+					if(move.equals(MovementOption.ENEMY)) {
+						highlightTile(x,y,Highlight.CMBT_RED);
+						Event e = new Event();
+						e.setX(x);
+						e.setY(y);
+						e.setObject(this.objects[x][y]);
+						e.setEventId(this.connector.ATTACK);
+						this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);					
+						
 					}
 				}
 			}
@@ -186,33 +206,50 @@ public class Room {
 		}
 		objects[currentX][currentY] = null;
 		objects[x][y] = o;
-		this.highlights = new boolean[this.highlights.length][this.highlights[0].length];
+		removeMovements();
 		setSelectPlayerEvent(o, x, y);
 	}
-	private boolean getMovementViability(int x, int y) {
+	private void removeMovements() {
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null &&
+						(highlights[x][y].equals(Highlight.MVMNT_BLUE)||highlights[x][y].equals(Highlight.CMBT_RED))) {
+					highlights[x][y] = null;
+				}
+			}
+		}
+	}
+	private MovementOption getMovementViability(int x, int y) {
 		
-		boolean result = true;
 		
 		if(data.getTileData()[y][x].getId()==Resources.WALL) {
-			result = false;
+			return MovementOption.OBSTACLE;
 		}
-		if(objects[x][y] != null) {
-			result = false;
+		if(data.getTileData()[y][x].getId()==Resources.VOID) {
+			return MovementOption.VOID;
 		}
-		return result;
+		if(data.getTileData()[y][x].getId()==Resources.ENDWALL) {
+			return MovementOption.ENDWALL;
+		}
+		if(objects[x][y] != null &&
+				Entity.class.isInstance(objects[x][y])) {
+			Entity e = Entity.class.cast(objects[x][y]);
+			return e.getMovement();
+		}
+		return MovementOption.VALID;
 	}
-	private void highlightTile(int x, int y) {
-		this.highlights[x][y] = true;
+	private void highlightTile(int x, int y,Highlight h) {
+		this.highlights[x][y] = h;
 	}
 	
 	//util
 	private int getRelationalX(int x) {
-		int result = x*tileSize + marginLeft;
+		int result = x*Property.TILE_SIZE + Property.START_OF_ROOM_X;
 		//result += xOffset*tileSize;
 		return result;
 	}
 	private int getRelationalY(int y) {
-		int result = y*tileSize + marginTop;
+		int result = y*Property.TILE_SIZE + Property.START_OF_ROOM_Y;
 		//result += yOffset*tileSize;
 		return result;
 	}
@@ -227,17 +264,15 @@ public class Room {
 	private void printHighlights() {
 		for(int i = 0; i < highlights.length; i++) {
 			for(int j = 0; j < highlights[0].length; j++) {
-				if(highlights[i][j]) {
-				}
 			}
 		}
 	}
 	private void setSelectPlayerEvent(SecondLayerObject o, int x, int y) {
 
 		Event selectPlayerEvent = new Event();
-		selectPlayerEvent.setEventId("selectPlayerEvent");
+		selectPlayerEvent.setEventId(this.connector.SELECT_PLAYER);
 		selectPlayerEvent.setObject(o);
-		this.connector.addEvent(getRelationalX(x),getRelationalY(y),tileSize,tileSize,selectPlayerEvent);
+		this.connector.addEvent(getRelationalX(x),getRelationalY(y),Property.TILE_SIZE,Property.TILE_SIZE,selectPlayerEvent);
 	}
 	
 	//eventhandling
@@ -255,31 +290,33 @@ public class Room {
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_S) {
-			if(yOffset<1) {
+			if(yOffset<data.size()-Property.ROOM_VIEW_TILE_COUNT) {
 				yOffset++;
 				this.connector.incrementYOffset();
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_D) {
-			if(xOffset<1) {
+			if(xOffset<data.size()-Property.ROOM_VIEW_TILE_COUNT) {
 				xOffset++;
 				this.connector.incrementXOffset();
 			}
 		}
 	}
 	public void mouseClicked(Event e) {
-		if(e.getEventId().equals("selectPlayerEvent")) {
-			
-			activeCharacter = getPlayer(e.getObject().getName());
-			if(activeCharacter==null) {
-				return;
+		if(e.getEventId().equals(this.connector.SELECT_PLAYER)) {
+			if(activeCharacter.getName().equals(e.getObject().getName())) {
+				showMovementOptions(activeCharacter);
 			}
-			showMovementOptions(activeCharacter);
 		}
-		if(e.getEventId().equals("characterMovement")) {
-			//this.connector.cleanMap(); //TODO do not clear everything obviously
+		if(e.getEventId().equals(this.connector.MOVE_PLAYER)) {
 			this.connector.clearMovement(activeCharacter.getName());
 			moveObject(e.getObject(),e.getX(),e.getY());
+		}
+		if(e.getEventId().equals(this.connector.ATTACK)) {
+			
+			CombatManager.normalMelee(this.activeCharacter,e.getObject());
+			removeMovements();
+			removeTheDead();
 		}
 	}
 }

@@ -11,11 +11,13 @@ import java.util.Calendar;
 
 import javax.swing.JFrame;
 
+import rogue.framework.resources.Property;
+
 public class WindowManager extends Canvas{
 
-	public static int width = 1920;
-	public static int height= 1080;
-	public static int tileSize = 32;
+	public int width = 1920;
+	public int height= 1080;
+	public int tileSize = 32;
 	
 	private JFrame frame;
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -27,7 +29,7 @@ public class WindowManager extends Canvas{
 		this.height=y;
 		Dimension size = new Dimension(this.width, this.height);
 		setPreferredSize(size);
-		tileIds = new int[(width/tileSize)*(height/tileSize)];
+		tileIds = new int[(width/Property.TILE_SIZE)*(height/Property.TILE_SIZE)];
 		
 		this.frame = new JFrame("Rogue");
 		this.frame.setBounds(0, 0, 0, 0);

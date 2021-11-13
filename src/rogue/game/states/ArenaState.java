@@ -10,7 +10,8 @@ import rogue.framework.resources.Resources;
 import rogue.framework.states.State;
 import rogue.game.world.World;
 import rogue.game.world.objects.PlayableCharacter;
-import rogue.graphics.CharacterInformationContainer;
+import rogue.graphics.EntityInformationContainer;
+import util.MovementOption;
 
 public class ArenaState extends State{
 
@@ -18,16 +19,16 @@ public class ArenaState extends State{
 	private List<PlayableCharacter> team = new ArrayList<PlayableCharacter>();
 	private PlayableCharacter activeCharacter;
 	
-	private CharacterInformationContainer activeCharacterCanvas;
+	private EntityInformationContainer activeCharacterCanvas;
 	
 	public ArenaState(Connector connector) {
 		super(connector);
 		
-		team.add(new PlayableCharacter(1,1,Resources.KNIGHT,"knight",Resources.KNIGHTMALE,this.connector));
-		team.add(new PlayableCharacter(1,2,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,this.connector));
+		team.add(new PlayableCharacter(1,1,Resources.KNIGHT,"knight",Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector));
+		team.add(new PlayableCharacter(1,2,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,MovementOption.PLAYER,this.connector));
 		this.activeCharacter = team.get(0);
 		this.world = new World(team,connector);
-		this.activeCharacterCanvas = new CharacterInformationContainer(team.get(0),connector);
+		this.activeCharacterCanvas = new EntityInformationContainer(team.get(0),connector);
 	}
 
 	@Override

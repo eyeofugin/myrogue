@@ -22,10 +22,23 @@ public class Sprite {
 			BufferedImage image = ImageIO.read(new File(this.path));
 			int width = image.getWidth();
 			int height = image.getHeight();
-			image.getRGB(0, 0,width,height,pixels,0,width);
+			int[] source = new int[width*height];
+			image.getRGB(0, 0,width,height,source,0,width);
+			convert(source,width);
 		} catch ( Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void convert(int[] source,int size) {
+		int mult = this.WIDTH / size;
+			
+		for(int y = 0; y < this.HEIGHT; y++) {
+			for(int x = 0; x < this.WIDTH; x++) {
+				this.pixels[x+y*this.WIDTH] = source[(x/mult)+(y/mult)*size];
+			}
+		}
+
 	}
 	
 	public int[] getPixels() {

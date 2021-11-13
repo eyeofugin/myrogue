@@ -9,6 +9,7 @@ public class Resources {
 	public static final byte WALL = 2;
 	public static final byte KNIGHT = 3;
 	public static final byte SKELETON = 4;
+	public static final byte ENDWALL = 5;
 	public static final ArrayList<int[]> TEXTURES = new ArrayList<>();
 	
 	public static final byte KNIGHTMALE = 0;

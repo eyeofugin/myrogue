@@ -1,31 +1,40 @@
 package rogue.game.world.objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rogue.framework.eventhandling.Connector;
+import rogue.game.world.objects.PlayableCharacter.CharacterTab;
+import util.MovementOption;
 
 public class Entity extends SecondLayerObject{
 
 	private boolean isPlayer = false;
 	
+	private Skill[] skills;
+	private List<Equipment> equipments = new ArrayList<>();
+	private CharacterTab activeTab = CharacterTab.STATS;
+	
 	protected int level = 0;
 //Stats
-	private short maxLife;
-	private short currentLife;
-	private short maxMana;
-	private short currentMana;
+	private int maxLife;
+	private int currentLife;
+	private int maxMana;
+	private int currentMana;
 	
-	private short meeleeAtk1;
-	private short meeleeAtk2;
-	private short rangedAtk1;
-	private short rangedAtk2;
-	private short magicAtk1;
-	private short magicAtk2;
+	private int meeleeAtk1;
+	private int meeleeAtk2;
+	private int rangedAtk1;
+	private int rangedAtk2;
+	private int magicAtk1;
+	private int magicAtk2;
 	
-	private short meeleeDef1;
-	private short meeleeDef2;
-	private short rangedDef1;
-	private short rangedDef2;
-	private short magicDef1;
-	private short magicDef2;
+	private int meeleeDef1;
+	private int meeleeDef2;
+	private int rangedDef1;
+	private int rangedDef2;
+	private int magicDef1;
+	private int magicDef2;
 	
 	
 //Playing
@@ -39,39 +48,39 @@ public class Entity extends SecondLayerObject{
 		super();
 	}
 	
-	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, boolean isPlayer) {
-		super(id,x,y,portraitId,name,connector);
+	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, boolean isPlayer, MovementOption movement) {
+		super(id,x,y,portraitId,name,movement,connector);
 		this.isPlayer = isPlayer;
-		this.currentLife = 1000;
-		this.maxLife = 1000;
-		this.currentMana = 100;
-		this.maxMana = 100;
+		this.currentLife = 10;
+		this.maxLife = 10;
+		this.currentMana = 5;
+		this.maxMana = 5;
 	}
 	
 	
 //Getters and Setters
 	
-	public short getMaxLife() {
+	public int getMaxLife() {
 		return maxLife;
 	}
-	public short getMeeleeDef1() {
+	public int getMeeleeDef1() {
 		return meeleeDef1;
 	}
 
 
-	public short getMaxMana() {
+	public int getMaxMana() {
 		return maxMana;
 	}
 
-	public void setMaxMana(short maxMana) {
+	public void setMaxMana(int maxMana) {
 		this.maxMana = maxMana;
 	}
 
-	public short getCurrentMana() {
+	public int getCurrentMana() {
 		return currentMana;
 	}
 
-	public void setCurrentMana(short currentMana) {
+	public void setCurrentMana(int currentMana) {
 		this.currentMana = currentMana;
 	}
 
@@ -107,111 +116,129 @@ public class Entity extends SecondLayerObject{
 		this.maxMovement = maxMovement;
 	}
 
-	public void setMeeleeDef1(short meeleeDef1) {
+	public void setMeeleeDef1(int meeleeDef1) {
 		this.meeleeDef1 = meeleeDef1;
 	}
 
 
-	public short getMeeleeDef2() {
+	public int getMeeleeDef2() {
 		return meeleeDef2;
 	}
 
 
-	public void setMeeleeDef2(short meeleeDef2) {
+	public void setMeeleeDef2(int meeleeDef2) {
 		this.meeleeDef2 = meeleeDef2;
 	}
 
 
-	public short getRangedDef1() {
+	public int getRangedDef1() {
 		return rangedDef1;
 	}
 
 
-	public void setRangedDef1(short rangedDef1) {
+	public void setRangedDef1(int rangedDef1) {
 		this.rangedDef1 = rangedDef1;
 	}
 
 
-	public short getRangedDef2() {
+	public int getRangedDef2() {
 		return rangedDef2;
 	}
 
 
-	public void setRangedDef2(short rangedDef2) {
+	public void setRangedDef2(int rangedDef2) {
 		this.rangedDef2 = rangedDef2;
 	}
 
 
-	public short getMagicDef1() {
+	public int getMagicDef1() {
 		return magicDef1;
 	}
 
 
-	public void setMagicDef1(short magicDef1) {
+	public void setMagicDef1(int magicDef1) {
 		this.magicDef1 = magicDef1;
 	}
 
 
-	public short getMagicDef2() {
+	public int getMagicDef2() {
 		return magicDef2;
 	}
 
 
-	public void setMagicDef2(short magicDef2) {
+	public void setMagicDef2(int magicDef2) {
 		this.magicDef2 = magicDef2;
 	}
 
 
-	public void setMaxLife(short maxLife) {
+	public void setMaxLife(int maxLife) {
 		this.maxLife = maxLife;
 	}
-	public short getCurrentLife() {
+	public int getCurrentLife() {
 		return currentLife;
 	}
-	public void setCurrentLife(short currentLife) {
+	public void setCurrentLife(int currentLife) {
 		this.currentLife = currentLife;
 	}
-	public short getMeeleeAtk1() {
+	public int getMeeleeAtk1() {
 		return meeleeAtk1;
 	}
-	public void setMeeleeAtk1(short meeleeAtk1) {
+	public void setMeeleeAtk1(int meeleeAtk1) {
 		this.meeleeAtk1 = meeleeAtk1;
 	}
-	public short getMeeleeAtk2() {
+	public int getMeeleeAtk2() {
 		return meeleeAtk2;
 	}
-	public void setMeeleeAtk2(short meeleeAtk2) {
+	public void setMeeleeAtk2(int meeleeAtk2) {
 		this.meeleeAtk2 = meeleeAtk2;
 	}
-	public short getRangedAtk1() {
+	public int getRangedAtk1() {
 		return rangedAtk1;
 	}
-	public void setRangedAtk1(short rangedAtk1) {
+	public void setRangedAtk1(int rangedAtk1) {
 		this.rangedAtk1 = rangedAtk1;
 	}
-	public short getRangedAtk2() {
+	public int getRangedAtk2() {
 		return rangedAtk2;
 	}
-	public void setRangedAtk2(short rangedAtk2) {
+	public void setRangedAtk2(int rangedAtk2) {
 		this.rangedAtk2 = rangedAtk2;
 	}
-	public short getMagicAtk1() {
+	public int getMagicAtk1() {
 		return magicAtk1;
 	}
-	public void setMagicAtk1(short magicAtk1) {
+	public void setMagicAtk1(int magicAtk1) {
 		this.magicAtk1 = magicAtk1;
 	}
-	public short getMagicAtk2() {
+	public int getMagicAtk2() {
 		return magicAtk2;
 	}
-	public void setMagicAtk2(short magicAtk2) {
+	public void setMagicAtk2(int magicAtk2) {
 		this.magicAtk2 = magicAtk2;
+	}
+	public CharacterTab getActiveTab() {
+		return activeTab;
+	}
+	public void setActiveTab(CharacterTab activeTab) {
+		this.activeTab = activeTab;
 	}
 	public void setPlayer() {
 		this.isPlayer = true;
 	}
 	public boolean isPlayer() {
 		return this.isPlayer;
+	}
+	public List<Equipment> getEquipments(){
+		return this.equipments;
+	}
+	public void setEquipments(List<Equipment> equipments) {
+		this.equipments = equipments;
+	}
+	public Skill[] getSkills() {
+		return skills;
+	}
+	public void setSkills(Skill[]skills) {
+		this.skills = skills;
 	}
 	public int getLevel() {
 		return level;
@@ -265,5 +292,24 @@ public class Entity extends SecondLayerObject{
 		maxStringL+=max;
 		
 		return currentStringL + "/" + maxStringL;
+	}
+	
+	public int getNormalMeleeDamage() {
+		int result = getMeeleeAtk1();
+		for(Equipment e : getEquipments()) {
+			result+=e.getMeleeDamageBonus();
+		}
+		return result;
+		
+	}
+	public int getNormalMeleeDefense() {
+		int result = getMeeleeDef1();
+		for(Equipment e:getEquipments()) {
+			result+=e.getMeleeDefenseBonus();
+		}
+		return result;
+	}
+	public void damage(int damage) {
+		this.currentLife-=damage;
 	}
 }
