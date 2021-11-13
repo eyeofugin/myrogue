@@ -81,6 +81,11 @@ public class Room {
 		entities.add(enemy);
 		objects[enemy.getX()][enemy.getY()] = enemy;
 		
+		Entity enemy2 = new Entity(5,5,Resources.SKELETON,this.connector,"skeleton2",Resources.KNIGHTMALE,false,MovementOption.ENEMY);
+		enemy2.setMeeleeDef1(5);
+		entities.add(enemy2);
+		objects[enemy2.getX()][enemy2.getY()] = enemy2;
+		
 		initEntityInformationEvents();
 		
 		

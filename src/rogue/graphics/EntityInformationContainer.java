@@ -66,6 +66,9 @@ public class EntityInformationContainer extends InformationContainer{
 	private static int TAB5_X_FROM					= 336;
 	private static int TAB5_X_UNTIL					= 419;
 	
+	private static int PLAYER_NR_TABS 				= 5;
+	private static int ENTITY_NR_TABS				= 3;
+	
 	//stats
 	private static int STATSTABLE_X_FROM			= 5;
 	private static int STATSTABLE_X_UNTIL			= 414;
@@ -82,11 +85,13 @@ public class EntityInformationContainer extends InformationContainer{
 	
 	
 	private Entity copy = new PlayableCharacter();
+	private CharacterTab[] tabs; 
 	
 	
 	public EntityInformationContainer(Entity original,Connector connector) {
 		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),getDimensions(original),connector);
 		setActiveCharacter(original);
+		setTabs(original.isPlayer());
 		initialPrint();
 	}
 	public void checkUdate(Entity currentActive) {
@@ -99,8 +104,24 @@ public class EntityInformationContainer extends InformationContainer{
 			copy.setActiveTab(currentActive.getActiveTab());
 		}
 	}
+	private void setTabs(boolean isPlayer) {
+		if(isPlayer) {
+			tabs = new CharacterTab[] {
+					CharacterTab.STATS,
+					CharacterTab.SKILLS,
+					CharacterTab.GEAR,
+					CharacterTab.ITEMS
+			};
+		}else {
+			tabs = new CharacterTab[] {
+					CharacterTab.STATS,
+					CharacterTab.SKILLS,
+			};
+		}
+	}
 	private void initialPrint()	{
 		//green();
+		clear();
 		printPortrait();
 		printHeader();
 		printTabs(CharacterTab.STATS);
@@ -164,6 +185,7 @@ public class EntityInformationContainer extends InformationContainer{
 		default:
 			break;
 		}
+		
 		writeLine("stats", 		TAB1_X_FROM, TAB1_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,statsBackground,MyColor.WHITE);
 		writeLine("skills", 	TAB2_X_FROM, TAB2_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,skillsBackground,MyColor.WHITE);
 		writeLine("items", 		TAB3_X_FROM, TAB3_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,itemsBackground,MyColor.WHITE);

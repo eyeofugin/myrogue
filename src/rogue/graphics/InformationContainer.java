@@ -182,6 +182,9 @@ public class InformationContainer {
 			}
 		}
 	}
+	protected void clear() {
+		this.pixels = new int[this.pixels.length];
+	}
 	public int[] getPixels() {
 		return this.pixels;
 	}
