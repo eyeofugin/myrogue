@@ -1,11 +1,71 @@
 package rogue.graphics;
 
 import rogue.framework.eventhandling.Connector;
+import rogue.framework.eventhandling.Event;
+import rogue.game.world.objects.Entity;
+import rogue.game.world.objects.Skill;
+import rogue.game.world.objects.PlayableCharacter.CharacterTab;
+import util.IconRow;
 import util.MyColor;
 import util.TextAlignment;
 import util.TextEditor;
 
 public class InformationContainer {
+	
+	//general
+	private int TOTAL_WIDTH;
+	private int TOTAL_HEIGHT;
+	
+	private int OFFSET_LEFT;
+	private int OFFSET_TOP;
+	
+	private int STANDARD_PADDING;
+	
+	//header
+	protected int PORTRAIT_X_FROM;
+	protected int PORTRAIT_X_UNTIL;
+	protected int PORTRAIT_Y_FROM;
+	protected int PORTRAIT_Y_UNTIL;
+	protected int LIFEBAR_WIDTH;
+	protected int LIFEBAR_HEIGHT;
+	protected int MANABAR_WIDTH;
+	protected int MANABAR_HEIGHT;
+	protected int HEADER_ROW1_Y_FROM;
+	protected int HEADER_ROW1_Y_UNTIL;
+	protected int HEADER_ROW2_Y_FROM ;
+	protected int HEADER_ROW2_Y_UNTIL;
+	protected int HEADER_ROW3_Y_FROM;
+	protected int HEADER_ROW3_Y_UNTIL;
+	protected int HEADER_COLUMN1_X_FROM;
+	protected int HEADER_COLUMN1_X_UNTIL;
+	protected int HEADER_COLUMN2_X_FROM;
+	protected int HEADER_COLUMN2_X_UNTIL;
+	
+	//tabs
+	protected int TAB_Y_FROM;
+	protected int TAB_Y_UNTIL;
+	protected int TAB_WIDTH	;
+	protected int TAB_HEIGHT;
+	
+	protected int TAB_INFO_X_FROM;
+	protected int TAB_INFO_X_UNTIL;
+	protected int TAB_INFO_Y_FROM;
+	protected int TAB_INFO_Y_UNTIL;
+	
+	//stats
+	protected int STATSTABLE_X_FROM	;
+	protected int STATSTABLE_X_UNTIL;
+	protected int STATSTABLE_Y_FROM;
+	
+	//skills
+	private int ICON_SIZE;
+	private int C_SKILLS_WIDTH;
+	private int C_SKILLS_HEIGHT;
+	private int C_SKILLS_ICONS_X_FROM;
+	private int C_SKILLS_ICONS_X_UNTIL;
+	private int C_SKILLS_ICONS_Y_FROM;
+	private int C_SKILLS_ICONS_Y_UNTIL;
+	
 	
 	protected Connector connector;
 	protected int[] pixels;
@@ -19,11 +79,11 @@ public class InformationContainer {
 		
 	}
 	
-	public InformationContainer(int[] portrait, String name, int width, int height, Connector connector) {
+	public InformationContainer(int[] portrait, String name, int[] dimensions, Connector connector) {
 		this.portrait = portrait;
 		this.name = name;
-		this.width = width;
-		this.height= height;
+		this.width = dimensions[0];
+		this.height= dimensions[1];
 		this.connector = connector;
 		this.pixels = new int[width*height];
 	}
@@ -110,6 +170,18 @@ public class InformationContainer {
 		}
 	}
 	
+	protected void green() {
+		for(int i = 0; i < this.pixels.length; i++) {
+			this.pixels[i] = MyColor.GREEN.VALUE;
+		}
+	}
+	private void clearTabInfo(int width) {
+		for(int x = TAB_INFO_X_FROM; x <= TAB_INFO_X_UNTIL; x++) {
+			for(int y = TAB_INFO_Y_FROM; y <= TAB_INFO_Y_UNTIL; y++) {
+				this.pixels[x+y*TOTAL_WIDTH] = MyColor.GREEN.VALUE;
+			}
+		}
+	}
 	public int[] getPixels() {
 		return this.pixels;
 	}

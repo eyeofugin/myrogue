@@ -4,29 +4,32 @@ import java.awt.event.KeyEvent;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
+import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.framework.states.State;
 import rogue.game.world.World;
 import rogue.game.world.objects.PlayableCharacter;
-import rogue.graphics.CharacterInformationContainer;
-import rogue.graphics.InformationContainer;
+import rogue.graphics.EntityInformationContainer;
+import util.MovementOption;
 
 public class DungeonState extends State{
 
 	private World world;
 	private PlayableCharacter player;
 	
-	private CharacterInformationContainer activeCharacterCanvas;
+	private EntityInformationContainer activeCharacterCanvas;
 	private boolean characterHasChanges = true;
+	
 	
 	
 	
 	public DungeonState(Connector connector) {
 		super(connector);
-		player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Resources.KNIGHTMALE,this.connector);
+		player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector);
+		player.setMeeleeAtk1(10);
 		player.setPlayer();
 		this.world = new World(player,connector);
-		this.activeCharacterCanvas = new CharacterInformationContainer(player,connector);
+		this.activeCharacterCanvas = new EntityInformationContainer(player,connector);
 		//this.hud = new HUD();
 	}
 	
@@ -37,21 +40,21 @@ public class DungeonState extends State{
 
 	@Override
 	protected int[] render() {
-		int[] pixels = new int[1920*1080];
+		int[] pixels = new int[Property.END_OF_X*Property.END_OF_Y];
 		pixels = backGround(pixels);
 		int[] map = world.getRoom().render().get(0);
 		
 		int indexWorld = 0;
-		for(int i = 12; i < 1068; i++) {
-			for(int j = 431; j < 1487; j++) {
-				pixels[j+i*1920] = map[indexWorld];
+		for(int i = Property.START_OF_ROOM_Y; i < Property.END_OF_ROOM_Y; i++) {
+			for(int j = Property.START_OF_ROOM_X; j < Property.END_OF_ROOM_X; j++) {
+				pixels[j+i*Property.END_OF_X] = map[indexWorld];
 				indexWorld++;
 			}
 		}
 		int indexActiveCharacter=0;
-		for(int i = 0; i < 660; i++) {
-			for(int j = 1500; j < 1920; j++) {
-				pixels[j+i*1920] = this.activeCharacterCanvas.getPixels()[indexActiveCharacter];
+		for(int i = Property.START_OF_ACTIVE_CHAR_Y; i < Property.END_OF_ACTIVE_CHAR_Y; i++) {
+			for(int j = Property.START_OF_ACTIVE_CHAR_X; j < Property.END_OF_ACTIVE_CHAR_X; j++) {
+				pixels[j+i*Property.END_OF_X] = this.activeCharacterCanvas.getPixels()[indexActiveCharacter];
 				indexActiveCharacter++;
 			}
 		}
@@ -60,9 +63,9 @@ public class DungeonState extends State{
 	}
 	
 	private int[] backGround(int[] pixels) {
-		for(int i = 0; i < 1080; i++) {
-			for(int j = 420; j < 1500; j++) {
-				pixels[j+i*1920] = 15066597;
+		for(int i = Property.START_OF_ROOM_BACKGROUND_Y; i < Property.END_OF_ROOM_BACKGROUND_Y; i++) {
+			for(int j = Property.START_OF_ROOM_BACKGROUND_X; j < Property.END_OF_ROOM_BACKGROUND_X; j++) {
+				pixels[j+i*Property.END_OF_X] = 15066597;
 			}
 		}
 		return pixels;

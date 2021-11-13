@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
+import rogue.framework.resources.Property;
 import rogue.game.states.ArenaState;
 import rogue.game.states.DungeonState;
 
@@ -30,7 +31,7 @@ public class StateManager {
 	}
 	
 	public int[] render(){
-		int[] p = new int[960*640];
+		int[] p = new int[Property.END_OF_X*Property.END_OF_Y];
 		try {
 			p =  this.states.peek().render();
 		} catch(EmptyStackException e) {

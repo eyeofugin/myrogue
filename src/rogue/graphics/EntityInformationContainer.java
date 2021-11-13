@@ -1,10 +1,9 @@
 package rogue.graphics;
 
-import java.util.Arrays;
-
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
+import rogue.game.world.objects.Entity;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.PlayableCharacter.CharacterTab;
 import rogue.game.world.objects.Skill;
@@ -14,78 +13,80 @@ import util.StndColumn;
 import util.StndTable;
 import util.TextAlignment;
 
-public class CharacterInformationContainer extends InformationContainer{
+public class EntityInformationContainer extends InformationContainer{
 	
 	//general
-	private static final int TOTAL_WIDTH 			= 420;
-	private static final int TOTAL_HEIGHT 			= 660;
 	
-	private static final int OFFSET_LEFT			= 1500;
-	private static final int OFFSET_TOP				= 0;
+	private static int TOTAL_WIDTH 					= 420;
+	private static int TOTAL_HEIGHT 				= 660;
 	
-	private static final int STANDARD_PADDING		= 15;
+	private static int OFFSET_LEFT					= 1500;
+	private static int OFFSET_TOP					= 0;
+	
+	private static int STANDARD_PADDING				= 15;
 	
 	//header
-	private static final int PORTRAIT_X_FROM  		= 10;
-	private static final int PORTRAIT_X_UNTIL 		= 73;
-	private static final int PORTRAIT_Y_FROM 		= 10;
-	private static final int PORTRAIT_Y_UNTIL		= 73;
-	private static final int LIFEBAR_WIDTH			= 200;
-	private static final int LIFEBAR_HEIGHT			= 20;
-	private static final int MANABAR_WIDTH			= 200;
-	private static final int MANABAR_HEIGHT			= 20;
-	private static final int HEADER_ROW1_Y_FROM		= 10;
-	private static final int HEADER_ROW1_Y_UNTIL	= 29;
-	private static final int HEADER_ROW2_Y_FROM 	= 32;
-	private static final int HEADER_ROW2_Y_UNTIL	= 51;
-	private static final int HEADER_ROW3_Y_FROM 	= 54;
-	private static final int HEADER_ROW3_Y_UNTIL	= 73;
-	private static final int HEADER_COLUMN1_X_FROM 	= 100;
-	private static final int HEADER_COLUMN1_X_UNTIL	= 299;
-	private static final int HEADER_COLUMN2_X_FROM 	= 320;
-	private static final int HEADER_COLUMN2_X_UNTIL	= 419;
+	private static int PORTRAIT_X_FROM  			= 10;
+	private static int PORTRAIT_X_UNTIL 			= 73;
+	private static int PORTRAIT_Y_FROM 				= 10;
+	private static int PORTRAIT_Y_UNTIL				= 73;
+	private static int LIFEBAR_WIDTH				= 200;
+	private static int LIFEBAR_HEIGHT				= 20;
+	private static int MANABAR_WIDTH				= 200;
+	private static int MANABAR_HEIGHT				= 20;
+	private static int HEADER_ROW1_Y_FROM			= 10;
+	private static int HEADER_ROW1_Y_UNTIL			= 29;
+	private static int HEADER_ROW2_Y_FROM 			= 32;
+	private static int HEADER_ROW2_Y_UNTIL			= 51;
+	private static int HEADER_ROW3_Y_FROM 			= 54;
+	private static int HEADER_ROW3_Y_UNTIL			= 73;
+	private static int HEADER_COLUMN1_X_FROM 		= 100;
+	private static int HEADER_COLUMN1_X_UNTIL		= 299;
+	private static int HEADER_COLUMN2_X_FROM 		= 320;
+	private static int HEADER_COLUMN2_X_UNTIL		= 419;
 	
 	//tabs
-	private static final int TAB_Y_FROM				= 90;
-	private static final int TAB_Y_UNTIL			= 109;
-	private static final int TAB1_X_FROM			= 0;
-	private static final int TAB1_X_UNTIL			= 83;
-	private static final int TAB2_X_FROM			= 84;
-	private static final int TAB2_X_UNTIL			= 167;
-	private static final int TAB3_X_FROM			= 168;
-	private static final int TAB3_X_UNTIL			= 251;
-	private static final int TAB4_X_FROM			= 252;
-	private static final int TAB4_X_UNTIL			= 335;
-	private static final int TAB5_X_FROM			= 336;
-	private static final int TAB5_X_UNTIL			= 419;
-	private static final int TAB_WIDTH				= 84;
-	private static final int TAB_HEIGHT				= 20;
+	private static int TAB_Y_FROM					= 90;
+	private static int TAB_Y_UNTIL					= 109;
+	private static int TAB_WIDTH					= 84;
+	private static int TAB_HEIGHT					= 20;
 	
-	private static final int TAB_INFO_X_FROM		= 5;
-	private static final int TAB_INFO_X_UNTIL		= 414;
-	private static final int TAB_INFO_Y_FROM		= 125;
-	private static final int TAB_INFO_Y_UNTIL		= 654;
+	private static int TAB_INFO_X_FROM				= 5;
+	private static int TAB_INFO_X_UNTIL				= 414;
+	private static int TAB_INFO_Y_FROM				= 125;
+	private static int TAB_INFO_Y_UNTIL				= 654;
+	private static int TAB1_X_FROM					= 0;
+	private static int TAB1_X_UNTIL					= 83;
+	private static int TAB2_X_FROM					= 84;
+	private static int TAB2_X_UNTIL					= 167;
+	private static int TAB3_X_FROM					= 168;
+	private static int TAB3_X_UNTIL					= 251;
+	private static int TAB4_X_FROM					= 252;
+	private static int TAB4_X_UNTIL					= 335;
+	private static int TAB5_X_FROM					= 336;
+	private static int TAB5_X_UNTIL					= 419;
 	
 	//stats
-	private static final int STATSTABLE_X_FROM		= 5;
-	private static final int STATSTABLE_X_UNTIL		= 414;
-	private static final int STATSTABLE_Y_FROM		= 125;
+	private static int STATSTABLE_X_FROM			= 5;
+	private static int STATSTABLE_X_UNTIL			= 414;
+	private static int STATSTABLE_Y_FROM			= 125;
 	
 	//skills
-	private static final int ICON_SIZE				= 32;
-	private static final int C_SKILLS_WIDTH			= TOTAL_WIDTH;
-	private static final int C_SKILLS_HEIGHT		= STANDARD_PADDING*2+ICON_SIZE;
-	private static final int C_SKILLS_ICONS_X_FROM  = 0;
-	private static final int C_SKILLS_ICONS_X_UNTIL = C_SKILLS_ICONS_X_FROM+C_SKILLS_WIDTH-1;
-	private static final int C_SKILLS_ICONS_Y_FROM  = 125;
-	private static final int C_SKILLS_ICONS_Y_UNTIL = C_SKILLS_ICONS_Y_FROM + C_SKILLS_HEIGHT-1;
+	private static int ICON_SIZE					= 32;
+	private static int C_SKILLS_WIDTH				= TOTAL_WIDTH;
+	private static int C_SKILLS_HEIGHT				= STANDARD_PADDING*2+ICON_SIZE;
+	private static int C_SKILLS_ICONS_X_FROM  		= 0;
+	private static int C_SKILLS_ICONS_X_UNTIL 		= C_SKILLS_ICONS_X_FROM+C_SKILLS_WIDTH-1;
+	private static int C_SKILLS_ICONS_Y_FROM  		= 125;
+	private static int C_SKILLS_ICONS_Y_UNTIL 		= C_SKILLS_ICONS_Y_FROM + C_SKILLS_HEIGHT-1;
 	
 	
-	private PlayableCharacter copy = new PlayableCharacter();
+	private Entity copy = new PlayableCharacter();
 	
 	
-	public CharacterInformationContainer(PlayableCharacter original,Connector connector) {
-		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),TOTAL_WIDTH,TOTAL_HEIGHT,connector);
+	public EntityInformationContainer(Entity original,Connector connector) {
+		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),getDimensions(original),connector);
+		
 		setActiveCharacter(original);
 		initialPrint();
 	}
@@ -100,15 +101,10 @@ public class CharacterInformationContainer extends InformationContainer{
 		}
 	}
 	private void initialPrint()	{
-		green();
+		//green();
 		printPortrait();
 		printHeader();
-		printTabs(CharacterTab.SKILLS);
-	}
-	private void green() {
-		for(int i = 0; i < this.pixels.length; i++) {
-			this.pixels[i] = MyColor.GREEN.VALUE;
-		}
+		printTabs(CharacterTab.STATS);
 	}
 	private void printPortrait() {
 		int portraitIndex = 0;
@@ -122,24 +118,26 @@ public class CharacterInformationContainer extends InformationContainer{
 			}
 		}
 		for (int i = PORTRAIT_X_FROM - 1; i < PORTRAIT_X_UNTIL + 2; i++) {
-			pixels[i + (PORTRAIT_Y_FROM - 1) * this.TOTAL_WIDTH] = -1;
-			pixels[i + (PORTRAIT_Y_UNTIL + 1) * this.TOTAL_WIDTH] = -1;
+			pixels[i + (PORTRAIT_Y_FROM - 1) * TOTAL_WIDTH] = -1;
+			pixels[i + (PORTRAIT_Y_UNTIL + 1) * TOTAL_WIDTH] = -1;
 		}
 		for (int i = PORTRAIT_Y_FROM - 1; i < PORTRAIT_Y_UNTIL + 2; i++) {
-			pixels[(PORTRAIT_X_FROM - 1) + i * this.TOTAL_WIDTH] = -1;
-			pixels[(PORTRAIT_X_UNTIL + 1) + i * this.TOTAL_WIDTH] = -1;
-		}	
+			pixels[(PORTRAIT_X_FROM - 1) + i * TOTAL_WIDTH] = -1;
+			pixels[(PORTRAIT_X_UNTIL + 1) + i * TOTAL_WIDTH] = -1;
+		}
 	}
-	private void printHeader() {
-		writeLine(copy.getName(), 			HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
-		writeLine(copy.getLevelString(),	HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+
+	protected void printHeader() {
+		writeLine(this.copy.getName(), 			HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+		writeLine(this.copy.getLevelString(),	HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeBar(							HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,copy.getCurrentResourcePercentage("life"),MyColor.TRUEGREEN);
 		fillWithGraphics(					HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,getTextLine(copy.getCurrentResourceString("life"), LIFEBAR_WIDTH, LIFEBAR_HEIGHT, 1, MyColor.WHITE),false);
 		writeBar(							HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,copy.getCurrentResourcePercentage("mana"),MyColor.BLUE);
 		fillWithGraphics(					HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,getTextLine(copy.getCurrentResourceString("mana"), MANABAR_WIDTH, MANABAR_HEIGHT, 1, MyColor.WHITE),false);
-		writeLine(copy.getCurrentResourceString("movement"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
-		writeLine(copy.getCurrentResourceString("action"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+		writeLine(this.copy.getCurrentResourceString("movement"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+		writeLine(this.copy.getCurrentResourceString("action"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 	}
+
 	private void printTabs(CharacterTab tab) {
 		MyColor skillsBackground = MyColor.DARKGREY;
 		MyColor itemsBackground = MyColor.DARKGREY;
@@ -148,21 +146,21 @@ public class CharacterInformationContainer extends InformationContainer{
 		switch(tab) {
 		case SKILLS:
 			skillsBackground = MyColor.BLACK;
-			clearTabInfo();
+			//clearTabInfo();
 			printSkills();
 			break;
 		case ITEMS:
 			itemsBackground = MyColor.BLACK;
-			clearTabInfo();
+//			clearTabInfo();
 			break;
 		case STATS:
 			statsBackground = MyColor.BLACK;
-			clearTabInfo();
+//			clearTabInfo();
 			printStats();
 			break;
 		case GEAR:
 			gearBackground = MyColor.BLACK;
-			clearTabInfo();
+//			clearTabInfo();
 			break;
 		default:
 			break;
@@ -197,34 +195,34 @@ public class CharacterInformationContainer extends InformationContainer{
 	private void printStats() {
 		StndColumn meelee1 = new StndColumn(new String[] {
 					"meeleeAtk1",
-					Short.toString(copy.getMeeleeAtk1()),
+					Integer.toString(copy.getMeeleeAtk1()),
 					"meeleeDef1",
-					Short.toString(copy.getMeeleeDef1())});
+					Integer.toString(copy.getMeeleeDef1())});
 		StndColumn meelee2 = new StndColumn(new String[] {
 					"meeleeAtk2",
-					Short.toString(copy.getMeeleeAtk2()),
+					Integer.toString(copy.getMeeleeAtk2()),
 					"meeleeDef2",
-					Short.toString(copy.getMeeleeDef2())});
+					Integer.toString(copy.getMeeleeDef2())});
 		StndColumn ranged1 = new StndColumn(new String[] {
 					"rangedAtk1",
-					Short.toString(copy.getRangedAtk1()),
+					Integer.toString(copy.getRangedAtk1()),
 					"rangedDef1",
-					Short.toString(copy.getRangedDef1())});
+					Integer.toString(copy.getRangedDef1())});
 		StndColumn ranged2 = new StndColumn(new String[] {
 					"rangedAtk2",
-					Short.toString(copy.getRangedAtk2()),
+					Integer.toString(copy.getRangedAtk2()),
 					"rangedDef2",
-					Short.toString(copy.getRangedDef2())});
+					Integer.toString(copy.getRangedDef2())});
 		StndColumn magic1 = new StndColumn(new String[] {
 					"magicAtk1",
-					Short.toString(copy.getMagicAtk1()),
+					Integer.toString(copy.getMagicAtk1()),
 					"magicDef1",
-					Short.toString(copy.getMagicDef1())});
+					Integer.toString(copy.getMagicDef1())});
 		StndColumn magic2 = new StndColumn(new String[] {
 					"magicAtk2",
-					Short.toString(copy.getMagicAtk2()),
+					Integer.toString(copy.getMagicAtk2()),
 					"magicDef2",
-					Short.toString(copy.getMagicDef2())});
+					Integer.toString(copy.getMagicDef2())});
 		StndTable statsTable = new StndTable(new StndColumn[]{
 					meelee1,meelee2,ranged1,ranged2,magic1,magic2
 										}, new int[] {
@@ -258,7 +256,7 @@ public class CharacterInformationContainer extends InformationContainer{
 		}
 	}
 
-	private void setActiveCharacter(PlayableCharacter c) {
+	private void setActiveCharacter(Entity c) {
 		copy.setName(c.getName());
 		copy.setLevel(c.getLevel());
 		copy.setActiveTab(c.getActiveTab());
@@ -271,6 +269,13 @@ public class CharacterInformationContainer extends InformationContainer{
 		copy.setMaxMana(c.getMaxMana());
 		copy.setMaxMovement(c.getMaxMovement());
 		copy.setSkills(c.getSkills());
+		this.portrait = Resources.PORTRAITSx64.get(c.getPortraitId());
+	}
+	private static int[] getDimensions(Entity e){
+		if(e.isPlayer()) {
+			return new int[] {420,660};
+		}
+		return new int[] {420,420};
 	}
 	private void clearTabInfo() {
 		for(int x = TAB_INFO_X_FROM; x <= TAB_INFO_X_UNTIL; x++) {
