@@ -109,8 +109,8 @@ public class EntityInformationContainer extends InformationContainer{
 			tabs = new CharacterTab[] {
 					CharacterTab.STATS,
 					CharacterTab.SKILLS,
-					CharacterTab.GEAR,
-					CharacterTab.ITEMS
+					CharacterTab.ITEMS,
+					CharacterTab.GEAR
 			};
 		}else {
 			tabs = new CharacterTab[] {
@@ -150,68 +150,96 @@ public class EntityInformationContainer extends InformationContainer{
 	protected void printHeader() {
 		writeLine(this.copy.getName(), 			HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeLine(this.copy.getLevelString(),	HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
-		writeBar(							HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,copy.getCurrentResourcePercentage("life"),MyColor.TRUEGREEN);
-		fillWithGraphics(					HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,getTextLine(copy.getCurrentResourceString("life"), LIFEBAR_WIDTH, LIFEBAR_HEIGHT, 1, MyColor.WHITE),false);
-		writeBar(							HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,copy.getCurrentResourcePercentage("mana"),MyColor.BLUE);
-		fillWithGraphics(					HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,getTextLine(copy.getCurrentResourceString("mana"), MANABAR_WIDTH, MANABAR_HEIGHT, 1, MyColor.WHITE),false);
+		writeBar(								HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,copy.getCurrentResourcePercentage("life"),MyColor.TRUEGREEN);
+		fillWithGraphics(						HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,getTextLine(copy.getCurrentResourceString("life"), LIFEBAR_WIDTH, LIFEBAR_HEIGHT, 1, MyColor.WHITE),false);
+		writeBar(								HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,copy.getCurrentResourcePercentage("mana"),MyColor.BLUE);
+		fillWithGraphics(						HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,getTextLine(copy.getCurrentResourceString("mana"), MANABAR_WIDTH, MANABAR_HEIGHT, 1, MyColor.WHITE),false);
 		writeLine(this.copy.getCurrentResourceString("movement"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeLine(this.copy.getCurrentResourceString("action"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 	}
 
 	private void printTabs(CharacterTab tab) {
-		MyColor skillsBackground = MyColor.DARKGREY;
-		MyColor itemsBackground = MyColor.DARKGREY;
-		MyColor statsBackground = MyColor.DARKGREY;
-		MyColor gearBackground = MyColor.DARKGREY;
+		MyColor[] tabColors = new MyColor[] {
+				 MyColor.DARKGREY,
+				 MyColor.DARKGREY,
+				 MyColor.DARKGREY,
+				 MyColor.DARKGREY
+		};
+//		MyColor skillsBackground = MyColor.DARKGREY;
+//		MyColor itemsBackground = MyColor.DARKGREY;
+//		MyColor statsBackground = MyColor.DARKGREY;
+//		MyColor gearBackground = MyColor.DARKGREY;
 		switch(tab) {
-		case SKILLS:
-			skillsBackground = MyColor.BLACK;
+		case STATS:
+			tabColors[0] = MyColor.BLACK;
 			//clearTabInfo();
+			printStats();
+			break;
+		case SKILLS:
+			tabColors[1] = MyColor.BLACK;
+//			clearTabInfo();
 			printSkills();
 			break;
 		case ITEMS:
-			itemsBackground = MyColor.BLACK;
+			tabColors[2] = MyColor.BLACK;
 //			clearTabInfo();
-			break;
-		case STATS:
-			statsBackground = MyColor.BLACK;
-//			clearTabInfo();
-			printStats();
 			break;
 		case GEAR:
-			gearBackground = MyColor.BLACK;
+			tabColors[3] = MyColor.BLACK;
 //			clearTabInfo();
 			break;
 		default:
 			break;
 		}
 		
-		writeLine("stats", 		TAB1_X_FROM, TAB1_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,statsBackground,MyColor.WHITE);
-		writeLine("skills", 	TAB2_X_FROM, TAB2_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,skillsBackground,MyColor.WHITE);
-		writeLine("items", 		TAB3_X_FROM, TAB3_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,itemsBackground,MyColor.WHITE);
-		writeLine("gear",		TAB4_X_FROM, TAB4_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,gearBackground,MyColor.WHITE);
-		writeLine("tab5", 		TAB5_X_FROM, TAB5_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,MyColor.DARKGREY,MyColor.WHITE);
-	
-		Event clickStats = new Event();
-		clickStats.setEventId("tabChange");
-		clickStats.setTab(CharacterTab.STATS);
+		int tabSize = TOTAL_WIDTH / this.tabs.length;
+		int startX = 0;
+		int endX = startX + tabSize -1;
+		int i = 0;
 		
-		Event clickSkills = new Event();
-		clickSkills.setEventId("tabChange");
-		clickSkills.setTab(CharacterTab.SKILLS);
+		for(CharacterTab t: this.tabs) {
+			System.out.println("tab " + (i+1) + " ; x:" + startX + ",xbis:"+endX);
+			writeLine(t.name(),startX,endX,TAB_Y_FROM,TAB_Y_UNTIL,1,TextAlignment.CENTER,tabColors[i],MyColor.WHITE);
+			
+			Event click = new Event();
+			click.setEventId("tabChange");
+			click.setTab(this.tabs[i]);
+			
+			this.connector.addEvent(startX+OFFSET_LEFT,TAB_Y_FROM+OFFSET_TOP,tabSize,TAB_HEIGHT,click);
+			
+			i++;
+			startX+=tabSize;
+			endX+=tabSize;
+		}
 		
-		Event clickItems = new Event();
-		clickItems.setEventId("tabChange");
-		clickItems.setTab(CharacterTab.ITEMS);
 		
-		Event clickGear = new Event();
-		clickGear.setEventId("tabChange");
-		clickGear.setTab(CharacterTab.GEAR);
-		
-		this.connector.addEvent(TAB1_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickStats);
-		this.connector.addEvent(TAB2_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickSkills);
-		this.connector.addEvent(TAB3_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickItems);
-		this.connector.addEvent(TAB4_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickGear);
+//		
+//		writeLine("stats", 		TAB1_X_FROM, TAB1_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,statsBackground,MyColor.WHITE);
+//		writeLine("skills", 	TAB2_X_FROM, TAB2_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,skillsBackground,MyColor.WHITE);
+//		writeLine("items", 		TAB3_X_FROM, TAB3_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,itemsBackground,MyColor.WHITE);
+//		writeLine("gear",		TAB4_X_FROM, TAB4_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,gearBackground,MyColor.WHITE);
+//		writeLine("tab5", 		TAB5_X_FROM, TAB5_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,MyColor.DARKGREY,MyColor.WHITE);
+//	
+//		Event clickStats = new Event();
+//		clickStats.setEventId("tabChange");
+//		clickStats.setTab(CharacterTab.STATS);
+//		
+//		Event clickSkills = new Event();
+//		clickSkills.setEventId("tabChange");
+//		clickSkills.setTab(CharacterTab.SKILLS);
+//		
+//		Event clickItems = new Event();
+//		clickItems.setEventId("tabChange");
+//		clickItems.setTab(CharacterTab.ITEMS);
+//		
+//		Event clickGear = new Event();
+//		clickGear.setEventId("tabChange");
+//		clickGear.setTab(CharacterTab.GEAR);
+//		
+//		this.connector.addEvent(TAB1_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickStats);
+//		this.connector.addEvent(TAB2_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickSkills);
+//		this.connector.addEvent(TAB3_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickItems);
+//		this.connector.addEvent(TAB4_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickGear);
 	}
 	private void printStats() {
 		StndColumn meelee1 = new StndColumn(new String[] {
@@ -304,5 +332,9 @@ public class EntityInformationContainer extends InformationContainer{
 				this.pixels[x+y*TOTAL_WIDTH] = MyColor.GREEN.VALUE;
 			}
 		}
+	}
+	
+	public static class EntityInformationContainerConfig() {
+		
 	}
 }

@@ -57,7 +57,8 @@ public class StateManager {
 		}
 		
 		if(event!=null && event.getEventId()!=null) {
-			
+
+			System.out.println("event: " + event.getEventId());
 			this.states.peek().mouseClicked(event);
 		}
 	}
