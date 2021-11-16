@@ -10,29 +10,10 @@ public class PlayableCharacter extends Entity{
 	}
 	
 	public PlayableCharacter(int x, int y, byte id,String name, byte portraitId, MovementOption movement, Connector connector) {
-		super(x, y, id, connector,name,portraitId,true,movement);
-		loadSkills(CharacterTemplate.NONE);
+		super(x, y, id, connector,name,CharacterTemplate.NONE,portraitId,movement);
 	}
 	
 	public PlayableCharacter(int x, int y, byte id,String name, byte portraitId, MovementOption movement, Connector connector, CharacterTemplate template) {
-		super(x, y, id, connector,name,portraitId,true,movement);
-		loadSkills(template);
-	}
-	
-	private void loadSkills(CharacterTemplate t) {
-		if(t.equals(CharacterTemplate.NONE)) {
-			this.setSkills(new Skill[] {Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE});
-		}
-	}
-	public static enum CharacterTab{
-		STATS,
-		SKILLS,
-		ITEMS,
-		GEAR,
-	}
-	public static enum CharacterTemplate{
-		KNIGHT,
-		NONE,
-	}
-
+		super(x, y, id, connector,name,template,portraitId,movement);
+	}	
 }

@@ -56,4 +56,12 @@ public abstract class SecondLayerObject extends Tile{
 	public void setMovement(MovementOption movement) {
 		this.movement = movement;
 	}
+
+	@Override
+	public String toString() {
+		return "SecondLayerObject [connector=" + connector + ", name=" + name + ", movement=" + movement
+				+ ", portraitId=" + portraitId + ", x=" + x + ", y=" + y + "]";
+	}
+	
+	
 }

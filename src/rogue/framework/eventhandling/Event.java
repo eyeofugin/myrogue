@@ -1,8 +1,8 @@
 package rogue.framework.eventhandling;
 
+import rogue.game.world.objects.Entity.CharacterTab;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
-import rogue.game.world.objects.PlayableCharacter.CharacterTab;
 
 public class Event {
 

@@ -13,13 +13,12 @@ import util.TextEditor;
 public class InformationContainer {
 	
 	//general
-	private int TOTAL_WIDTH;
-	private int TOTAL_HEIGHT;
+	private int totalWidth;
+	private int totalHeight;
 	
-	private int OFFSET_LEFT;
-	private int OFFSET_TOP;
+	protected int offsetLeft;
+	protected int offsetTop;
 	
-	private int STANDARD_PADDING;
 	
 	//header
 	protected int PORTRAIT_X_FROM;
@@ -178,7 +177,7 @@ public class InformationContainer {
 	private void clearTabInfo(int width) {
 		for(int x = TAB_INFO_X_FROM; x <= TAB_INFO_X_UNTIL; x++) {
 			for(int y = TAB_INFO_Y_FROM; y <= TAB_INFO_Y_UNTIL; y++) {
-				this.pixels[x+y*TOTAL_WIDTH] = MyColor.GREEN.VALUE;
+				this.pixels[x+y*totalWidth] = MyColor.GREEN.VALUE;
 			}
 		}
 	}

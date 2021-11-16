@@ -17,12 +17,6 @@ public class EntityInformationContainer extends InformationContainer{
 	
 	//general
 	
-	private static int TOTAL_WIDTH 					= 420;
-	private static int TOTAL_HEIGHT 				= 660;
-	
-	private static int OFFSET_LEFT					= 1500;
-	private static int OFFSET_TOP					= 0;
-	
 	private static int STANDARD_PADDING				= 15;
 	
 	//header
@@ -48,26 +42,12 @@ public class EntityInformationContainer extends InformationContainer{
 	//tabs
 	private static int TAB_Y_FROM					= 90;
 	private static int TAB_Y_UNTIL					= 109;
-	private static int TAB_WIDTH					= 84;
 	private static int TAB_HEIGHT					= 20;
 	
 	private static int TAB_INFO_X_FROM				= 5;
 	private static int TAB_INFO_X_UNTIL				= 414;
 	private static int TAB_INFO_Y_FROM				= 125;
 	private static int TAB_INFO_Y_UNTIL				= 654;
-	private static int TAB1_X_FROM					= 0;
-	private static int TAB1_X_UNTIL					= 83;
-	private static int TAB2_X_FROM					= 84;
-	private static int TAB2_X_UNTIL					= 167;
-	private static int TAB3_X_FROM					= 168;
-	private static int TAB3_X_UNTIL					= 251;
-	private static int TAB4_X_FROM					= 252;
-	private static int TAB4_X_UNTIL					= 335;
-	private static int TAB5_X_FROM					= 336;
-	private static int TAB5_X_UNTIL					= 419;
-	
-	private static int PLAYER_NR_TABS 				= 5;
-	private static int ENTITY_NR_TABS				= 3;
 	
 	//stats
 	private static int STATSTABLE_X_FROM			= 5;
@@ -76,22 +56,33 @@ public class EntityInformationContainer extends InformationContainer{
 	
 	//skills
 	private static int ICON_SIZE					= 32;
-	private static int C_SKILLS_WIDTH				= TOTAL_WIDTH;
+	private static int C_SKILLS_WIDTH 				= 420;
 	private static int C_SKILLS_HEIGHT				= STANDARD_PADDING*2+ICON_SIZE;
-	private static int C_SKILLS_ICONS_X_FROM  		= 0;
-	private static int C_SKILLS_ICONS_X_UNTIL 		= C_SKILLS_ICONS_X_FROM+C_SKILLS_WIDTH-1;
 	private static int C_SKILLS_ICONS_Y_FROM  		= 125;
 	private static int C_SKILLS_ICONS_Y_UNTIL 		= C_SKILLS_ICONS_Y_FROM + C_SKILLS_HEIGHT-1;
+	private static int C_SKILLS_ICONS_X_FROM  		= 0;
+	private static int C_SKILLS_ICONS_X_UNTIL 		= C_SKILLS_ICONS_X_FROM+C_SKILLS_WIDTH-1;
 	
+	public static final EntityInformationContainerConfig PLAYER_CONFIG = 
+			new EntityInformationContainerConfig(420, 660, 1500, 0, new CharacterTab[] {
+					CharacterTab.STATS,
+					CharacterTab.SKILLS,
+					CharacterTab.ITEMS,
+					CharacterTab.GEAR
+			});
+	public static final EntityInformationContainerConfig ENTITY_CONFIG = 
+			new EntityInformationContainerConfig(420, 420, 1500, 660, new CharacterTab[] {
+					CharacterTab.STATS,
+					CharacterTab.SKILLS,
+			});
 	
 	private Entity copy = new PlayableCharacter();
 	private CharacterTab[] tabs; 
 	
-	
-	public EntityInformationContainer(Entity original,Connector connector) {
-		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),getDimensions(original),connector);
+	public EntityInformationContainer(Entity original,EntityInformationContainerConfig config, Connector connector) {
+		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),getDimensions(config),connector);
+		applyConfig(config);
 		setActiveCharacter(original);
-		setTabs(original.isPlayer());
 		initialPrint();
 	}
 	public void checkUdate(Entity currentActive) {
@@ -104,23 +95,7 @@ public class EntityInformationContainer extends InformationContainer{
 			copy.setActiveTab(currentActive.getActiveTab());
 		}
 	}
-	private void setTabs(boolean isPlayer) {
-		if(isPlayer) {
-			tabs = new CharacterTab[] {
-					CharacterTab.STATS,
-					CharacterTab.SKILLS,
-					CharacterTab.ITEMS,
-					CharacterTab.GEAR
-			};
-		}else {
-			tabs = new CharacterTab[] {
-					CharacterTab.STATS,
-					CharacterTab.SKILLS,
-			};
-		}
-	}
 	private void initialPrint()	{
-		//green();
 		clear();
 		printPortrait();
 		printHeader();
@@ -133,20 +108,19 @@ public class EntityInformationContainer extends InformationContainer{
 				if(portraitIndex > this.portrait.length)
 					break;
 				if(portrait[portraitIndex] != -12450784)
-					this.pixels[j+i*TOTAL_WIDTH] = this.portrait[portraitIndex];
+					this.pixels[j+i*this.width] = this.portrait[portraitIndex];
 				portraitIndex++;
 			}
 		}
 		for (int i = PORTRAIT_X_FROM - 1; i < PORTRAIT_X_UNTIL + 2; i++) {
-			pixels[i + (PORTRAIT_Y_FROM - 1) * TOTAL_WIDTH] = -1;
-			pixels[i + (PORTRAIT_Y_UNTIL + 1) * TOTAL_WIDTH] = -1;
+			pixels[i + (PORTRAIT_Y_FROM - 1) * this.width] = -1;
+			pixels[i + (PORTRAIT_Y_UNTIL + 1) * this.width] = -1;
 		}
 		for (int i = PORTRAIT_Y_FROM - 1; i < PORTRAIT_Y_UNTIL + 2; i++) {
-			pixels[(PORTRAIT_X_FROM - 1) + i * TOTAL_WIDTH] = -1;
-			pixels[(PORTRAIT_X_UNTIL + 1) + i * TOTAL_WIDTH] = -1;
+			pixels[(PORTRAIT_X_FROM - 1) + i * this.width] = -1;
+			pixels[(PORTRAIT_X_UNTIL + 1) + i * this.width] = -1;
 		}
 	}
-
 	protected void printHeader() {
 		writeLine(this.copy.getName(), 			HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeLine(this.copy.getLevelString(),	HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
@@ -157,7 +131,6 @@ public class EntityInformationContainer extends InformationContainer{
 		writeLine(this.copy.getCurrentResourceString("movement"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeLine(this.copy.getCurrentResourceString("action"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 	}
-
 	private void printTabs(CharacterTab tab) {
 		MyColor[] tabColors = new MyColor[] {
 				 MyColor.DARKGREY,
@@ -192,20 +165,21 @@ public class EntityInformationContainer extends InformationContainer{
 			break;
 		}
 		
-		int tabSize = TOTAL_WIDTH / this.tabs.length;
+		int tabSize = this.width / this.tabs.length;
 		int startX = 0;
 		int endX = startX + tabSize -1;
 		int i = 0;
 		
 		for(CharacterTab t: this.tabs) {
-			System.out.println("tab " + (i+1) + " ; x:" + startX + ",xbis:"+endX);
+			//System.out.println("tab " + (i+1) + " ; x:" + startX + ",xbis:"+endX);
 			writeLine(t.name(),startX,endX,TAB_Y_FROM,TAB_Y_UNTIL,1,TextAlignment.CENTER,tabColors[i],MyColor.WHITE);
 			
 			Event click = new Event();
 			click.setEventId("tabChange");
 			click.setTab(this.tabs[i]);
+			click.setObject(this.copy);
 			
-			this.connector.addEvent(startX+OFFSET_LEFT,TAB_Y_FROM+OFFSET_TOP,tabSize,TAB_HEIGHT,click);
+			this.connector.addEvent(startX+this.offsetLeft,TAB_Y_FROM+this.offsetTop,tabSize,TAB_HEIGHT,click);
 			
 			i++;
 			startX+=tabSize;
@@ -281,7 +255,7 @@ public class EntityInformationContainer extends InformationContainer{
 		int tableIndex = 0;
 		for(int y = STATSTABLE_Y_FROM; y < (STATSTABLE_Y_FROM + tableHeight); y++) {
 			for(int x = STATSTABLE_X_FROM; x <= STATSTABLE_X_UNTIL; x++) {
-				pixels[x+y*TOTAL_WIDTH] = statsTable.getPixels()[tableIndex];
+				pixels[x+y*this.width] = statsTable.getPixels()[tableIndex];
 				tableIndex++;
 			}
 		}
@@ -299,12 +273,11 @@ public class EntityInformationContainer extends InformationContainer{
 		//print(characterSkillIconRow.getPixels(),C_SKILLS_WIDTH,C_SKILLS_HEIGHT);
 		for(int y = C_SKILLS_ICONS_Y_FROM; y <= C_SKILLS_ICONS_Y_UNTIL; y++) {
 			for(int x = C_SKILLS_ICONS_X_FROM; x <= C_SKILLS_ICONS_X_UNTIL; x++) {
-				pixels[x+y*TOTAL_WIDTH] = characterSkillIconRow.getPixels()[iconRowIndex];
+				pixels[x+y*this.width] = characterSkillIconRow.getPixels()[iconRowIndex];
 				iconRowIndex++;
 			}
 		}
 	}
-
 	private void setActiveCharacter(Entity c) {
 		copy.setName(c.getName());
 		copy.setLevel(c.getLevel());
@@ -320,21 +293,57 @@ public class EntityInformationContainer extends InformationContainer{
 		copy.setSkills(c.getSkills());
 		this.portrait = Resources.PORTRAITSx64.get(c.getPortraitId());
 	}
-	private static int[] getDimensions(Entity e){
-		if(e.isPlayer()) {
-			return new int[] {420,660};
-		}
-		return new int[] {420,420};
+	private static int[] getDimensions(EntityInformationContainerConfig e){
+		return new int[] {e.getWidth(),e.getHeight()};
+	}
+	private void applyConfig(EntityInformationContainerConfig config) {
+	
+		this.tabs = config.getTabs();
+		this.offsetLeft = config.getOffsetLeft();
+		this.offsetTop = config.getOffsetTop();
 	}
 	private void clearTabInfo() {
 		for(int x = TAB_INFO_X_FROM; x <= TAB_INFO_X_UNTIL; x++) {
 			for(int y = TAB_INFO_Y_FROM; y <= TAB_INFO_Y_UNTIL; y++) {
-				this.pixels[x+y*TOTAL_WIDTH] = MyColor.GREEN.VALUE;
+				this.pixels[x+y*this.width] = MyColor.GREEN.VALUE;
 			}
 		}
 	}
-	
-	public static class EntityInformationContainerConfig() {
+	public static class EntityInformationContainerConfig {
 		
+		private final int width;
+		private final int height;
+		private final int offsetLeft;
+		private final int offsetTop;
+		private final CharacterTab[] tabs;
+		
+		public EntityInformationContainerConfig(int width, int height, int offsetLeft, int offsetTop, CharacterTab[] tabs) {
+			super();
+			this.width = width;
+			this.height = height;
+			this.offsetLeft = offsetLeft;
+			this.offsetTop = offsetTop;
+			this.tabs = tabs;
+		}
+
+		public int getWidth() {
+			return width;
+		}
+
+		public int getHeight() {
+			return height;
+		}
+
+		public int getOffsetLeft() {
+			return offsetLeft;
+		}
+
+		public int getOffsetTop() {
+			return offsetTop;
+		}
+
+		public CharacterTab[] getTabs() {
+			return tabs;
+		}
 	}
 }

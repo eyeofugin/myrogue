@@ -9,6 +9,7 @@ import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.framework.states.State;
 import rogue.game.world.World;
+import rogue.game.world.objects.Entity;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import util.MovementOption;
@@ -30,7 +31,7 @@ public class DungeonState extends State{
 		player.setMeeleeAtk1(10);
 		player.setPlayer();
 		this.world = new World(player,connector);
-		this.activeCharacterCanvas = new EntityInformationContainer(player,connector);
+		this.activeCharacterCanvas = new EntityInformationContainer(player,EntityInformationContainer.PLAYER_CONFIG,connector);
 		//this.hud = new HUD();
 	}
 	
@@ -85,7 +86,13 @@ public class DungeonState extends State{
 	@Override
 	protected void mouseClicked(Event e) {
 		if(e.getEventId().equals("tabChange")) {
-			this.player.setActiveTab(e.getTab());
+			Entity entity = Entity.class.cast(e.getObject());
+			System.out.println(entity.toString());
+			if(entity.getName().equals("player")) {
+				System.out.println("!!");
+				this.player.setActiveTab(e.getTab());
+				return;
+			}
 		}
 		this.world.getRoom().mouseClicked(e);
 		

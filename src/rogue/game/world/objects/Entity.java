@@ -1,15 +1,13 @@
 package rogue.game.world.objects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import rogue.framework.eventhandling.Connector;
-import rogue.game.world.objects.PlayableCharacter.CharacterTab;
 import util.MovementOption;
 
 public class Entity extends SecondLayerObject{
-
-	private boolean isPlayer = false;
 	
 	private Skill[] skills;
 	private List<Equipment> equipments = new ArrayList<>();
@@ -48,15 +46,34 @@ public class Entity extends SecondLayerObject{
 		super();
 	}
 	
-	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, boolean isPlayer, MovementOption movement) {
+	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, MovementOption movement) {
+		
+	}
+	
+	public Entity(int x, int y, byte id, Connector connector, String name,CharacterTemplate t, byte portraitId, MovementOption movement) {
 		super(id,x,y,portraitId,name,movement,connector);
-		this.isPlayer = isPlayer;
+		loadSkills(t);
 		this.currentLife = 10;
 		this.maxLife = 10;
 		this.currentMana = 5;
 		this.maxMana = 5;
 	}
 	
+	private void loadSkills(CharacterTemplate t) {
+		if(t.equals(CharacterTemplate.NONE)) {
+			this.setSkills(new Skill[] {Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE});
+		}
+	}
+	public static enum CharacterTemplate{
+		KNIGHT,
+		NONE,
+	}
+	public static enum CharacterTab{
+		STATS,
+		SKILLS,
+		ITEMS,
+		GEAR,
+	}
 	
 //Getters and Setters
 	
@@ -222,12 +239,6 @@ public class Entity extends SecondLayerObject{
 	public void setActiveTab(CharacterTab activeTab) {
 		this.activeTab = activeTab;
 	}
-	public void setPlayer() {
-		this.isPlayer = true;
-	}
-	public boolean isPlayer() {
-		return this.isPlayer;
-	}
 	public List<Equipment> getEquipments(){
 		return this.equipments;
 	}
@@ -312,4 +323,19 @@ public class Entity extends SecondLayerObject{
 	public void damage(int damage) {
 		this.currentLife-=damage;
 	}
+
+	@Override
+	public String toString() {
+		return "Entity [name="+this.getName()+", skills=" + Arrays.toString(skills) + ", equipments=" + equipments
+				+ ", activeTab=" + activeTab + ", level=" + level + ", maxLife=" + maxLife + ", currentLife="
+				+ currentLife + ", maxMana=" + maxMana + ", currentMana=" + currentMana + ", meeleeAtk1=" + meeleeAtk1
+				+ ", meeleeAtk2=" + meeleeAtk2 + ", rangedAtk1=" + rangedAtk1 + ", rangedAtk2=" + rangedAtk2
+				+ ", magicAtk1=" + magicAtk1 + ", magicAtk2=" + magicAtk2 + ", meeleeDef1=" + meeleeDef1
+				+ ", meeleeDef2=" + meeleeDef2 + ", rangedDef1=" + rangedDef1 + ", rangedDef2=" + rangedDef2
+				+ ", magicDef1=" + magicDef1 + ", magicDef2=" + magicDef2 + ", currentActions=" + currentActions
+				+ ", maxActions=" + maxActions + ", currentMovement=" + currentMovement + ", maxMovement=" + maxMovement
+				+ "]";
+	}
+	
+	
 }

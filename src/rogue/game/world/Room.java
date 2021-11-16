@@ -11,6 +11,7 @@ import rogue.framework.resources.Resources;
 import rogue.game.combat.CombatManager;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.Entity;
+import rogue.game.world.objects.NPC;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
 import rogue.game.world.objects.Tile;
@@ -26,7 +27,7 @@ public class Room {
 	private Connector connector;
 
 	private SecondLayerObject activeCharacter;
-	private Entity activeNpc;
+	private NPC activeNpc;
 	
 	private ArrayList<Entity> entities;
 	private SecondLayerObject[][] objects;
@@ -44,7 +45,7 @@ public class Room {
 		this.entities = new ArrayList<Entity>();
 		this.objects = new SecondLayerObject[data.getTileData().length][data.getTileData()[0].length];
 		this.highlights = new Highlight[data.getTileData().length][data.getTileData()[0].length];
-		this.activeNpcCanvas = new EntityInformationContainer(new Entity(), connector);
+		this.activeNpcCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, connector);
 		initEnemies();
 	}
 	
@@ -76,12 +77,12 @@ public class Room {
 		activeCharacter = team.get(0);
 	}
 	public void initEnemies() {
-		Entity enemy = new Entity(4,5,Resources.SKELETON,this.connector,"skeleton",Resources.SKELETONMALE,false,MovementOption.ENEMY);
+		NPC enemy = new NPC(4,5,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,MovementOption.ENEMY,this.connector);
 		enemy.setMeeleeDef1(5);
 		entities.add(enemy);
 		objects[enemy.getX()][enemy.getY()] = enemy;
 		
-		Entity enemy2 = new Entity(5,5,Resources.SKELETON,this.connector,"skeleton2",Resources.KNIGHTMALE,false,MovementOption.ENEMY);
+		NPC enemy2 = new NPC(5,5,Resources.SKELETON,"skeleton2",Resources.KNIGHTMALE,MovementOption.ENEMY,this.connector);
 		enemy2.setMeeleeDef1(5);
 		entities.add(enemy2);
 		objects[enemy2.getX()][enemy2.getY()] = enemy2;
@@ -291,9 +292,9 @@ public class Room {
 			}
 		}
 	}
-	private void selectEntity(SecondLayerObject obj) {
-		if(Entity.class.isInstance(obj)) {
-			Entity e = Entity.class.cast(obj);
+	private void selectNpc(SecondLayerObject obj) {
+		if(NPC.class.isInstance(obj)) {
+			NPC e = NPC.class.cast(obj);
 			this.activeNpc = e;
 		}
 	}
@@ -348,7 +349,11 @@ public class Room {
 			removeTheDead();
 		}
 		if(e.getEventId().equals(this.connector.INFO_ENTITY)) {
-			selectEntity(e.getObject());
+			selectNpc(e.getObject());
+		}
+		if(e.getEventId().equals("tabChange")) {
+			if(this.activeNpc!=null)
+				this.activeNpc.setActiveTab(e.getTab());
 		}
 	}
 }

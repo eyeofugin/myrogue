@@ -28,7 +28,7 @@ public class ArenaState extends State{
 		team.add(new PlayableCharacter(1,2,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,MovementOption.PLAYER,this.connector));
 		this.activeCharacter = team.get(0);
 		this.world = new World(team,connector);
-		this.activeCharacterCanvas = new EntityInformationContainer(team.get(0),connector);
+		this.activeCharacterCanvas = new EntityInformationContainer(team.get(0),EntityInformationContainer.PLAYER_CONFIG,connector);
 	}
 
 	@Override
