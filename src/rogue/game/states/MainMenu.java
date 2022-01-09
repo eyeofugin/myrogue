@@ -40,4 +40,9 @@ public class MainMenu extends State{
 		
 	}
 
+	@Override
+	protected boolean hasSprite() {
+		return false;
+	}
+
 }

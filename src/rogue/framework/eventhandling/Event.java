@@ -3,6 +3,7 @@ package rogue.framework.eventhandling;
 import rogue.game.world.objects.Entity.CharacterTab;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
+import rogue.game.world.objects.Skill;
 
 public class Event {
 
@@ -10,7 +11,9 @@ public class Event {
 	
 	private PlayableCharacter character;
 	private SecondLayerObject object;
+	private Skill skill;
 	private CharacterTab tab;
+	
 	private int x,y;
 	
 	public String getEventId() {
@@ -48,6 +51,12 @@ public class Event {
 	}
 	public void setY(int y) {
 		this.y = y;
+	}
+	public Skill getSkill() {
+		return this.skill;
+	}
+	public void setSkill(Skill s) {
+		this.skill = s;
 	}
 	
 }

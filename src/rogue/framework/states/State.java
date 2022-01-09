@@ -11,11 +11,11 @@ public abstract class State {
 	
 	protected abstract void update();
 	protected abstract int[] render();
+	protected abstract boolean hasSprite();
 	protected abstract void mouseClicked(Event e);
 	protected abstract void keyPressed(KeyEvent e);
 	
 	public State(Connector connector) {
 		this.connector = connector;
 	}
-	
 }

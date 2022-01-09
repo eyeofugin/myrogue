@@ -1,14 +1,11 @@
 package rogue.graphics;
 
 import rogue.framework.eventhandling.Connector;
-import rogue.framework.eventhandling.Event;
-import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.Skill;
-import rogue.game.world.objects.PlayableCharacter.CharacterTab;
-import util.IconRow;
+import rogue.framework.resources.Property;
 import util.MyColor;
 import util.TextAlignment;
 import util.TextEditor;
+import util.TextEditor.TextEditorConfig;
 
 public class InformationContainer {
 	
@@ -74,29 +71,44 @@ public class InformationContainer {
 	protected String name;
 	protected int height,width;
 	
+	protected TextEditor editor;
+	
 	public InformationContainer() {
 		
 	}
 	
-	public InformationContainer(int[] portrait, String name, int[] dimensions, Connector connector) {
+	public InformationContainer(int[] portrait, String name, int[] dimensions,TextEditorConfig txtEditConf, Connector connector) {
 		this.portrait = portrait;
 		this.name = name;
 		this.width = dimensions[0];
 		this.height= dimensions[1];
 		this.connector = connector;
+		this.editor = new TextEditor(txtEditConf);
 		this.pixels = new int[width*height];
 	}
 	
 	protected int[] getTextLine(String text, int textWidth, int textHeight, int fontSize, MyColor fontColor) {
-		int result[] = TextEditor.getTextLine(text, textWidth, textHeight, fontSize, TextAlignment.CENTER, MyColor.VOID, fontColor);
+		int result[] = editor.getTextLine(text, textWidth, textHeight, fontSize, TextAlignment.CENTER, MyColor.VOID, fontColor);
 		return result;
 	}
 	protected void writeLine(String text, int xFrom, int xUntil, int yFrom, int yUntil) {
 		writeLine(text,xFrom,xUntil,yFrom,yUntil,0,TextAlignment.CENTER,MyColor.BLACK,MyColor.WHITE);
 	}
 	protected void writeLine(String text, int xFrom, int xUntil, int yFrom, int yUntil, int fontSize, TextAlignment alignment, MyColor backGround, MyColor font) {
-		int result[] = TextEditor.getTextLine(text, (xUntil-xFrom+1),(yUntil-yFrom+1),fontSize,alignment,backGround, font);
-		
+		int result[] = editor.getTextLine(text, (xUntil-xFrom+1),(yUntil-yFrom+1),fontSize,alignment,backGround, font);
+		if(text.equals("end"))
+			print(result,100,20);
+		//print(result,(xUntil-xFrom+1),(yUntil-yFrom+1));
+		int index = 0;
+		for(int y = yFrom; y <= yUntil; y++) {
+			for(int x = xFrom; x <= xUntil; x++) {
+				this.pixels[x+y*width] = result[index];
+				index++;
+			}
+		}
+	}
+	public static void writeLineExt(String text, int xFrom, int xUntil, int yFrom, int yUntil, int fontSize, TextAlignment alignment, MyColor backGround, MyColor font,int[] pixels, int width) {
+		int result[] = new TextEditor(TextEditor.conf8x7).getTextLine(text, (xUntil-xFrom+1),(yUntil-yFrom+1),fontSize,alignment,backGround, font);
 		int index = 0;
 		for(int y = yFrom; y <= yUntil; y++) {
 			for(int x = xFrom; x <= xUntil; x++) {
@@ -105,6 +117,25 @@ public class InformationContainer {
 			}
 		}
 	}
+	public void writeButton(String text, int xFrom, int yFrom) {
+		writeButton(text,xFrom,yFrom, MyColor.BLACK, MyColor.WHITE);
+	}
+	
+	public void writeButton(String label,int xfrom, int yfrom, MyColor backGroundColor, MyColor fontColor) {
+		
+		int button[] = editor.getButtonLine(label, Property.BUTTON_NORMAL_WIDTH, Property.BUTTON_NORMAL_HEIGHT,backGroundColor,fontColor);
+		
+		int yUntil = yfrom+Property.BUTTON_NORMAL_HEIGHT;
+		int xUntil = xfrom+Property.BUTTON_NORMAL_WIDTH;
+		int index = 0;
+		for(int y = yfrom; y < yUntil; y++)  {
+			for(int x = xfrom; x < xUntil; x++) {
+				pixels[x+y*width] = button[index];
+				index++;
+			}
+		}
+	}
+	
 	protected void horizontalLine(int xfrom, int xuntil, int height) {
 		for(int i = xfrom; i <= xuntil; i++) {
 			pixels[i+height*this.width] = -1;
@@ -160,9 +191,9 @@ public class InformationContainer {
 			for(int y = 0; y < width; y++) {
 				int i = p[y+x*width];
 				if(i == 0) {
-					System.out.print("0");
+					System.out.print(". ");
 				}else {
-					System.out.print("1");
+					System.out.print("# ");
 				}
 			}
 			System.out.println();

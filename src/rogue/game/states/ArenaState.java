@@ -12,6 +12,7 @@ import rogue.game.world.World;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import util.MovementOption;
+import util.TextEditor;
 
 public class ArenaState extends State{
 
@@ -28,7 +29,7 @@ public class ArenaState extends State{
 		team.add(new PlayableCharacter(1,2,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,MovementOption.PLAYER,this.connector));
 		this.activeCharacter = team.get(0);
 		this.world = new World(team,connector);
-		this.activeCharacterCanvas = new EntityInformationContainer(team.get(0),EntityInformationContainer.PLAYER_CONFIG,connector);
+		this.activeCharacterCanvas = new EntityInformationContainer(team.get(0),EntityInformationContainer.PLAYER_CONFIG,TextEditor.conf8x7,connector);
 	}
 
 	@Override
@@ -92,6 +93,12 @@ public class ArenaState extends State{
 	protected void keyPressed(KeyEvent e) {
 		world.getRoom().keyPressed(e);
 		
+	}
+
+	@Override
+	protected boolean hasSprite() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

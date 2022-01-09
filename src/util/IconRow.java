@@ -1,6 +1,5 @@
 package util;
 
-import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
 import rogue.graphics.InformationContainer;
@@ -11,18 +10,18 @@ public class IconRow extends InformationContainer{
 	private int amntIcons;
 	private byte[] icons;
 	private Event[] onClickEvents;
-	private Connector connector;
+	private Event[] events;
 	private int hMargin,vMargin;
 	
-	public IconRow(Event[] events, byte[] icons, int xSpan, int ySpan, Connector connector) {
+	public IconRow(Event[] events, byte[] icons, int xSpan, int ySpan) {
 		
 		this.amntIcons = icons.length;
 		this.icons = icons;
 		this.onClickEvents = events;
-		this.connector = connector;
 		this.width = round(xSpan);
 		this.height = round(ySpan);
 		calcMargins();
+		this.events = new Event[events.length];
 		this.pixels = new int[this.width*this.height];
 		finish();
 	}
@@ -35,7 +34,7 @@ public class IconRow extends InformationContainer{
 			int[] iconPixels = Resources.PORTRAITSx32.get(b);
 			//print(iconPixels,32,32);
 			fillWithGraphics(xOffset, xOffset+ICON_SIZE-1, yOffset, yOffset+ICON_SIZE-1, iconPixels, true);
-			this.connector.addEvent(xOffset, yOffset, ICON_SIZE, ICON_SIZE, this.onClickEvents[eventCtr]);
+			fillInEvents(xOffset, yOffset,eventCtr);
 			xOffset+=hMargin;
 			xOffset+=ICON_SIZE;
 			eventCtr++;
@@ -50,5 +49,14 @@ public class IconRow extends InformationContainer{
 	private void calcMargins() {
 		this.hMargin = (this.width-ICON_SIZE*amntIcons) / (amntIcons+1);
 		this.vMargin = (this.height-ICON_SIZE) / 2;
+	}
+	private void fillInEvents(int xOff, int yOff, int eventCtr) {
+		Event e = this.onClickEvents[eventCtr];
+		e.setX(xOff);
+		e.setY(yOff);
+		this.events[eventCtr] = e;
+	}
+	public Event[] getEvents() {
+		return this.events;
 	}
 }

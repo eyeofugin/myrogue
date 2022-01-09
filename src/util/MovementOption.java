@@ -6,5 +6,6 @@ public enum MovementOption {
 	VOID,
 	OBSTACLE,
 	PLAYER,
+	SELF,
 	VALID
 }

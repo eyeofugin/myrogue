@@ -45,6 +45,9 @@ public class StateManager {
 	public void update() {
 		this.states.peek().update();
 	}
+	public boolean hasSprite() {
+		return this.states.peek().hasSprite();
+	}
 	
 	public void mouseClicked(MouseEvent e) {
 		Event event = new Event();

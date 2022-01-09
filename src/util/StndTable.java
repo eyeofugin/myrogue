@@ -1,6 +1,7 @@
 package util;
 
 import rogue.graphics.InformationContainer;
+import util.TextEditor.TextEditorConfig;
 
 public class StndTable extends InformationContainer{
 	
@@ -12,32 +13,34 @@ public class StndTable extends InformationContainer{
 	private StndColumn footer;
 	
 	private static final int BASELINEDISTANCE = 4;
-	private static final int BASELINESIZE = 7;
+	private int baseLineSize = 8;
 	
-	public StndTable(StndColumn[] columns, int[] sizes) {
+	public StndTable(StndColumn[] columns, TextEditor editor,int[] sizes) {
 		this.sizes = sizes;
 		this.superSizes = sizes;
 		this.columns = columns;
+		this.editor = editor;
+		this.baseLineSize=this.editor.charHeight;
 		
 		int sum = 0;
 		for(int i : sizes) {sum+=i;}
 		
 		this.width = sum + 10;
-		this.height = columns.length*(BASELINEDISTANCE+BASELINESIZE)-BASELINEDISTANCE;
+		this.height = columns.length*(BASELINEDISTANCE+baseLineSize)-BASELINEDISTANCE;
 	}
 	public void addHeader(StndColumn header) {
 		this.header = header;
-		this.height+=(BASELINESIZE + BASELINEDISTANCE*2) +1;
+		this.height+=(baseLineSize + BASELINEDISTANCE*2) +1;
 	}
 	
 	public void addFooter(StndColumn footer) {
 		this.footer = footer;
-		this.height+=(BASELINESIZE + BASELINEDISTANCE*2) +1;
+		this.height+=(baseLineSize + BASELINEDISTANCE*2) +1;
 	}
 	
 	public void addSuperHeader(StndColumn superHeader) {
 		this.superHeader = superHeader;
-		this.height+=(BASELINESIZE + BASELINEDISTANCE*2) +1;
+		this.height+=(baseLineSize + BASELINEDISTANCE*2) +1;
 	}
 	
 	public void addSuperSizes(int[] superSizes) {
@@ -54,11 +57,11 @@ public class StndTable extends InformationContainer{
 		//superHeader
 		if(superHeader!=null) {
 			for(int i = 0; i < superHeader.getEntries().length; i++) {
-				writeLine(superHeader.getEntries()[i], xOffset, xOffset+superSizes[i]-1, yOffset, yOffset+BASELINESIZE-1,  1, TextAlignment.CENTER, MyColor.BLACK, MyColor.WHITE);
+				writeLine(superHeader.getEntries()[i], xOffset, xOffset+superSizes[i]-1, yOffset, yOffset+baseLineSize-1,  1, TextAlignment.CENTER, MyColor.BLACK, MyColor.WHITE);
 				xOffset+=superSizes[i];
 			}
 			xOffset=5;
-			yOffset+=BASELINESIZE+BASELINEDISTANCE;
+			yOffset+=baseLineSize+BASELINEDISTANCE;
 			horizontalLine(xOffset-5, this.width-1, yOffset);
 			yOffset+=BASELINEDISTANCE;
 		}
@@ -66,29 +69,29 @@ public class StndTable extends InformationContainer{
 		//header
 		if(header!=null) {
 			for(int i = 0; i<header.getEntries().length; i++) {
-				writeLine(header.getEntries()[i], xOffset, xOffset+sizes[i]-1, yOffset, yOffset+BASELINESIZE-1, 1, TextAlignment.RIGHT, MyColor.BLACK, header.getColors()[i]);
+				writeLine(header.getEntries()[i], xOffset, xOffset+sizes[i]-1, yOffset, yOffset+baseLineSize-1, 1, TextAlignment.RIGHT, MyColor.BLACK, header.getColors()[i]);
 				xOffset+=sizes[i];
 			}
 			xOffset=5;
-			yOffset+=BASELINESIZE+BASELINEDISTANCE;
+			yOffset+=baseLineSize+BASELINEDISTANCE;
 			horizontalLine(xOffset-5, this.width-1, yOffset);
 			yOffset+=BASELINEDISTANCE;
 		}
 		//entries
 		for(StndColumn column : columns) {
 			for(int i = 0; i<column.getEntries().length; i++) {
-				writeLine(column.getEntries()[i], xOffset, xOffset+sizes[i]-1, yOffset, yOffset+BASELINESIZE-1, 1, TextAlignment.RIGHT, MyColor.BLACK, column.getColors()[i]);
+				writeLine(column.getEntries()[i], xOffset, xOffset+sizes[i]-1, yOffset, yOffset+baseLineSize-1, 1, TextAlignment.RIGHT, MyColor.BLACK, column.getColors()[i]);
 				xOffset+=sizes[i];
 			}
 			xOffset=5;
-			yOffset+=BASELINESIZE+BASELINEDISTANCE;
+			yOffset+=baseLineSize+BASELINEDISTANCE;
 		}
 		//footer
 		if(footer!=null) {
 			horizontalLine(xOffset-5, this.width-1, yOffset);
 			yOffset+=BASELINEDISTANCE;
 			for(int i = 0; i<footer.getEntries().length; i++) {
-				writeLine(footer.getEntries()[i], xOffset, xOffset+sizes[i]-1, yOffset, yOffset+BASELINESIZE-1, 1, TextAlignment.RIGHT, MyColor.BLACK, footer.getColors()[i]);
+				writeLine(footer.getEntries()[i], xOffset, xOffset+sizes[i]-1, yOffset, yOffset+baseLineSize-1, 1, TextAlignment.RIGHT, MyColor.BLACK, footer.getColors()[i]);
 				xOffset+=sizes[i];
 			}
 		}

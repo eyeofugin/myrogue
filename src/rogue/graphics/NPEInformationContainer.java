@@ -3,7 +3,7 @@ package rogue.graphics;
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.resources.Resources;
 import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.PlayableCharacter.CharacterTab;
+import util.TextEditor.TextEditorConfig;
 
 public class NPEInformationContainer extends InformationContainer{
 
@@ -39,8 +39,8 @@ public class NPEInformationContainer extends InformationContainer{
 	
 	private Entity copy = new Entity();
 	
-	public NPEInformationContainer(Entity original, Connector connector) {
-		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),new int[0],connector);
+	public NPEInformationContainer(Entity original,TextEditorConfig conf, Connector connector) {
+		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),new int[0],conf,connector);
 		setActiveEntity(original);
 		//initialPrint();
 	}

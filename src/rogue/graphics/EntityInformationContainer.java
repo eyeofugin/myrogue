@@ -1,17 +1,21 @@
 package rogue.graphics;
 
+import java.util.List;
+
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
 import rogue.game.world.objects.Entity;
+import rogue.game.world.objects.Entity.CharacterTab;
+import rogue.game.world.objects.Equipment;
 import rogue.game.world.objects.PlayableCharacter;
-import rogue.game.world.objects.PlayableCharacter.CharacterTab;
 import rogue.game.world.objects.Skill;
 import util.IconRow;
 import util.MyColor;
 import util.StndColumn;
 import util.StndTable;
 import util.TextAlignment;
+import util.TextEditor.TextEditorConfig;
 
 public class EntityInformationContainer extends InformationContainer{
 	
@@ -79,27 +83,26 @@ public class EntityInformationContainer extends InformationContainer{
 	private Entity copy = new PlayableCharacter();
 	private CharacterTab[] tabs; 
 	
-	public EntityInformationContainer(Entity original,EntityInformationContainerConfig config, Connector connector) {
-		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),getDimensions(config),connector);
+	public EntityInformationContainer(Entity original,EntityInformationContainerConfig config,TextEditorConfig conf, Connector connector) {
+		super(Resources.PORTRAITSx64.get(original.getPortraitId()),original.getName(),getDimensions(config),conf,connector);
 		applyConfig(config);
 		setActiveCharacter(original);
-		initialPrint();
+		initialPrint(CharacterTab.STATS);
 	}
 	public void checkUdate(Entity currentActive) {
-		if(!copy.getName().equals(currentActive.getName())) {
-			setActiveCharacter(currentActive);
-			initialPrint();
-		}
-		if(!copy.getActiveTab().equals(currentActive.getActiveTab())) {
-			printTabs(currentActive.getActiveTab());
-			copy.setActiveTab(currentActive.getActiveTab());
-		}
+		setActiveCharacter(currentActive);
+		initialPrint(currentActive.getActiveTab());
 	}
-	private void initialPrint()	{
+	private void initialPrint(CharacterTab tab)	{
 		clear();
 		printPortrait();
 		printHeader();
-		printTabs(CharacterTab.STATS);
+		printTabs(tab);
+	}
+	private void thisGreen() {
+		for(int i =0; i < this.pixels.length;i++) {
+			this.pixels[i] = MyColor.TRUEGREEN.VALUE;
+		}
 	}
 	private void printPortrait() {
 		int portraitIndex = 0;
@@ -121,7 +124,7 @@ public class EntityInformationContainer extends InformationContainer{
 			pixels[(PORTRAIT_X_UNTIL + 1) + i * this.width] = -1;
 		}
 	}
-	protected void printHeader() {
+	private void printHeader() {
 		writeLine(this.copy.getName(), 			HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeLine(this.copy.getLevelString(),	HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeBar(								HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,copy.getCurrentResourcePercentage("life"),MyColor.TRUEGREEN);
@@ -138,10 +141,6 @@ public class EntityInformationContainer extends InformationContainer{
 				 MyColor.DARKGREY,
 				 MyColor.DARKGREY
 		};
-//		MyColor skillsBackground = MyColor.DARKGREY;
-//		MyColor itemsBackground = MyColor.DARKGREY;
-//		MyColor statsBackground = MyColor.DARKGREY;
-//		MyColor gearBackground = MyColor.DARKGREY;
 		switch(tab) {
 		case STATS:
 			tabColors[0] = MyColor.BLACK;
@@ -185,39 +184,10 @@ public class EntityInformationContainer extends InformationContainer{
 			startX+=tabSize;
 			endX+=tabSize;
 		}
-		
-		
-//		
-//		writeLine("stats", 		TAB1_X_FROM, TAB1_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,statsBackground,MyColor.WHITE);
-//		writeLine("skills", 	TAB2_X_FROM, TAB2_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,skillsBackground,MyColor.WHITE);
-//		writeLine("items", 		TAB3_X_FROM, TAB3_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,itemsBackground,MyColor.WHITE);
-//		writeLine("gear",		TAB4_X_FROM, TAB4_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,gearBackground,MyColor.WHITE);
-//		writeLine("tab5", 		TAB5_X_FROM, TAB5_X_UNTIL, TAB_Y_FROM, TAB_Y_UNTIL,1,TextAlignment.CENTER,MyColor.DARKGREY,MyColor.WHITE);
-//	
-//		Event clickStats = new Event();
-//		clickStats.setEventId("tabChange");
-//		clickStats.setTab(CharacterTab.STATS);
-//		
-//		Event clickSkills = new Event();
-//		clickSkills.setEventId("tabChange");
-//		clickSkills.setTab(CharacterTab.SKILLS);
-//		
-//		Event clickItems = new Event();
-//		clickItems.setEventId("tabChange");
-//		clickItems.setTab(CharacterTab.ITEMS);
-//		
-//		Event clickGear = new Event();
-//		clickGear.setEventId("tabChange");
-//		clickGear.setTab(CharacterTab.GEAR);
-//		
-//		this.connector.addEvent(TAB1_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickStats);
-//		this.connector.addEvent(TAB2_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickSkills);
-//		this.connector.addEvent(TAB3_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickItems);
-//		this.connector.addEvent(TAB4_X_FROM+OFFSET_LEFT, TAB_Y_FROM+OFFSET_TOP, TAB_WIDTH, TAB_HEIGHT, clickGear);
 	}
 	private void printStats() {
 		StndColumn meelee1 = new StndColumn(new String[] {
-					"meeleeAtk1",
+					"Meelee Atk 1",
 					Integer.toString(copy.getMeeleeAtk1()),
 					"meeleeDef1",
 					Integer.toString(copy.getMeeleeDef1())});
@@ -244,13 +214,14 @@ public class EntityInformationContainer extends InformationContainer{
 		StndColumn magic2 = new StndColumn(new String[] {
 					"magicAtk2",
 					Integer.toString(copy.getMagicAtk2()),
-					"magicDef2",
+					"MagicDef2",
 					Integer.toString(copy.getMagicDef2())});
 		StndTable statsTable = new StndTable(new StndColumn[]{
-					meelee1,meelee2,ranged1,ranged2,magic1,magic2
-										}, new int[] {
+					meelee1,meelee2,ranged1,ranged2,magic1,magic2},this.editor,
+				new int[] {
 				    100,100,100,100});
 		statsTable.finish();
+		//print(statsTable.pixels,400,statsTable.height);
 		int tableHeight= statsTable.getHeight();
 		int tableIndex = 0;
 		for(int y = STATSTABLE_Y_FROM; y < (STATSTABLE_Y_FROM + tableHeight); y++) {
@@ -268,7 +239,7 @@ public class EntityInformationContainer extends InformationContainer{
 			skillIds[i] = characterSkills[i].getId();
 			skillEvents[i] = characterSkills[i].getEvent();
 		}
-		IconRow characterSkillIconRow = new IconRow(skillEvents, skillIds, C_SKILLS_WIDTH, C_SKILLS_HEIGHT, connector);
+		IconRow characterSkillIconRow = new IconRow(skillEvents, skillIds, C_SKILLS_WIDTH, C_SKILLS_HEIGHT);
 		int iconRowIndex=0;
 		//print(characterSkillIconRow.getPixels(),C_SKILLS_WIDTH,C_SKILLS_HEIGHT);
 		for(int y = C_SKILLS_ICONS_Y_FROM; y <= C_SKILLS_ICONS_Y_UNTIL; y++) {
@@ -277,8 +248,21 @@ public class EntityInformationContainer extends InformationContainer{
 				iconRowIndex++;
 			}
 		}
+		for(Event e : characterSkillIconRow.getEvents()) {
+			this.connector.addEvent(C_SKILLS_ICONS_X_FROM+e.getX()+this.offsetLeft,C_SKILLS_ICONS_Y_FROM+e.getY()+this.offsetTop, ICON_SIZE, ICON_SIZE, e);
+		}
+	}
+	
+	private void printItems() {
+		List<Equipment> equipments = this.copy.getEquipments();
+	
+		for(int i = 0; i < equipments.size(); i++) {
+			
+		}
+		
 	}
 	private void setActiveCharacter(Entity c) {
+		//System.out.println(c);
 		copy.setName(c.getName());
 		copy.setLevel(c.getLevel());
 		copy.setActiveTab(c.getActiveTab());

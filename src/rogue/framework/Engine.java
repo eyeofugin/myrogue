@@ -44,7 +44,13 @@ public class Engine {
 		stateManager.update();
 	}
 	private static void render() {
+		renderSprite();
 		windowManager.render(stateManager.render());
+	}
+	private static void renderSprite() {
+		if(stateManager.hasSprite()) {
+			System.out.println("yess");
+		}
 	}
 	
 	private static class Mouse implements MouseListener{

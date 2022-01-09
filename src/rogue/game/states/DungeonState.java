@@ -10,9 +10,14 @@ import rogue.framework.resources.Resources;
 import rogue.framework.states.State;
 import rogue.game.world.World;
 import rogue.game.world.objects.Entity;
+import rogue.game.world.objects.Entity.CharacterTemplate;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
+import rogue.graphics.InformationContainer;
 import util.MovementOption;
+import util.MyColor;
+import util.TextAlignment;
+import util.TextEditor;
 
 public class DungeonState extends State{
 
@@ -27,11 +32,10 @@ public class DungeonState extends State{
 	
 	public DungeonState(Connector connector) {
 		super(connector);
-		player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector);
+		player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector,CharacterTemplate.KNIGHT);
 		player.setMeeleeAtk1(10);
-		player.setPlayer();
 		this.world = new World(player,connector);
-		this.activeCharacterCanvas = new EntityInformationContainer(player,EntityInformationContainer.PLAYER_CONFIG,connector);
+		this.activeCharacterCanvas = new EntityInformationContainer(player,EntityInformationContainer.PLAYER_CONFIG,Resources.textEditorConfig,connector);
 		//this.hud = new HUD();
 	}
 	
@@ -70,6 +74,15 @@ public class DungeonState extends State{
 				indexActiveNpc++;
 			}
 		}
+		int[] buttonPanel = roomPixels.get(2);
+		int indexButtonPanel=0;
+		for(int i = Property.BUTTON_PANEL_Y_FROM; i < Property.BUTTON_PANEL_Y_UNTIL; i++) {
+			for(int j = Property.BUTTON_PANEL_X_FROM; j < Property.BUTTON_PANEL_X_UNTIL; j++) {
+				pixels[j+i*Property.END_OF_X] = buttonPanel[indexButtonPanel];
+				indexButtonPanel++;
+			}
+		}
+		getButtons(pixels);
 		
 		return pixels;
 	}
@@ -82,14 +95,23 @@ public class DungeonState extends State{
 		}
 		return pixels;
 	}
+	private int[] getButtons(int[] pixels) {
+		InformationContainer.writeLineExt("end turn", Property.END_BUTTON_X_FROM, Property.END_BUTTON_X_UNTIL, Property.END_BUTTON_Y_FROM, Property.END_BUTTON_Y_UNTIL, 
+				0, TextAlignment.CENTER, MyColor.BLACK, MyColor.WHITE, pixels, Property.END_OF_X);
+		Event e = new Event();
+		e.setEventId("npcMove");
+		this.connector.addEvent(Property.END_BUTTON_X_FROM, Property.END_BUTTON_Y_FROM, Property.END_BUTTON_WIDTH, Property.END_BUTTON_HEIGHT, e);
+		return pixels;
+	}
 
 	@Override
 	protected void mouseClicked(Event e) {
 		if(e.getEventId().equals("tabChange")) {
 			Entity entity = Entity.class.cast(e.getObject());
-			System.out.println(entity.toString());
+			//System.out.println(entity.toString());
 			if(entity.getName().equals("player")) {
-				System.out.println("!!");
+				//System.out.println("!!");
+				//System.out.println(e.getTab().name());
 				this.player.setActiveTab(e.getTab());
 				return;
 			}
@@ -101,5 +123,10 @@ public class DungeonState extends State{
 	@Override
 	protected void keyPressed(KeyEvent e) {
 		world.getRoom().keyPressed(e);
+	}
+
+	@Override
+	protected boolean hasSprite() {
+		return this.world.getRoom().hasSprite();
 	}
  }

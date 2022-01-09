@@ -10,7 +10,9 @@ public class Connector {
 	
 	public final String MOVE_PLAYER = "MOV";
 	public final String SHOW_MOVEMENT = "SMV";
+	public final String SHOW_ATTACK = "SAT";
 	public final String ATTACK = "ATK";
+	public final String END_TURN ="END";
 	public final String SELECT_PLAYER = "SCT";
 	public final String INFO_ENTITY = "IEN";
 
@@ -43,6 +45,17 @@ public class Connector {
 		}
 		eventsList.add(e);
 	}
+	public void removeEvent(String s) {
+		for(int x = 0; x < this.events.length; x++) {
+			for(int y = 0; y < this.events[0].length; y++) {
+				if(this.events[x][y].getEventId().equals(s)) {
+					this.eventsList.remove(this.events[x][y]);
+					this.events[x][y] =null;
+					return;
+				}
+			}
+		}
+	}
 	public void addContext(int xFrom, int yFrom, int xSize, int ySize, Event e) {
 		for(int x = xFrom; x < (xFrom+xSize); x++) {
 			for(int y = yFrom; y < (yFrom+ySize); y++) {
@@ -50,9 +63,23 @@ public class Connector {
 			}
 		}
 	}
+	public void removeContextOf(String object) {
+		for(int x = 0; x < context.length; x++) {
+			for(int y = 0; y < context[0].length; y++) {
+				if(this.context[x][y] != null &&
+						this.context[x][y].getObject().getName().equals(object)) {
+					this.context[x][y] = null;	
+				}
+			}
+		}
+	}
 	
 	public Event getEvent(MouseEvent e) {
-		return this.events[e.getX()+xOffset*Property.TILE_SIZE][e.getY()+yOffset*Property.TILE_SIZE];
+		if(e.getX()>Property.START_OF_ROOM_X && e.getX()<Property.END_OF_ROOM_X&&
+				e.getY()>Property.START_OF_ROOM_Y && e.getX()<Property.END_OF_ROOM_Y) {
+			return this.events[e.getX()+xOffset*Property.TILE_SIZE][e.getY()+yOffset*Property.TILE_SIZE];
+		}
+		return this.events[e.getX()][e.getY()];
 	}
 	public Event getContext(MouseEvent e) {
 		return this.context[e.getX()+xOffset*Property.TILE_SIZE][e.getY()+yOffset*Property.TILE_SIZE];
@@ -70,11 +97,26 @@ public class Connector {
 			}
 		}
 	}
+	public void cleanButtonPanel() {
+		for(int i = Property.BUTTON_PANEL_X_FROM; i < Property.BUTTON_PANEL_X_UNTIL; i++ ) {
+			for(int j = Property.BUTTON_PANEL_Y_FROM; j < Property.BUTTON_PANEL_Y_UNTIL; j++) {
+				this.events[i][j] = null;
+				this.context[i][j] = null;
+			}
+		}
+	}
+	public void cleanMapEvents() {
+		for(int i = mapXFrom; i <= mapXUntil; i++ ) {
+			for(int j = 0; j < y; j++) {
+				this.events[i][j] = null;
+			}
+		}
+	}
 	
 	public void clearMovement(String name) {
 		for(int i = mapXFrom; i <= mapXUntil; i++ ) {
 			for(int j = 0; j < y; j++) {
-				if(this.events[i][j] != null &&
+				if(this.events[i][j] != null && this.events[i][j].getObject()!=null&&
 						this.events[i][j].getObject().getName().equals(name)) {
 					this.events[i][j] = null;	
 				}

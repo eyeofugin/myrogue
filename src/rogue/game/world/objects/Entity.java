@@ -47,7 +47,6 @@ public class Entity extends SecondLayerObject{
 	}
 	
 	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, MovementOption movement) {
-		
 	}
 	
 	public Entity(int x, int y, byte id, Connector connector, String name,CharacterTemplate t, byte portraitId, MovementOption movement) {
@@ -57,12 +56,19 @@ public class Entity extends SecondLayerObject{
 		this.maxLife = 10;
 		this.currentMana = 5;
 		this.maxMana = 5;
+		this.maxActions=1;
+		this.currentActions=1;
+		this.maxMovement=3;
+		this.currentMovement=3;
 	}
 	
 	private void loadSkills(CharacterTemplate t) {
 		if(t.equals(CharacterTemplate.NONE)) {
 			this.setSkills(new Skill[] {Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE});
+		}else if(t.equals(CharacterTemplate.KNIGHT)) {
+			this.setSkills(new Skill[] {Skill.SLASH,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE});
 		}
+		
 	}
 	public static enum CharacterTemplate{
 		KNIGHT,
@@ -73,6 +79,24 @@ public class Entity extends SecondLayerObject{
 		SKILLS,
 		ITEMS,
 		GEAR,
+	}
+	public void refresh() {
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
+	}
+	public boolean useAction(int amnt) {
+		if(amnt<=this.currentActions) {
+			this.currentActions-=amnt;
+			return true;
+		}
+		return false;
+	}
+	public boolean useMovement(int amnt) {
+		if(amnt<=this.currentMovement) {
+			this.currentMovement-=amnt;
+			return true;
+		}
+		return false;
 	}
 	
 //Getters and Setters
@@ -278,9 +302,9 @@ public class Entity extends SecondLayerObject{
 		
 		switch(resource) {
 		case "life":
-			return calcCurrentResourceString(this.currentLife, this.maxLife);
+			return calcCurrentResourceString(this.currentLife>0?this.currentLife:0, this.maxLife);
 		case "mana":
-			return calcCurrentResourceString(this.currentMana, this.maxMana);
+			return calcCurrentResourceString(this.currentMana>0?this.currentMana:0, this.maxMana);
 		case "movement":
 			return "m " + calcCurrentResourceString(this.currentMovement,this.maxMovement);
 		case "action":
