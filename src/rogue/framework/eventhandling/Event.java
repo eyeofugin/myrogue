@@ -1,9 +1,9 @@
 package rogue.framework.eventhandling;
 
+import rogue.game.world.objects.Entity;
 import rogue.game.world.objects.Entity.CharacterTab;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
-import rogue.game.world.objects.Skill;
 
 public class Event {
 
@@ -11,7 +11,8 @@ public class Event {
 	
 	private PlayableCharacter character;
 	private SecondLayerObject object;
-	private Skill skill;
+	private Entity entity;
+	private byte skill;
 	private CharacterTab tab;
 	
 	private int x,y;
@@ -52,11 +53,23 @@ public class Event {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public Skill getSkill() {
-		return this.skill;
+	public byte getSkill() {
+		return skill;
 	}
-	public void setSkill(Skill s) {
-		this.skill = s;
+	public void setSkill(byte skill) {
+		this.skill = skill;
 	}
+	//	@Override
+//	public String toString() {
+//		return "Event [eventId=" + eventId + ", character=" + character + ", object=" + object + ", skill=" + skill
+//				+ ", tab=" + tab + ", x=" + x + ", y=" + y + "]";
+//	}
+	public Entity getEntity() {
+		return entity;
+	}
+	public void setEntity(Entity entity) {
+		this.entity = entity;
+	}
+	
 	
 }

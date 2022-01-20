@@ -44,6 +44,22 @@ public enum Highlight {
 			}
 			return p;
 		}
+	},
+	
+	SELECT_WHITE{
+		@Override
+		public int[] printHighlight(int[] p,int x, int y, int xOffset, int yOffset) {
+			for(int i = 1; i < (Property.TILE_SIZE-1); i++) {
+				
+				//TODO check if in visible room
+				
+				p[((x*Property.TILE_SIZE)+i+(-1)*xOffset*Property.TILE_SIZE)+((y*Property.TILE_SIZE)+Property.MARKING_START+(-1)*yOffset*Property.TILE_SIZE)*Property.ROOM_SIZE] = MyColor.WHITE.VALUE;
+				p[((x*Property.TILE_SIZE)+i+(-1)*xOffset*Property.TILE_SIZE)+((y*Property.TILE_SIZE)+Property.MARKING_END+(-1)*yOffset*Property.TILE_SIZE)*Property.ROOM_SIZE] = MyColor.WHITE.VALUE;
+				p[((x*Property.TILE_SIZE)+Property.MARKING_START+(-1)*xOffset*Property.TILE_SIZE)+((y*Property.TILE_SIZE)+i+(-1)*yOffset*Property.TILE_SIZE)*Property.ROOM_SIZE] = MyColor.WHITE.VALUE;
+				p[((x*Property.TILE_SIZE)+Property.MARKING_END+(-1)*xOffset*Property.TILE_SIZE)+((y*Property.TILE_SIZE)+i+(-1)*yOffset*Property.TILE_SIZE)*Property.ROOM_SIZE] = MyColor.WHITE.VALUE;
+			}
+			return p;
+		}
 	};
 	
 	public abstract int[] printHighlight(int[] p,int x, int y, int xOffset, int yOffset);

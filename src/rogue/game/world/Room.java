@@ -10,41 +10,57 @@ import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.CombatManager;
+import rogue.game.combat.skills.ActiveSkill;
+import rogue.game.combat.skills.BaseSkill;
+import rogue.game.combat.skills.BaseSkill.TargetType;
+import rogue.game.combat.skills.DamageSkill;
+import rogue.game.combat.skills.Skill;
+import rogue.game.pvp.Team;
 import rogue.game.world.generation.RoomData;
+import rogue.game.world.objects.BattleLog;
 import rogue.game.world.objects.Entity;
+import rogue.game.world.objects.Entity.EntityType;
 import rogue.game.world.objects.NPC;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
-import rogue.game.world.objects.Skill;
-import rogue.game.world.objects.Skill.TargetType;
 import rogue.game.world.objects.Tile;
 import rogue.graphics.BaseActionContainer;
 import rogue.graphics.EntityInformationContainer;
 import util.Highlight;
 import util.MovementOption;
-import util.calc.path.AStarPathfinder;
+import util.MyColor;
 
 public class Room {
 	
 	private RoomData data;
 	private EntityInformationContainer activeNpcCanvas;
-	private BaseActionContainer buttonPanel;
+	protected BaseActionContainer buttonPanel;
+	
+	private EntityInformationContainer entityCanvas;
+	protected Entity activeEntity;
+	protected Connector connector;
 
-	private Connector connector;
-
-	private PlayableCharacter activeCharacter;
+	protected PlayableCharacter activeCharacter;
 	private NPC activeNpc;
 	
-	private ArrayList<Entity> entities;
-	private SecondLayerObject[][] objects;
+	protected Entity[] entityOrder;
+	protected ArrayList<Entity> entities;
+	protected SecondLayerObject[][] objects;
 	private Highlight[][] highlights;
 	private byte[][] sprites;
+	private BattleLog log;
+	protected final static int xPlayerStart = 12;
+	protected final static int yPlayerStart = 12;
 	
-	private final static int xPlayerStart = 12;
-	private final static int yPlayerStart = 12;
+	protected Point[][] teamPlacements=new Point[][] {
+		new Point[] {new Point(10,11),new Point(11,11),new Point(9,11)},
+		new Point[] {new Point(10,3),new Point(11,3),new Point(9,3)}
+	};
 	
-	private int xOffset = 0;
-	private int yOffset = 0;
+	
+	
+	protected int xOffset = 0;
+	protected int yOffset = 0;
 	
 	public Room(RoomData data, Connector connector) {
 		this.data = data;
@@ -53,14 +69,18 @@ public class Room {
 		this.objects = new SecondLayerObject[data.getTileData().length][data.getTileData()[0].length];
 		this.highlights = new Highlight[data.getTileData().length][data.getTileData()[0].length];
 		this.activeNpcCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
+		this.entityCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
 		this.buttonPanel = new BaseActionContainer(connector);
 		this.sprites = new byte[data.getTileData().length][data.getTileData()[0].length];
-		initEnemies();
+		//initEnemies();
 	}
 	
 	public void update() {
 		if(activeNpc!=null) {
 			this.activeNpcCanvas.checkUdate(activeNpc);
+		}
+		if(activeEntity!=null) {
+			this.entityCanvas.checkUdate(activeEntity);
 		}
 	}
 	
@@ -85,9 +105,36 @@ public class Room {
 		}
 		activeCharacter = team.get(0);
 	}
-	private void initEnemies() {
-		NPC enemy = new NPC(4,5,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,MovementOption.ENEMY,this.connector);
-		enemy.setMeeleeDef1(5);
+	public void initTeams(List<Team> teams) {
+		for(Team team : teams) {
+			int i = 0;
+			for(PlayableCharacter c : team.getCharacters()) {
+				c.setX(teamPlacements[team.getTeamNr()][i].x);
+				c.setY(teamPlacements[team.getTeamNr()][i].y);
+				entities.add(c);
+				objects[c.getX()][c.getY()] = c;
+				i++;
+			}
+		}
+	}
+	public void openViewForTeamNr(int nr) {
+		for(Entity e : this.entities) {
+			if(e.getTeam()==nr && e.getEntityType()==EntityType.PLAYABLE) {
+				setSelectPlayerEvent(e, e.getX(), e.getY());
+				this.activeCharacter=PlayableCharacter.class.cast(e);
+			}
+			if(e.getTeam()!=nr && e.getEntityType()==EntityType.PLAYABLE) {
+				Event event = new Event();
+				event.setObject(e);
+				event.setEventId(this.connector.INFO_OBJECT);
+				event.setX(e.getX());
+				event.setY(e.getY());
+				this.connector.addContext(getRelationalX(e.getX()), getRelationalY(e.getY()), Property.TILE_SIZE, Property.TILE_SIZE, event);	
+			}
+		}
+	}
+	protected void initEnemies() {
+		NPC enemy = new NPC(4,5,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,Property.TEAM_2,MovementOption.ENEMY,this.connector);
 		entities.add(enemy);
 		objects[enemy.getX()][enemy.getY()] = enemy;
 
@@ -95,11 +142,11 @@ public class Room {
 		
 		
 	}
-	private void initEntityInformationEvents() {
+	protected void initEntityInformationEvents() {
 		for(Entity e: this.entities) {
 			Event event = new Event();
 			event.setObject(e);
-			event.setEventId(this.connector.INFO_ENTITY);
+			event.setEventId(this.connector.INFO_OBJECT);
 			event.setX(e.getX());
 			event.setY(e.getY());
 			this.connector.addContext(getRelationalX(e.getX()), getRelationalY(e.getY()), Property.TILE_SIZE, Property.TILE_SIZE, event);			
@@ -126,9 +173,17 @@ public class Room {
 		buttons = buttonPanel.getPixels();
 		compartments.add(buttons);
 		
+		int[] minimap = new int[Property.MINIMAP_HEIGHT*Property.MINIMAP_WIDTH];
+		minimap = getMinimap(minimap);
+		compartments.add(minimap);
+		
+		int[] entityInfo = new int[Property.ACTIVE_NPC_HEIGHT*Property.ACTIVE_NPC_WIDTH];
+		entityInfo = entityCanvas.getPixels();
+		compartments.add(entityInfo);
+		
 		return compartments;
 	}
-	private int[] renderRoom(int[]p) {
+	protected int[] renderRoom(int[]p) {
 		for(int y = 0; y < Property.ROOM_SIZE; y++) {
 			for(int x = 0; x < Property.ROOM_SIZE; x++) {
 				int tileX = x/Property.TILE_SIZE;
@@ -142,7 +197,7 @@ public class Room {
 		
 		return p;
 	}
-	private int[] renderEntities(int[] p) {
+	protected int[] renderEntities(int[] p) {
 		
 		for(Entity e : entities) {
 			int i = 0;
@@ -155,7 +210,7 @@ public class Room {
 						
 						int color = Resources.TEXTURES.get(e.getId())[x+y*Property.TILE_SIZE];
 						if(i==0) {
-							System.out.println(color);
+							//System.out.println(color);
 							i++;
 						}
 						if(color!=-12450784 && color!=-3947581) {
@@ -168,10 +223,12 @@ public class Room {
 		
 		return p;
 	}
-	private int[] renderHighlights(int[] p) {
+	protected int[] renderHighlights(int[] p) {
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y =0; y < highlights[0].length; y++) {
-				if(highlights[x][y]!=null) {
+				if(highlights[x][y]!=null
+						&& x>=xOffset && y>=yOffset) {
+					
 					highlights[x][y].printHighlight(p, x, y, xOffset, yOffset);
 
 				}
@@ -179,7 +236,7 @@ public class Room {
 		}
 		return p;
 	}
-	private void removeTheDead() {
+	protected void removeTheDead() {
 		this.entities.removeIf(e -> e.getCurrentLife() < 1);
 		for(int x  = 0; x < this.objects.length; x++) {
 			for(int y = 0; y < this.objects[0].length; y++) {
@@ -192,28 +249,39 @@ public class Room {
 			}
 		}
 	}
-	
-	private void endTurn() {
-		for(Entity e : this.entities) {
-			boolean[][] mvmntMap = getMvmntMapFor(e.getName());
-			System.out.println(e.getName()+"200");
-			if(!e.getName().equals("player")) {
-				Point firstStep = AStarPathfinder.calcPath(mvmntMap, e.getX(), e.getY(), this.activeCharacter.getX(), this.activeCharacter.getY());
-				if(firstStep.x==-1||firstStep.y==-1)
-					continue;
-				moveObject(e, firstStep.x, firstStep.y);
+	protected int[] getMinimap(int[] map) {
+		for(int x = 0 ; x < data.getTileData().length*4;x++) {
+			for(int y = 0; y < data.getTileData()[0].length*4;y++) {
+				map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForTiles(data.getTileData()[y/4][x/4].getId()).VALUE;
+				if(this.objects[x/4][y/4]!=null) {
+					map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForEntities(this.objects[x/4][y/4].getPortraitId()).VALUE;
+				}
 			}
 		}
+		return map;
+	}
+	
+	protected void endTurn() {
+//		for(Entity e : this.entities) {
+//			boolean[][] mvmntMap = getMvmntMapFor(e.getName());
+//			if(!e.getName().equals("player")) {
+//				Point firstStep = AStarPathfinder.calcPath(mvmntMap, e.getX(), e.getY(), this.activeCharacter.getX(), this.activeCharacter.getY());
+//				if(firstStep.x==-1||firstStep.y==-1)
+//					continue;
+//				moveObject(e, firstStep.x, firstStep.y,false);
+//			}
+//		}
+		
 		this.activeCharacter.refresh();
 	}
 	//movement
-	private void showMovementOptions() {
+	protected void showMovementOptions() {
 		int xGridPos = this.activeCharacter.getX();
 		int yGridPos = this.activeCharacter.getY();
 		
 		Entity character = (Entity)this.activeCharacter;
 		
-		int movementDistance = character.getCurrentMovement();
+		int movementDistance = Math.min(character.getCurrentMovement(),1);
 		
 		if(movementDistance>0) {
 			for(int x = xGridPos-movementDistance; x <= xGridPos+movementDistance; x++) {
@@ -261,9 +329,11 @@ public class Room {
 	}
 	private void basicAttack(Event e) {
 		if(this.activeCharacter.useAction(1)) {
-			CombatManager.normalMelee(this.activeCharacter,e.getObject());
+			CombatManager.normalMelee(this.activeCharacter,e.getObject(),this.log);
 			if(activeNpc!=null) 
 				this.activeNpcCanvas.checkUdate(activeNpc);
+			if(activeEntity!=null)
+				this.entityCanvas.checkUdate(activeEntity);
 		}
 		removeMovements();
 		removeTheDead();
@@ -282,12 +352,12 @@ public class Room {
 		}
 		return mvmntMap;
 	}
-	private void showAttackRange(Skill s) {
+	private void onSkillChosen(ActiveSkill s) {
 		int currentX = this.activeCharacter.getX();
 		int currentY = this.activeCharacter.getY();
 		int skillRange = s.getDistance();
 		if(s.getTargetType().equals(TargetType.SURROUNDING)) {
-			showSkillConfirm(s,currentX,currentY);
+			onTargetChosen(s,currentX,currentY);
 			return;
 		}
 		for(int x = currentX-skillRange; x <= currentX+skillRange; x++) {
@@ -298,29 +368,34 @@ public class Room {
 					e.setEventId("castSkillSelected"+x+""+y);
 					e.setX(x);
 					e.setY(y);
-					e.setSkill(s);
+					e.setSkill(s.getId());
 					this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);
 				}
 			}
 		}
 	}
-	private void executeSkill(Event e) {
-		CombatManager.executeSkill(this.activeCharacter,getAffectedTargets(),e.getSkill());
+	private void onExecuteSkill(Event e) {
+		BaseSkill baseSkill = BaseSkill.getActiveSkill(e.getSkill());
+		if(DamageSkill.class.isInstance(baseSkill)) {
+			CombatManager.executeDamageSkill(this.activeCharacter,getAffectedTargets(),DamageSkill.class.cast(baseSkill),this.log);
+		}
 		if(activeNpc!=null) 
 			this.activeNpcCanvas.checkUdate(activeNpc);
-		addSprites(e.getSkill().getId());
+		if(activeEntity!=null) 
+			this.entityCanvas.checkUdate(activeEntity);
+		addSprites(e.getSkill());
 		removeMovements();
 		removeTheDead();
 		this.buttonPanel.removeEvent(BaseActionContainer.CONFIRM);
 		this.buttonPanel.removeEvent(BaseActionContainer.CANCEL);
 	}
-	private void cancelSkill(Event e) {
+	private void onCancelSkill(Event e) {
 		removeMovements();
 		this.buttonPanel.removeEvent(BaseActionContainer.CONFIRM);
 		this.buttonPanel.removeEvent(BaseActionContainer.CANCEL);
 	}
 	
-	private void showSkillConfirm(Skill s,int targetX,int targetY) {
+	private void onTargetChosen(ActiveSkill s,int targetX,int targetY) {
 		
 		if(s.getTargetType()==null) {}
 		
@@ -330,8 +405,8 @@ public class Room {
 			markSingleSkillSpot(s.getRadius(),targetX,targetY);
 			break;
 		case LINE:
-			System.out.println("char x:"+this.activeCharacter.getX()+" y:"+this.activeCharacter.getY());
-			System.out.println("target x:"+targetX+" y:"+targetY);
+			//System.out.println("char x:"+this.activeCharacter.getX()+" y:"+this.activeCharacter.getY());
+			//System.out.println("target x:"+targetX+" y:"+targetY);
 			markSkillLine(new Point(this.activeCharacter.getX(),this.activeCharacter.getY()),new Point(targetX,targetY));
 			break;
 		case SURROUNDING:
@@ -346,11 +421,11 @@ public class Room {
 		
 		Event e = new Event();
 		e.setEventId("confirmSkill");
-		e.setSkill(s);
+		e.setSkill(s.getId());
 		
 		Event e2 = new Event();
 		e2.setEventId("cancelSkill");
-		e2.setSkill(s);
+		e2.setSkill(s.getId());
 		
 		this.buttonPanel.addEvent(BaseActionContainer.CONFIRM, e, Resources.CONFIRM_ACTION);
 		this.buttonPanel.addEvent(BaseActionContainer.CANCEL, e2, Resources.CANCEL_ACTION);
@@ -358,7 +433,7 @@ public class Room {
 	private void markSingleSkillSpot(int radius, int targetx, int targety) {
 		for(int x = targetx-radius;x<=targetx+radius;x++) {
 			for(int y = targety-radius;y<=targety+radius;y++) {
-				System.out.println("highlihgt:"+x+""+y);
+				//System.out.println("highlihgt:"+x+""+y);
 				if(x>0 && y>0) {
 					highlightTile(x, y, Highlight.SKLL_GREEN);
 				}
@@ -399,7 +474,7 @@ public class Room {
 			}
 		}
 	}
-	private void moveObject(SecondLayerObject o, int x, int y) {
+	private void moveObject(SecondLayerObject o, int x, int y,boolean manual) {
 		int currentX = o.getX();
 		int currentY = o.getY();
 		
@@ -416,7 +491,7 @@ public class Room {
 		}
 		objects[currentX][currentY] = null;
 		objects[x][y] = o;
-		if(o.getName().equals("player")) {
+		if(manual) {
 			Entity e = Entity.class.cast(o);
 			e.useMovement(distance);
 			removeMovements();
@@ -476,12 +551,12 @@ public class Room {
 	}
 	
 	//util
-	private int getRelationalX(int x) {
+	protected int getRelationalX(int x) {
 		int result = x*Property.TILE_SIZE + Property.START_OF_ROOM_X;
 		//result += xOffset*tileSize;
 		return result;
 	}
-	private int getRelationalY(int y) {
+	protected int getRelationalY(int y) {
 		int result = y*Property.TILE_SIZE + Property.START_OF_ROOM_Y;
 		//result += yOffset*tileSize;
 		return result;
@@ -489,6 +564,14 @@ public class Room {
 	private Entity getPlayer(String name) {
 		for(Entity e: entities) {
 			if(e.getName().equals(name)) {
+				return e;
+			}
+		}
+		return null;
+	}
+	private Entity getEntity(String s) {
+		for(Entity e : this.entities) {
+			if(e.getName().equals(s)) {
 				return e;
 			}
 		}
@@ -511,13 +594,14 @@ public class Room {
 		}
 		return obj;
 	}
-	private void selectNpc(SecondLayerObject obj) {
-		if(NPC.class.isInstance(obj)) {
-			NPC e = NPC.class.cast(obj);
-			this.activeNpc = e;
-		}
+	protected void selectNpc(SecondLayerObject obj) {
+//		if(NPC.class.isInstance(obj)) {
+//			NPC e = NPC.class.cast(obj);
+//			this.activeNpc = e;
+//		}
+		this.activeEntity = Entity.class.cast(obj);
 	}
-	private void setSelectPlayerEvent(SecondLayerObject o, int x, int y) {
+	protected void setSelectPlayerEvent(SecondLayerObject o, int x, int y) {
 
 		Event selectPlayerEvent = new Event();
 		selectPlayerEvent.setEventId(this.connector.SELECT_PLAYER);
@@ -543,7 +627,7 @@ public class Room {
 		this.connector.removeContextOf(e.getName());
 		Event event = new Event();
 		event.setObject(e);
-		event.setEventId(this.connector.INFO_ENTITY);
+		event.setEventId(this.connector.INFO_OBJECT);
 		event.setX(e.getX());
 		event.setY(e.getY());
 		this.connector.addContext(getRelationalX(e.getX()), getRelationalY(e.getY()), Property.TILE_SIZE, Property.TILE_SIZE, event);			
@@ -588,31 +672,33 @@ public class Room {
 			showAttackOptions();
 		}
 		if(e.getEventId().equals(this.connector.MOVE_PLAYER)) {
-			moveObject(e.getObject(),e.getX(),e.getY());
+			moveObject(e.getObject(),e.getX(),e.getY(),true);
 		}
 		if(e.getEventId().equals(this.connector.ATTACK)) {
 			basicAttack(e);
 		}
-		if(e.getEventId().equals(this.connector.INFO_ENTITY)) {
+		if(e.getEventId().equals(this.connector.INFO_OBJECT)) {
 			selectNpc(e.getObject());
 		}
-		if(e.getEventId().equals("tabChange")) {
-			if(this.activeNpc!=null)
-				this.activeNpc.setActiveTab(e.getTab());
+		if(e.getEventId().contains("tabChange")) {
+			if(e.getEventId().startsWith(this.entityCanvas.getPrefix())) {
+				if(this.activeNpc!=null)
+					this.activeNpc.setActiveTab(e.getTab());
+			}
 		}
 		if(e.getEventId().equals("castSkill")) {
 			clear();
-			showAttackRange(e.getSkill());
+			onSkillChosen(BaseSkill.getActiveSkill(e.getSkill()));
 		}
 		if(e.getEventId().startsWith("castSkillSelected")) {
 			clear();
-			showSkillConfirm(e.getSkill(),e.getX(),e.getY());
+			onTargetChosen(BaseSkill.getActiveSkill(e.getSkill()),e.getX(),e.getY());
 		}
 		if(e.getEventId().equals("confirmSkill")) {
-			executeSkill(e);
+			onExecuteSkill(e);
 		}
 		if(e.getEventId().equals("cancelSkill")) {
-			cancelSkill(e);
+			onCancelSkill(e);
 		}
 		if(e.getEventId().equals(this.connector.END_TURN)) {
 			removeMovements();

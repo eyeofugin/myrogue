@@ -58,7 +58,6 @@ public class StateManager {
 		if(e.getButton() == MOUSE_BUTTON_R) {
 			event = this.connector.getContext(e);
 		}
-		
 		if(event!=null && event.getEventId()!=null) {
 
 			System.out.println("event: " + event.getEventId());

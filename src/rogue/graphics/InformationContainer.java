@@ -86,6 +86,13 @@ public class InformationContainer {
 		this.editor = new TextEditor(txtEditConf);
 		this.pixels = new int[width*height];
 	}
+	public InformationContainer(int[] dimensions, TextEditorConfig conf, Connector connector) {
+		this.width=dimensions[0];
+		this.height=dimensions[1];
+		this.editor = new TextEditor(conf);
+		this.connector=connector;
+		this.pixels=new int[width*height];
+	}
 	
 	protected int[] getTextLine(String text, int textWidth, int textHeight, int fontSize, MyColor fontColor) {
 		int result[] = editor.getTextLine(text, textWidth, textHeight, fontSize, TextAlignment.CENTER, MyColor.VOID, fontColor);
@@ -95,10 +102,11 @@ public class InformationContainer {
 		writeLine(text,xFrom,xUntil,yFrom,yUntil,0,TextAlignment.CENTER,MyColor.BLACK,MyColor.WHITE);
 	}
 	protected void writeLine(String text, int xFrom, int xUntil, int yFrom, int yUntil, int fontSize, TextAlignment alignment, MyColor backGround, MyColor font) {
+		
 		int result[] = editor.getTextLine(text, (xUntil-xFrom+1),(yUntil-yFrom+1),fontSize,alignment,backGround, font);
-		if(text.equals("end"))
-			print(result,100,20);
-		//print(result,(xUntil-xFrom+1),(yUntil-yFrom+1));
+		if(text.equals("this is a test of my current battlelog"))
+			print(result,(xUntil-xFrom+1),(yUntil-yFrom+1));
+//		print(result,(xUntil-xFrom+1),(yUntil-yFrom+1));
 		int index = 0;
 		for(int y = yFrom; y <= yUntil; y++) {
 			for(int x = xFrom; x <= xUntil; x++) {

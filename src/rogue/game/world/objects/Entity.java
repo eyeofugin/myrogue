@@ -3,36 +3,33 @@ package rogue.game.world.objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import com.google.gson.annotations.SerializedName;
 
 import rogue.framework.eventhandling.Connector;
+import rogue.game.combat.skills.BaseSkill;
+import rogue.game.combat.skills.BaseSkill.DamageType;
 import util.MovementOption;
 
 public class Entity extends SecondLayerObject{
 	
-	private Skill[] skills;
+	private BaseSkill[] skills;
 	private List<Equipment> equipments = new ArrayList<>();
 	private CharacterTab activeTab = CharacterTab.STATS;
 	
 	protected int level = 0;
+	protected int team;
 //Stats
 	private int maxLife;
 	private int currentLife;
 	private int maxMana;
 	private int currentMana;
+	private DamageType stdDamageType;
 	
-	private int meeleeAtk1;
-	private int meeleeAtk2;
-	private int rangedAtk1;
-	private int rangedAtk2;
-	private int magicAtk1;
-	private int magicAtk2;
-	
-	private int meeleeDef1;
-	private int meeleeDef2;
-	private int rangedDef1;
-	private int rangedDef2;
-	private int magicDef1;
-	private int magicDef2;
+	private Map<Proficiency,Integer> proficiencies;
+	private Map<DamageType,Integer> resistances;
+	private Map<DamageType,Double> multipliers;
 	
 	
 //Playing
@@ -49,9 +46,11 @@ public class Entity extends SecondLayerObject{
 	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, MovementOption movement) {
 	}
 	
-	public Entity(int x, int y, byte id, Connector connector, String name,CharacterTemplate t, byte portraitId, MovementOption movement) {
+	public Entity(int x, int y, byte id, Connector connector, String name,CharacterTemplate t, int team, byte portraitId, MovementOption movement) {
 		super(id,x,y,portraitId,name,movement,connector);
 		loadSkills(t);
+		loadStats(t);
+		this.team = team;
 		this.currentLife = 10;
 		this.maxLife = 10;
 		this.currentMana = 5;
@@ -64,11 +63,26 @@ public class Entity extends SecondLayerObject{
 	
 	private void loadSkills(CharacterTemplate t) {
 		if(t.equals(CharacterTemplate.NONE)) {
-			this.setSkills(new Skill[] {Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE});
+			this.setSkills(new BaseSkill[] {
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE)});
 		}else if(t.equals(CharacterTemplate.KNIGHT)) {
-			this.setSkills(new Skill[] {Skill.SLASH,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE,Skill.NONE});
+			this.setSkills(new BaseSkill[] {
+					BaseSkill.getSkill(BaseSkill.SLASH),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE),
+					BaseSkill.getSkill(BaseSkill.NONE)});
 		}
-		
+	}
+	private void loadStats(CharacterTemplate t) {
 	}
 	public static enum CharacterTemplate{
 		KNIGHT,
@@ -79,6 +93,25 @@ public class Entity extends SecondLayerObject{
 		SKILLS,
 		ITEMS,
 		GEAR,
+	}
+	public static enum EntityType{
+		PLAYABLE,
+		NPC,
+	}
+	public static enum Proficiency{
+		@SerializedName("0")
+		PRECISION,
+		@SerializedName("1")
+		STRENGTH,
+		@SerializedName("2")
+		INTELLIGENCE,
+		@SerializedName("3")
+		FAITH,
+		@SerializedName("4")
+		LETHALITY
+	}
+	public EntityType getEntityType() {
+		return null;
 	}
 	public void refresh() {
 		this.currentActions=this.maxActions;
@@ -104,10 +137,6 @@ public class Entity extends SecondLayerObject{
 	public int getMaxLife() {
 		return maxLife;
 	}
-	public int getMeeleeDef1() {
-		return meeleeDef1;
-	}
-
 
 	public int getMaxMana() {
 		return maxMana;
@@ -156,62 +185,6 @@ public class Entity extends SecondLayerObject{
 	public void setMaxMovement(int maxMovement) {
 		this.maxMovement = maxMovement;
 	}
-
-	public void setMeeleeDef1(int meeleeDef1) {
-		this.meeleeDef1 = meeleeDef1;
-	}
-
-
-	public int getMeeleeDef2() {
-		return meeleeDef2;
-	}
-
-
-	public void setMeeleeDef2(int meeleeDef2) {
-		this.meeleeDef2 = meeleeDef2;
-	}
-
-
-	public int getRangedDef1() {
-		return rangedDef1;
-	}
-
-
-	public void setRangedDef1(int rangedDef1) {
-		this.rangedDef1 = rangedDef1;
-	}
-
-
-	public int getRangedDef2() {
-		return rangedDef2;
-	}
-
-
-	public void setRangedDef2(int rangedDef2) {
-		this.rangedDef2 = rangedDef2;
-	}
-
-
-	public int getMagicDef1() {
-		return magicDef1;
-	}
-
-
-	public void setMagicDef1(int magicDef1) {
-		this.magicDef1 = magicDef1;
-	}
-
-
-	public int getMagicDef2() {
-		return magicDef2;
-	}
-
-
-	public void setMagicDef2(int magicDef2) {
-		this.magicDef2 = magicDef2;
-	}
-
-
 	public void setMaxLife(int maxLife) {
 		this.maxLife = maxLife;
 	}
@@ -220,42 +193,6 @@ public class Entity extends SecondLayerObject{
 	}
 	public void setCurrentLife(int currentLife) {
 		this.currentLife = currentLife;
-	}
-	public int getMeeleeAtk1() {
-		return meeleeAtk1;
-	}
-	public void setMeeleeAtk1(int meeleeAtk1) {
-		this.meeleeAtk1 = meeleeAtk1;
-	}
-	public int getMeeleeAtk2() {
-		return meeleeAtk2;
-	}
-	public void setMeeleeAtk2(int meeleeAtk2) {
-		this.meeleeAtk2 = meeleeAtk2;
-	}
-	public int getRangedAtk1() {
-		return rangedAtk1;
-	}
-	public void setRangedAtk1(int rangedAtk1) {
-		this.rangedAtk1 = rangedAtk1;
-	}
-	public int getRangedAtk2() {
-		return rangedAtk2;
-	}
-	public void setRangedAtk2(int rangedAtk2) {
-		this.rangedAtk2 = rangedAtk2;
-	}
-	public int getMagicAtk1() {
-		return magicAtk1;
-	}
-	public void setMagicAtk1(int magicAtk1) {
-		this.magicAtk1 = magicAtk1;
-	}
-	public int getMagicAtk2() {
-		return magicAtk2;
-	}
-	public void setMagicAtk2(int magicAtk2) {
-		this.magicAtk2 = magicAtk2;
 	}
 	public CharacterTab getActiveTab() {
 		return activeTab;
@@ -269,10 +206,10 @@ public class Entity extends SecondLayerObject{
 	public void setEquipments(List<Equipment> equipments) {
 		this.equipments = equipments;
 	}
-	public Skill[] getSkills() {
+	public BaseSkill[] getSkills() {
 		return skills;
 	}
-	public void setSkills(Skill[]skills) {
+	public void setSkills(BaseSkill[]skills) {
 		this.skills = skills;
 	}
 	public int getLevel() {
@@ -281,6 +218,14 @@ public class Entity extends SecondLayerObject{
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	public int getTeam() {
+		return team;
+	}
+
+	public void setTeam(int team) {
+		this.team = team;
+	}
+
 	public String getLevelString() {
 		return "level "+ level;
 	}
@@ -328,35 +273,54 @@ public class Entity extends SecondLayerObject{
 		
 		return currentStringL + "/" + maxStringL;
 	}
-	
-	public int getNormalMeleeDamage() {
-		int result = getMeeleeAtk1();
-		for(Equipment e : getEquipments()) {
-			result+=e.getMeleeDamageBonus();
-		}
-		return result;
-		
+	public int getProficiency(Proficiency prof) {
+		int p = this.proficiencies.get(prof);
+		p+=getEquipmentProficiency(prof);
+		return p;
 	}
-	public int getNormalMeleeDefense() {
-		int result = getMeeleeDef1();
-		for(Equipment e:getEquipments()) {
-			result+=e.getMeleeDefenseBonus();
+	private int getEquipmentProficiency(Proficiency prof) {
+		int p = 0;
+		for(Equipment e : getEquipments()) {
+			p+=e.getProfBonus(prof);
 		}
-		return result;
+		return p;
+	}
+	public int getResistance(DamageType stat) {
+		int s = this.resistances.get(stat);
+		s+=getEquipmentResistances(stat);
+		return s;
+	}
+	private int getEquipmentResistances(DamageType stat) {
+		int p = 0;
+		for(Equipment e : getEquipments()) {
+			p+=e.getResistBonus(stat);
+		}
+		return p;
+	}
+	public double getMultiplier(DamageType stat) {
+		double s = this.multipliers.get(stat);
+		s+=getEquipmentMultipliers(stat);
+		return s;
+	}
+	private double getEquipmentMultipliers(DamageType stat) {
+		double p = 0;
+		for(Equipment e : getEquipments()) {
+			p+=e.getMultBonus(stat);
+		}
+		return p;
 	}
 	public void damage(int damage) {
 		this.currentLife-=damage;
+	}
+	public DamageType getBasicDamageType() {
+		return this.stdDamageType;
 	}
 
 	@Override
 	public String toString() {
 		return "Entity [name="+this.getName()+", skills=" + Arrays.toString(skills) + ", equipments=" + equipments
 				+ ", activeTab=" + activeTab + ", level=" + level + ", maxLife=" + maxLife + ", currentLife="
-				+ currentLife + ", maxMana=" + maxMana + ", currentMana=" + currentMana + ", meeleeAtk1=" + meeleeAtk1
-				+ ", meeleeAtk2=" + meeleeAtk2 + ", rangedAtk1=" + rangedAtk1 + ", rangedAtk2=" + rangedAtk2
-				+ ", magicAtk1=" + magicAtk1 + ", magicAtk2=" + magicAtk2 + ", meeleeDef1=" + meeleeDef1
-				+ ", meeleeDef2=" + meeleeDef2 + ", rangedDef1=" + rangedDef1 + ", rangedDef2=" + rangedDef2
-				+ ", magicDef1=" + magicDef1 + ", magicDef2=" + magicDef2 + ", currentActions=" + currentActions
+				+ currentLife + ", maxMana=" + maxMana + ", currentMana=" + currentMana + ", currentActions=" + currentActions
 				+ ", maxActions=" + maxActions + ", currentMovement=" + currentMovement + ", maxMovement=" + maxMovement
 				+ "]";
 	}

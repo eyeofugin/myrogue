@@ -8,13 +8,20 @@ import rogue.framework.resources.Property;
 
 public class Connector {
 	
-	public final String MOVE_PLAYER = "MOV";
-	public final String SHOW_MOVEMENT = "SMV";
-	public final String SHOW_ATTACK = "SAT";
-	public final String ATTACK = "ATK";
-	public final String END_TURN ="END";
-	public final String SELECT_PLAYER = "SCT";
-	public final String INFO_ENTITY = "IEN";
+	public static final String MOVE_PLAYER = "MOV";
+	public static final String SHOW_MOVEMENT = "SMV";
+	public static final String SHOW_ATTACK = "SAT";
+	public static final String ATTACK = "ATK";
+	public static final String END_TURN ="END";
+	public static final String SELECT_PLAYER = "SCT";
+	public static final String INFO_OBJECT = "IEN";
+	public static final String TAB_CHANGE ="TAB";
+	public static final String SKILL_CHOSEN ="SCH";
+	public static final String TARGET_CHOSEN ="TCH";
+	public static final String CONFIRM_SKILL = "COS";
+	public static final String CANCEL_SKILL = "CAS";
+	public static final String LOG_UP = "LUP";
+	public static final String LOG_DOWN = "LDO";
 
 	private int mapXFrom,mapXUntil;
 	
@@ -76,7 +83,7 @@ public class Connector {
 	
 	public Event getEvent(MouseEvent e) {
 		if(e.getX()>Property.START_OF_ROOM_X && e.getX()<Property.END_OF_ROOM_X&&
-				e.getY()>Property.START_OF_ROOM_Y && e.getX()<Property.END_OF_ROOM_Y) {
+				e.getY()>Property.START_OF_ROOM_Y && e.getY()<Property.END_OF_ROOM_Y) {
 			return this.events[e.getX()+xOffset*Property.TILE_SIZE][e.getY()+yOffset*Property.TILE_SIZE];
 		}
 		return this.events[e.getX()][e.getY()];
@@ -154,6 +161,6 @@ public class Connector {
 		this.xOffset--;
 	}
 	private void writeOffset() {
-		System.out.println(xOffset + " " + yOffset);
+		//System.out.println(xOffset + " " + yOffset);
 	}
 }

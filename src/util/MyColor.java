@@ -1,5 +1,7 @@
 package util;
 
+import rogue.framework.resources.Resources;
+
 public enum MyColor {
 
 	BLACK(0),
@@ -21,5 +23,28 @@ public enum MyColor {
 	public static MyColor colorize(int target) {
 		if(target<0) {return MyColor.RED;}
 		else{return MyColor.GREEN;}
+	}
+	public static MyColor getMinimapColorForTiles(byte id) {
+		switch (id) {
+		case Resources.BRICK:
+			return DARKGREY;
+		case Resources.ENDWALL:
+			return WHITE;
+		case Resources.VOID:
+			return BLACK;
+		case Resources.WALL:
+			return WHITE;
+		}
+		return VOID;
+	}
+	public static MyColor getMinimapColorForEntities(byte id) {
+		//System.out.println(id);
+		switch (id) {
+		case Resources.KNIGHTMALE:
+			return BLUE;
+		case Resources.SKELETONMALE:
+			return RED;
+		}
+		return VOID;
 	}
 }

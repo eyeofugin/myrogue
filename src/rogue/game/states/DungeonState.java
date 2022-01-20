@@ -32,8 +32,7 @@ public class DungeonState extends State{
 	
 	public DungeonState(Connector connector) {
 		super(connector);
-		player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector,CharacterTemplate.KNIGHT);
-		player.setMeeleeAtk1(10);
+		player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Property.TEAM_1,Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector,CharacterTemplate.KNIGHT);
 		this.world = new World(player,connector);
 		this.activeCharacterCanvas = new EntityInformationContainer(player,EntityInformationContainer.PLAYER_CONFIG,Resources.textEditorConfig,connector);
 		//this.hud = new HUD();
@@ -83,7 +82,14 @@ public class DungeonState extends State{
 			}
 		}
 		getButtons(pixels);
-		
+		int[] minimap = roomPixels.get(3);
+		int minimapIndex=0;
+		for(int i = Property.MINIMAP_Y_FROM; i < Property.MINIMAP_Y_UNTIL; i++) {
+			for(int j = Property.MINIMAP_X_FROM; j < Property.MINIMAP_X_UNTIL; j++) {
+				pixels[j+i*Property.END_OF_X] = minimap[minimapIndex];
+				minimapIndex++;
+			}
+		}
 		return pixels;
 	}
 	

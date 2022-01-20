@@ -1,9 +1,6 @@
 package rogue.framework.resources;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import rogue.game.combat.skills.BaseSkill;
 
 public class Loader {
 	public static void load() {
@@ -15,6 +12,11 @@ public class Loader {
 		Resources.TEXTURES.add(Resources.SKELETON,new Sprite("res/textures/skeleton.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.ENDWALL,new Sprite("res/textures/wall.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.SPONGEBOB,new Sprite("res/textures/spongebob.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.DARTH_SION,new Sprite("res/textures/sion.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.DARTH_VADER,new Sprite("res/textures/vader.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.LUKE,new Sprite("res/textures/luke.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.BOBA,new Sprite("res/textures/boba.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		
 		
 		Resources.PORTRAITSx64.add(Resources.NONE,new Sprite("res/textures/lockedskill.png",64,64).getPixels());
 		Resources.PORTRAITSx64.add(Resources.KNIGHTMALE,new Sprite("res/textures/knightPortraitMale.png",64,64).getPixels());
@@ -27,5 +29,11 @@ public class Loader {
 		Resources.PORTRAITSx32.add(Resources.CONFIRM_ACTION,new Sprite("res/textures/confirm.png",32,32).getPixels());
 		Resources.PORTRAITSx32.add(Resources.END_TURN_ACTION,new Sprite("res/textures/endTurn.png",32,32).getPixels());
 		Resources.PORTRAITSx32.add(Resources.CANCEL_ACTION,new Sprite("res/textures/cancel.png",32,32).getPixels());
+		Resources.PORTRAITSx32.add(Resources.UP,new Sprite("res/textures/up.png",32,32).getPixels());
+		Resources.PORTRAITSx32.add(Resources.DOWN,new Sprite("res/textures/down.png",32,32).getPixels());
+		
+		BaseSkill.SKILLS.add(BaseSkill.NONE,BaseSkill.passiveSkillSetup("res/data/skills/none.txt"));
+		BaseSkill.SKILLS.add(BaseSkill.SLASH,BaseSkill.activeSkillSetup("res/data/skills/slash.txt"));
+		BaseSkill.SKILLS.add(BaseSkill.HATEFUL_SWING,BaseSkill.activeSkillSetup("res/data/skills/hatefulSwing"));
 	}
 }

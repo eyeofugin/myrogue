@@ -2,8 +2,7 @@ package util;
 
 import java.util.HashMap;
 
-import util.MyColor;
-import util.TextAlignment;
+import rogue.framework.resources.Property;
 
 public class TextEditor {
 
@@ -376,7 +375,7 @@ public class TextEditor {
 					for (int i = 0; i < this.charHeight; i++) {
 						word[lastWrittenWidth + i * resultWidth] = backgroundColor;
 					}
-					lastWrittenWidth++;
+					lastWrittenWidth+=Property.BASECHARDISTANCE;
 				}
 				symbolNr++;
 

@@ -1,0 +1,625 @@
+package rogue.game.world;
+
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import rogue.framework.eventhandling.Connector;
+import rogue.framework.eventhandling.Event;
+import rogue.framework.resources.Property;
+import rogue.framework.resources.Resources;
+import rogue.game.combat.CombatManager;
+import rogue.game.combat.skills.ActiveSkill;
+import rogue.game.combat.skills.BaseSkill;
+import rogue.game.combat.skills.BaseSkill.TargetType;
+import rogue.game.combat.skills.Skill;
+import rogue.game.pvp.Team;
+import rogue.game.world.generation.RoomData;
+import rogue.game.world.objects.BattleLog;
+import rogue.game.world.objects.Entity;
+import rogue.game.world.objects.NPC;
+import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.SecondLayerObject;
+import rogue.game.world.objects.Tile;
+import rogue.graphics.BaseActionContainer;
+import rogue.graphics.EntityInformationContainer;
+import util.Highlight;
+import util.MovementOption;
+import util.MyColor;
+
+public class Arena {
+	
+	private RoomData data;
+	private Connector connector;
+	private Point[][] teamPlacements=new Point[][] {
+		null,
+		new Point[] {new Point(10,11),new Point(11,11),new Point(9,11)},
+		new Point[] {new Point(10,10),new Point(11,10),new Point(9,10)}
+	};
+	protected int xOffset = 0;
+	protected int yOffset = 0;
+	
+	private List<Entity> entities = new ArrayList<Entity>();;
+	private Highlight[][] highlights;
+	private SecondLayerObject[][] objects;
+	private byte[][] sprites;
+
+	private EntityInformationContainer largeCanvas;
+	private EntityInformationContainer smallCanvas;
+	private PlayableCharacter activeLarge;
+	private Entity activeSmall;
+	private int activeTeam=0;
+	
+	private BattleLog log;
+
+	protected BaseActionContainer buttonPanel;
+	
+	
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------c'tors------------------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	public Arena(RoomData data, Connector connector) {
+		this.data = data; 
+		this.connector = connector;
+		this.objects = new SecondLayerObject[data.getTileData().length][data.getTileData()[0].length];
+		largeCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.PLAYER_CONFIG, Resources.textEditorConfig, connector);
+		smallCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
+		this.highlights = new Highlight[data.getTileData().length][data.getTileData()[0].length];
+		this.buttonPanel = new BaseActionContainer(connector);
+		this.sprites = new byte[data.getTileData().length][data.getTileData()[0].length];
+		this.log = new BattleLog(Resources.textEditorConfig,this.connector);
+	}
+	
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------init--------------------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	public void initTeams(List<Team> teams) {
+		for(Team team : teams) {
+			int i = 0;
+			int j = 0;
+			for(PlayableCharacter c : team.getCharacters()) {
+				c.setX(teamPlacements[team.getTeamNr()][i].x);
+				c.setY(teamPlacements[team.getTeamNr()][i].y);
+				entities.add(c);
+				i++;
+			}
+			for(NPC npc : team.getMobs()) {
+				npc.setX(teamPlacements[team.getTeamNr()][j].x);
+				npc.setY(teamPlacements[team.getTeamNr()][j].y);
+				entities.add(npc);
+				j++;
+			}
+		}
+	}
+	public void openViewForTeamNr(int nr) {
+		this.activeTeam=nr;
+		for(Entity e : this.entities) {
+			if(e.getTeam()==nr && PlayableCharacter.class.isInstance(e)) {
+				PlayableCharacter pc = PlayableCharacter.class.cast(e);
+				setSelectPlayerEvent(pc, pc.getX(), pc.getY());
+				this.activeLarge=pc;
+			}
+			if(e.getTeam()!=nr && PlayableCharacter.class.isInstance(e)) {
+				Event event = new Event();
+				event.setObject(e);
+				event.setEventId(Connector.INFO_OBJECT);
+				event.setX(e.getX());
+				event.setY(e.getY());
+				this.connector.addContext(getRelationalX(e.getX()), getRelationalY(e.getY()), Property.TILE_SIZE, Property.TILE_SIZE, event);	
+			}
+		}
+		highLightActive();
+		this.activeSmall=new Entity();
+	}
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------update------------------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	public void update() {
+		if(this.activeLarge!=null) {
+			this.largeCanvas.checkUdate(activeLarge);
+		}
+		if(this.activeSmall!=null) {
+			this.smallCanvas.checkUdate(activeSmall);
+		}
+	}	
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------render------------------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	public List<int[]> render(){
+		List <int[]> compartments = new ArrayList<int[]>();
+		
+		int[] map = new int[Property.ROOM_SIZE*Property.ROOM_SIZE];
+		map=renderRoom(map);
+		map=renderEntities(map);
+		map=renderHighlights(map);
+		compartments.add(map);
+		
+		int[] largeCanvasPixels = new int[Property.ACTIVE_CHAR_HEIGHT*Property.ACTIVE_CHAR_WIDTH];
+		largeCanvasPixels = this.largeCanvas.getPixels();
+		compartments.add(largeCanvasPixels);
+		
+		int[] smallCanvasPixels = new int[Property.ACTIVE_NPC_HEIGHT*Property.ACTIVE_NPC_WIDTH];
+		smallCanvasPixels = this.smallCanvas.getPixels();
+		compartments.add(smallCanvasPixels);
+		
+		int[] minimap = new int[Property.MINIMAP_HEIGHT*Property.MINIMAP_WIDTH];
+		minimap = getMinimap(minimap);
+		compartments.add(minimap);
+		
+		int[] buttons = new int[Property.BUTTON_PANEL_WIDTH*Property.BUTTON_PANEL_HEIGHT];
+		buttons = buttonPanel.getPixels();
+		compartments.add(buttons);
+		
+		int[] logs = new int[Property.LOG_WIDTH*Property.LOG_HEIGHT];
+		logs = this.log.getPixels();
+		compartments.add(logs);
+		
+		return compartments;
+	}
+	private int[] renderRoom(int[]p) {
+		for(int y = 0; y < Property.ROOM_SIZE; y++) {
+			for(int x = 0; x < Property.ROOM_SIZE; x++) {
+				int tileX = x/Property.TILE_SIZE;
+				int tileY = y/Property.TILE_SIZE;
+				int xInTile = x%Property.TILE_SIZE;
+				int yInTile = y%Property.TILE_SIZE;
+				Tile t = data.getTileData()[tileY+yOffset][tileX+xOffset];
+				p[x + y*Property.ROOM_SIZE] = Resources.TEXTURES.get(t.getId())[xInTile+yInTile*Property.TILE_SIZE];
+			}
+		}
+		return p;
+	}
+	private int[] renderEntities(int[] p) {
+		for(Entity e : entities) {
+			if((e.getX()>=xOffset)&&(e.getX()<=xOffset+Property.ROOM_VIEW_TILE_COUNT) &&
+				(e.getY()>=yOffset)&&(e.getY()<=yOffset+Property.ROOM_VIEW_TILE_COUNT)) {
+				for(int y = 0; y < Property.TILE_SIZE; y++) {
+					for(int x = 0; x < Property.TILE_SIZE; x++) {
+						int relX = ((e.getX()+(-1)*xOffset)*Property.TILE_SIZE)+x;
+						int relY = ((e.getY()+(-1)*yOffset)*Property.TILE_SIZE)+y;
+						int color = Resources.TEXTURES.get(e.getId())[x+y*Property.TILE_SIZE];
+						if(color!=-12450784 && color!=-3947581) {
+							p[relX+relY*Property.ROOM_SIZE] = color;	
+						}
+					}
+				}
+			}
+		}
+		return p;
+	}
+	private int[] renderHighlights(int[] p) {
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y =0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null
+						&& x>=xOffset && y>=yOffset) {
+					highlights[x][y].printHighlight(p, x, y, xOffset, yOffset);
+				}
+			}
+		}
+		return p;
+	}
+	protected int[] getMinimap(int[] map) {
+		for(int x = 0 ; x < data.getTileData().length*4;x++) {
+			for(int y = 0; y < data.getTileData()[0].length*4;y++) {
+				map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForTiles(data.getTileData()[y/4][x/4].getId()).VALUE;
+				Entity e = getEntityAt(x/4,y/4);
+				if(e!=null) {
+					map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForEntities(e.getPortraitId()).VALUE;
+				}
+			}
+		}
+		return map;
+	}
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------object-handling---------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	private void moveObject(SecondLayerObject o, int x, int y,boolean manual) {
+		int currentX = o.getX();
+		int currentY = o.getY();
+		o.setX(x);
+		o.setY(y);
+		int distance = calcDistance(currentX,currentY,x,y);
+		
+		for(Entity e : this.entities) {
+			if(e.getX()==currentX && e.getY()==currentY) {
+				e.setX(x);
+				e.setY(y);
+			}
+		}
+		objects[currentX][currentY] = null;
+		objects[x][y] = o;
+		if(manual) {
+			Entity e = Entity.class.cast(o);
+			e.useMovement(distance);
+			removeMovements();
+//			setSelectPlayerEvent(o, x, y);			
+		}else if(Entity.class.isInstance(o)){
+			Entity e = Entity.class.cast(o);
+//			updateContext(e,x,y);
+			e.useMovement(distance);
+		}
+	}
+	private void onMoveCharacter(int x, int y) {
+		int currentX = this.activeLarge.getX();
+		int currentY = this.activeLarge.getY();
+		
+		this.activeLarge.setX(x);
+		this.activeLarge.setY(y);
+		
+		int dist = calcDistance(currentX, currentY, x, y);
+		
+		this.activeLarge.useMovement(dist);
+		removeMovements();
+		highLightActive();
+		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge), x, y);
+		
+	}
+	private void removeTheDead() {
+		List<Entity> operatedList = new ArrayList<>();
+		this.entities.stream()
+			.filter(e->e.getCurrentLife()<1)
+			.forEach(e -> {
+				this.connector.removeContextOf(e.getName());
+				operatedList.add(e);
+				});
+		this.entities.removeAll(operatedList);
+	}
+	private void showMovementOptions() {
+		int xGridPos = this.activeLarge.getX();
+		int yGridPos = this.activeLarge.getY();
+		int movementDistance = Math.min(this.activeLarge.getCurrentMovement(),1);
+		if(movementDistance>0) {
+			for(int x = xGridPos-movementDistance; x <= xGridPos+movementDistance; x++) {
+				for(int y = yGridPos-movementDistance; y <= yGridPos+movementDistance;y++) {
+					if(!(x==xGridPos&&y==yGridPos)) {
+						
+						MovementOption move = getMovementViabilityFor(x,y,this.activeLarge.getTeam());
+						
+						if(move.equals(MovementOption.VALID)) {
+							highlightTile(x,y,Highlight.MVMNT_BLUE);
+							Event e = new Event();
+							e.setX(x);
+							e.setY(y);
+							e.setEventId(Connector.MOVE_PLAYER);
+							
+							this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);					
+						}
+					}
+				}
+			}
+		}
+	}
+	private void showAttackOptions() {
+		int xGridPos = this.activeLarge.getX();
+		int yGridPos = this.activeLarge.getY();
+		
+		for(int x = xGridPos-1; x <= xGridPos+1; x++) {
+			for(int y = yGridPos-1; y <= yGridPos+1;y++) {
+				if(!(x==xGridPos&&y==yGridPos)) {
+					MovementOption move = getMovementViabilityFor(x,y,this.activeLarge.getTeam());
+					if(move.equals(MovementOption.ENEMY)) {
+						highlightTile(x,y,Highlight.CMBT_RED);
+						Event e = new Event();
+						e.setX(x);
+						e.setY(y);
+						e.setObject(getEntityAt(x, y)!=null?getEntityAt(x,y):this.objects[x][y]);
+						e.setEventId(Connector.ATTACK);
+						this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);					
+					}
+				}
+			}
+		}
+	}
+	private void basicAttack(Event e) {
+		if(this.activeLarge.useAction(1)) {
+			CombatManager.normalMelee(this.activeLarge,e.getObject(),this.log);
+			if(activeSmall!=null) 
+				this.smallCanvas.checkUdate(activeSmall);
+			if(activeLarge!=null)
+				this.largeCanvas.checkUdate(activeLarge);
+		}
+		removeMovements();
+		removeTheDead();
+	}
+	private void onSelectLargeEntity(PlayableCharacter pc) {
+		this.activeLarge = pc;
+		highLightActive();
+	}
+	private void onSelectSmallEntity(Entity e) {
+		this.activeSmall = e;
+	}
+	private void onTabChange(Event e) {
+		if(e.getEventId().startsWith(this.largeCanvas.getPrefix()) && this.activeLarge!=null) {
+			this.activeLarge.setActiveTab(e.getTab());
+		}else if(this.activeSmall!=null){
+			this.activeSmall.setActiveTab(e.getTab());
+		}
+	}
+	private void highLightActive() {
+		removeHighlightsOfType(Highlight.SELECT_WHITE);
+		highlightTile(this.activeLarge.getX(), this.activeLarge.getY(), Highlight.SELECT_WHITE);
+	}
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------skill-handling----------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	private void onSkillChosen(ActiveSkill s) {
+		clear();
+		int currentX = this.activeLarge.getX();
+		int currentY = this.activeLarge.getY();
+		int skillRange = s.getDistance();
+		if(s.getTargetType().equals(TargetType.SURROUNDING)) {
+			onTargetChosen(s,currentX,currentY);
+			return;
+		}
+		for(int x = currentX-skillRange; x <= currentX+skillRange; x++) {
+			for(int y = currentY-skillRange; y <= currentY+skillRange;y++) {
+				if(x>0 && y>0) {
+					highlightTile(x,y,Highlight.SKLL_GREEN);
+					Event e = new Event();
+					e.setEventId(Connector.TARGET_CHOSEN+x+""+y);
+					e.setX(x);
+					e.setY(y);
+					e.setSkill(s.getId());
+					this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);
+				}
+			}
+		}
+
+	}
+	private void onTargetChosen(ActiveSkill s,int targetX,int targetY) {
+		clear();
+		
+		if(s.getTargetType()==null) {}
+		
+		
+		switch (s.getTargetType()) {
+		case SINGLE_TARGET:
+			markSingleSkillSpot(s.getRadius(),targetX,targetY);
+			break;
+		case LINE:
+			markSkillLine(new Point(this.activeLarge.getX(),this.activeLarge.getY()),new Point(targetX,targetY));
+			break;
+		case SURROUNDING:
+			markSkillSurrounding(s.getRadius(),s.getDistance());
+			break;
+		case NONE:
+			
+			break;
+		default:
+			break;
+		}
+		
+		Event e = new Event();
+		e.setEventId(Connector.CONFIRM_SKILL);
+		e.setSkill(s.getId());
+		
+		Event e2 = new Event();
+		e2.setEventId(Connector.CANCEL_SKILL);
+		e2.setSkill(s.getId());
+		
+		this.buttonPanel.addEvent(BaseActionContainer.CONFIRM, e, Resources.CONFIRM_ACTION);
+		this.buttonPanel.addEvent(BaseActionContainer.CANCEL, e2, Resources.CANCEL_ACTION);
+	}
+	private void markSingleSkillSpot(int radius, int targetx, int targety) {
+		for(int x = targetx-radius;x<=targetx+radius;x++) {
+			for(int y = targety-radius;y<=targety+radius;y++) {
+				if(x>0 && y>0) {
+					highlightTile(x, y, Highlight.SKLL_GREEN);
+				}
+			}
+		}
+	}
+	private void markSkillLine(Point a, Point b) {
+		int dx = a.x - b.x;
+		int dy = a.y - b.y;
+		int xs = dx>0? -1:1;
+		int ys = dy>0? -1:1;
+		double m = dx==0?0:(double)dy/dx;
+		
+		if(dx==0||m<=-2||m>=2) {
+			a.y+=ys;
+		}else if(m>=-0.5&&m<=0.5) {
+			a.x+=xs;
+		}else {
+			a.x+=xs;
+			a.y+=ys;
+		}
+		
+		highlightTile(a.x, a.y, Highlight.SKLL_GREEN);
+		
+		if(!a.equals(b)) {
+			markSkillLine(a,b);
+		}
+	}
+	private void markSkillSurrounding(int radius,int distance) {
+		int cx = this.activeLarge.getX();
+		int cy = this.activeLarge.getY();
+		int horizon = radius+distance;
+		for(int x = cx-horizon; x <= cx+horizon; x++) {
+			for(int y = cy-horizon; y <= cy+horizon;y++) {
+				if(!((x>(cx-distance)&&x<(cx+distance))&&((cy-distance)<y&&y<(cy+distance)))) {
+					highlightTile(x, y, Highlight.SKLL_GREEN);
+				}
+			}
+		}
+	}
+	private void onExecuteSkill(Event e) {
+	//	CombatManager.executeSkill(this.activeLarge,getAffectedTargets(),BaseSkill.getActiveSkill(e.getSkill()),this.log);
+		update();
+		addSprites(e.getSkill());
+		removeMovements();
+		removeTheDead();
+		this.buttonPanel.removeEvent(BaseActionContainer.CONFIRM);
+		this.buttonPanel.removeEvent(BaseActionContainer.CANCEL);
+	}
+	private void onCancelSkill(Event e) {
+		removeMovements();
+		this.buttonPanel.removeEvent(BaseActionContainer.CONFIRM);
+		this.buttonPanel.removeEvent(BaseActionContainer.CANCEL);
+	}
+	private void addSprites(byte spriteId) {
+		for(int i = 0; i < highlights.length; i++) {
+			for(int j = 0; j < highlights[0].length; j++) {
+				this.sprites[i][j] = spriteId;
+			}
+		}
+	}
+	private List<SecondLayerObject> getAffectedTargets() {
+		List<SecondLayerObject> obj=new ArrayList<>();
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null && highlights[x][y].equals(Highlight.SKLL_GREEN)) {
+					if(this.objects[x][y]!=null) {
+						obj.add(this.objects[x][y]);
+					}
+					if(getEntityAt(x, y)!=null) {
+						obj.add(getEntityAt(x, y));
+					}
+				}
+			}
+		}
+		return obj;
+	}
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------utility-----------------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	private int getRelationalX(int x) {
+		int result = x*Property.TILE_SIZE + Property.START_OF_ROOM_X;
+		return result;
+	}
+	private int getRelationalY(int y) {
+		int result = y*Property.TILE_SIZE + Property.START_OF_ROOM_Y;
+		return result;
+	}
+	private void setSelectPlayerEvent(PlayableCharacter pc, int x, int y) {
+		Event selectPlayerEvent = new Event();
+		selectPlayerEvent.setEventId(Connector.SELECT_PLAYER);
+		selectPlayerEvent.setCharacter(pc);
+		this.connector.addEvent(getRelationalX(x),getRelationalY(y),Property.TILE_SIZE,Property.TILE_SIZE,selectPlayerEvent);
+	}
+	private Entity getEntityAt(int x, int y) {
+		for(Entity e : this.entities) {
+			if(e.getX()==x && e.getY()==y) {
+				return e;
+			}
+		}
+		return null;
+	}
+	private MovementOption getMovementViabilityFor(int x, int y, int teamNr) {
+		if(data.getTileData()[y][x].getId()==Resources.WALL) {
+			return MovementOption.OBSTACLE;
+		}
+		if(data.getTileData()[y][x].getId()==Resources.VOID) {
+			return MovementOption.VOID;
+		}
+		if(data.getTileData()[y][x].getId()==Resources.ENDWALL) {
+			return MovementOption.ENDWALL;
+		}
+		Entity e = getEntityAt(x, y);
+		if(e != null) {
+			if(e.getTeam() == teamNr) {
+				return MovementOption.SELF;
+			}else {
+				return MovementOption.ENEMY;
+			}
+		}
+		return MovementOption.VALID;
+	}
+	private void highlightTile(int x, int y,Highlight h) {
+		if(x<0||y<0) {
+			return;
+		}
+		this.highlights[x][y] = h;
+	}
+	private void removeMovements() {
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null &&
+						(highlights[x][y].equals(Highlight.MVMNT_BLUE)||highlights[x][y].equals(Highlight.CMBT_RED)||highlights[x][y].equals(Highlight.SKLL_GREEN))) {
+					highlights[x][y] = null;
+				}
+			}
+		}
+	}
+	private int calcDistance(int cx, int cy, int x, int y) {
+		return Math.max((Math.abs(cx-x)),(Math.abs(cy-y)));
+	}
+	private void clear() {
+		removeMovements();
+		this.connector.cleanMapEvents();
+		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge),this.activeLarge.getX(),this.activeLarge.getY());
+	}
+	private void endTurn() {
+		removeMovements();
+		this.activeLarge.refresh();
+	}
+	private void removeHighlightsOfType(Highlight h) {
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null && highlights[x][y].equals(h)) {
+					highlights[x][y] = null;
+				}
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------events------------------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_W) {
+			if(yOffset>0) {
+				yOffset--;
+				this.connector.decrementYOffset();
+			}
+		}
+		if(e.getKeyCode() == KeyEvent.VK_A) {
+			if(xOffset>0) {
+				xOffset--;
+				this.connector.decrementXOffset();
+			}
+		}
+		if(e.getKeyCode() == KeyEvent.VK_S) {
+			if(yOffset<data.size()-Property.ROOM_VIEW_TILE_COUNT) {
+				yOffset++;
+				this.connector.incrementYOffset();
+			}
+		}
+		if(e.getKeyCode() == KeyEvent.VK_D) {
+			if(xOffset<data.size()-Property.ROOM_VIEW_TILE_COUNT) {
+				xOffset++;
+				this.connector.incrementXOffset();
+			}
+		}
+	}
+	public void mouseClicked(Event e) {
+		if(e.getEventId().equals(		Connector.SELECT_PLAYER)) {
+			onSelectLargeEntity(e.getCharacter());
+		}else if(e.getEventId().equals(			Connector.SHOW_MOVEMENT)) {
+			showMovementOptions();
+		}else if(e.getEventId().equals(		Connector.SHOW_ATTACK)) {
+			showAttackOptions();
+		}else if(e.getEventId().equals(		Connector.MOVE_PLAYER)) {
+			onMoveCharacter(e.getX(),e.getY());
+		}else if(e.getEventId().equals(		Connector.ATTACK)) {
+			basicAttack(e);
+		}else if(e.getEventId().equals(		Connector.INFO_OBJECT)) {
+			onSelectSmallEntity(Entity.class.cast(e.getObject()));
+		}else if(e.getEventId().contains(	Connector.TAB_CHANGE)) {
+			onTabChange(e);
+		}else if(e.getEventId().equals(		Connector.SKILL_CHOSEN)) {
+			onSkillChosen(BaseSkill.getActiveSkill(e.getSkill()));
+		}else if(e.getEventId().startsWith(	Connector.TARGET_CHOSEN)) {
+			onTargetChosen(BaseSkill.getActiveSkill(e.getSkill()),e.getX(),e.getY());
+		}else if(e.getEventId().equals(		Connector.CONFIRM_SKILL)) {
+			onExecuteSkill(e);
+		}else if(e.getEventId().equals(		Connector.CANCEL_SKILL)) {
+			onCancelSkill(e);
+		}else if(e.getEventId().equals(		Connector.END_TURN)) {
+			endTurn();
+		}else if(e.getEventId().equals(Connector.LOG_UP) ||
+				e.getEventId().equals(Connector.LOG_DOWN)) {
+			this.log.mouseClicked(e);
+		}
+	}
+}

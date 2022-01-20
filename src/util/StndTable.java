@@ -1,7 +1,7 @@
 package util;
 
+import rogue.framework.resources.Property;
 import rogue.graphics.InformationContainer;
-import util.TextEditor.TextEditorConfig;
 
 public class StndTable extends InformationContainer{
 	
@@ -12,7 +12,6 @@ public class StndTable extends InformationContainer{
 	private StndColumn superHeader;
 	private StndColumn footer;
 	
-	private static final int BASELINEDISTANCE = 4;
 	private int baseLineSize = 8;
 	
 	public StndTable(StndColumn[] columns, TextEditor editor,int[] sizes) {
@@ -26,21 +25,21 @@ public class StndTable extends InformationContainer{
 		for(int i : sizes) {sum+=i;}
 		
 		this.width = sum + 10;
-		this.height = columns.length*(BASELINEDISTANCE+baseLineSize)-BASELINEDISTANCE;
+		this.height = columns.length*(Property.BASELINEDISTANCE+baseLineSize)-Property.BASELINEDISTANCE;
 	}
 	public void addHeader(StndColumn header) {
 		this.header = header;
-		this.height+=(baseLineSize + BASELINEDISTANCE*2) +1;
+		this.height+=(baseLineSize + Property.BASELINEDISTANCE*2) +1;
 	}
 	
 	public void addFooter(StndColumn footer) {
 		this.footer = footer;
-		this.height+=(baseLineSize + BASELINEDISTANCE*2) +1;
+		this.height+=(baseLineSize + Property.BASELINEDISTANCE*2) +1;
 	}
 	
 	public void addSuperHeader(StndColumn superHeader) {
 		this.superHeader = superHeader;
-		this.height+=(baseLineSize + BASELINEDISTANCE*2) +1;
+		this.height+=(baseLineSize + Property.BASELINEDISTANCE*2) +1;
 	}
 	
 	public void addSuperSizes(int[] superSizes) {
@@ -61,9 +60,9 @@ public class StndTable extends InformationContainer{
 				xOffset+=superSizes[i];
 			}
 			xOffset=5;
-			yOffset+=baseLineSize+BASELINEDISTANCE;
+			yOffset+=baseLineSize+Property.BASELINEDISTANCE;
 			horizontalLine(xOffset-5, this.width-1, yOffset);
-			yOffset+=BASELINEDISTANCE;
+			yOffset+=Property.BASELINEDISTANCE;
 		}
 		
 		//header
@@ -73,9 +72,9 @@ public class StndTable extends InformationContainer{
 				xOffset+=sizes[i];
 			}
 			xOffset=5;
-			yOffset+=baseLineSize+BASELINEDISTANCE;
+			yOffset+=baseLineSize+Property.BASELINEDISTANCE;
 			horizontalLine(xOffset-5, this.width-1, yOffset);
-			yOffset+=BASELINEDISTANCE;
+			yOffset+=Property.BASELINEDISTANCE;
 		}
 		//entries
 		for(StndColumn column : columns) {
@@ -84,12 +83,12 @@ public class StndTable extends InformationContainer{
 				xOffset+=sizes[i];
 			}
 			xOffset=5;
-			yOffset+=baseLineSize+BASELINEDISTANCE;
+			yOffset+=baseLineSize+Property.BASELINEDISTANCE;
 		}
 		//footer
 		if(footer!=null) {
 			horizontalLine(xOffset-5, this.width-1, yOffset);
-			yOffset+=BASELINEDISTANCE;
+			yOffset+=Property.BASELINEDISTANCE;
 			for(int i = 0; i<footer.getEntries().length; i++) {
 				writeLine(footer.getEntries()[i], xOffset, xOffset+sizes[i]-1, yOffset, yOffset+baseLineSize-1, 1, TextAlignment.RIGHT, MyColor.BLACK, footer.getColors()[i]);
 				xOffset+=sizes[i];

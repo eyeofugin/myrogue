@@ -5,11 +5,11 @@ import java.util.List;
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
+import rogue.game.combat.skills.BaseSkill;
 import rogue.game.world.objects.Entity;
 import rogue.game.world.objects.Entity.CharacterTab;
 import rogue.game.world.objects.Equipment;
 import rogue.game.world.objects.PlayableCharacter;
-import rogue.game.world.objects.Skill;
 import util.IconRow;
 import util.MyColor;
 import util.StndColumn;
@@ -68,18 +68,19 @@ public class EntityInformationContainer extends InformationContainer{
 	private static int C_SKILLS_ICONS_X_UNTIL 		= C_SKILLS_ICONS_X_FROM+C_SKILLS_WIDTH-1;
 	
 	public static final EntityInformationContainerConfig PLAYER_CONFIG = 
-			new EntityInformationContainerConfig(420, 660, 1500, 0, new CharacterTab[] {
+			new EntityInformationContainerConfig("MAIN_CANVAS",420, 660, 1500, 0, new CharacterTab[] {
 					CharacterTab.STATS,
 					CharacterTab.SKILLS,
 					CharacterTab.ITEMS,
 					CharacterTab.GEAR
 			});
 	public static final EntityInformationContainerConfig ENTITY_CONFIG = 
-			new EntityInformationContainerConfig(420, 420, 1500, 660, new CharacterTab[] {
+			new EntityInformationContainerConfig("SMALL_CANVAS",420, 420, 1500, 660, new CharacterTab[] {
 					CharacterTab.STATS,
 					CharacterTab.SKILLS,
 			});
 	
+	private String prefix;
 	private Entity copy = new PlayableCharacter();
 	private CharacterTab[] tabs; 
 	
@@ -174,7 +175,7 @@ public class EntityInformationContainer extends InformationContainer{
 			writeLine(t.name(),startX,endX,TAB_Y_FROM,TAB_Y_UNTIL,1,TextAlignment.CENTER,tabColors[i],MyColor.WHITE);
 			
 			Event click = new Event();
-			click.setEventId("tabChange");
+			click.setEventId(this.prefix+this.connector.TAB_CHANGE);
 			click.setTab(this.tabs[i]);
 			click.setObject(this.copy);
 			
@@ -186,70 +187,74 @@ public class EntityInformationContainer extends InformationContainer{
 		}
 	}
 	private void printStats() {
-		StndColumn meelee1 = new StndColumn(new String[] {
-					"Meelee Atk 1",
-					Integer.toString(copy.getMeeleeAtk1()),
-					"meeleeDef1",
-					Integer.toString(copy.getMeeleeDef1())});
-		StndColumn meelee2 = new StndColumn(new String[] {
-					"meeleeAtk2",
-					Integer.toString(copy.getMeeleeAtk2()),
-					"meeleeDef2",
-					Integer.toString(copy.getMeeleeDef2())});
-		StndColumn ranged1 = new StndColumn(new String[] {
-					"rangedAtk1",
-					Integer.toString(copy.getRangedAtk1()),
-					"rangedDef1",
-					Integer.toString(copy.getRangedDef1())});
-		StndColumn ranged2 = new StndColumn(new String[] {
-					"rangedAtk2",
-					Integer.toString(copy.getRangedAtk2()),
-					"rangedDef2",
-					Integer.toString(copy.getRangedDef2())});
-		StndColumn magic1 = new StndColumn(new String[] {
-					"magicAtk1",
-					Integer.toString(copy.getMagicAtk1()),
-					"magicDef1",
-					Integer.toString(copy.getMagicDef1())});
-		StndColumn magic2 = new StndColumn(new String[] {
-					"magicAtk2",
-					Integer.toString(copy.getMagicAtk2()),
-					"MagicDef2",
-					Integer.toString(copy.getMagicDef2())});
-		StndTable statsTable = new StndTable(new StndColumn[]{
-					meelee1,meelee2,ranged1,ranged2,magic1,magic2},this.editor,
-				new int[] {
-				    100,100,100,100});
-		statsTable.finish();
-		//print(statsTable.pixels,400,statsTable.height);
-		int tableHeight= statsTable.getHeight();
-		int tableIndex = 0;
-		for(int y = STATSTABLE_Y_FROM; y < (STATSTABLE_Y_FROM + tableHeight); y++) {
-			for(int x = STATSTABLE_X_FROM; x <= STATSTABLE_X_UNTIL; x++) {
-				pixels[x+y*this.width] = statsTable.getPixels()[tableIndex];
-				tableIndex++;
-			}
+		if(!this.copy.getName().equals("dummy")) {
+//			StndColumn meelee1 = new StndColumn(new String[] {
+//					"Meelee Atk 1",
+//					Integer.toString(copy.getMeeleeAtk1()),
+//					"meeleeDef1",
+//					Integer.toString(copy.getMeeleeDef1())});
+//			StndColumn meelee2 = new StndColumn(new String[] {
+//						"meeleeAtk2",
+//						Integer.toString(copy.getMeeleeAtk2()),
+//						"meeleeDef2",
+//						Integer.toString(copy.getMeeleeDef2())});
+//			StndColumn ranged1 = new StndColumn(new String[] {
+//						"rangedAtk1",
+//						Integer.toString(copy.getRangedAtk1()),
+//						"rangedDef1",
+//						Integer.toString(copy.getRangedDef1())});
+//			StndColumn ranged2 = new StndColumn(new String[] {
+//						"rangedAtk2",
+//						Integer.toString(copy.getRangedAtk2()),
+//						"rangedDef2",
+//						Integer.toString(copy.getRangedDef2())});
+//			StndColumn magic1 = new StndColumn(new String[] {
+//						"magicAtk1",
+//						Integer.toString(copy.getMagicAtk1()),
+//						"magicDef1",
+//						Integer.toString(copy.getMagicDef1())});
+//			StndColumn magic2 = new StndColumn(new String[] {
+//						"magicAtk2",
+//						Integer.toString(copy.getMagicAtk2()),
+//						"MagicDef2",
+//						Integer.toString(copy.getMagicDef2())});
+//			StndTable statsTable = new StndTable(new StndColumn[]{
+//						meelee1,meelee2,ranged1,ranged2,magic1,magic2},this.editor,
+//					new int[] {
+//					    100,100,100,100});
+//			statsTable.finish();
+//			//print(statsTable.pixels,400,statsTable.height);
+//			int tableHeight= statsTable.getHeight();
+//			int tableIndex = 0;
+//			for(int y = STATSTABLE_Y_FROM; y < (STATSTABLE_Y_FROM + tableHeight); y++) {
+//				for(int x = STATSTABLE_X_FROM; x <= STATSTABLE_X_UNTIL; x++) {
+//					pixels[x+y*this.width] = statsTable.getPixels()[tableIndex];
+//					tableIndex++;
+//				}
+//			}	
 		}
 	}
 	private void printSkills() {
-		Skill[] characterSkills = this.copy.getSkills();
-		byte[] skillIds = new byte[characterSkills.length];
-		Event[] skillEvents = new Event[characterSkills.length];
-		for(int i = 0; i < characterSkills.length; i++) {
-			skillIds[i] = characterSkills[i].getId();
-			skillEvents[i] = characterSkills[i].getEvent();
-		}
-		IconRow characterSkillIconRow = new IconRow(skillEvents, skillIds, C_SKILLS_WIDTH, C_SKILLS_HEIGHT);
-		int iconRowIndex=0;
-		//print(characterSkillIconRow.getPixels(),C_SKILLS_WIDTH,C_SKILLS_HEIGHT);
-		for(int y = C_SKILLS_ICONS_Y_FROM; y <= C_SKILLS_ICONS_Y_UNTIL; y++) {
-			for(int x = C_SKILLS_ICONS_X_FROM; x <= C_SKILLS_ICONS_X_UNTIL; x++) {
-				pixels[x+y*this.width] = characterSkillIconRow.getPixels()[iconRowIndex];
-				iconRowIndex++;
+		BaseSkill[] characterSkills = this.copy.getSkills();
+		if(characterSkills!=null) {
+			byte[] skillIds = new byte[characterSkills.length];
+			Event[] skillEvents = new Event[characterSkills.length];
+			for(int i = 0; i < characterSkills.length; i++) {
+				skillIds[i] = characterSkills[i].getId();
+				skillEvents[i] = characterSkills[i].getEvent();
 			}
-		}
-		for(Event e : characterSkillIconRow.getEvents()) {
-			this.connector.addEvent(C_SKILLS_ICONS_X_FROM+e.getX()+this.offsetLeft,C_SKILLS_ICONS_Y_FROM+e.getY()+this.offsetTop, ICON_SIZE, ICON_SIZE, e);
+			IconRow characterSkillIconRow = new IconRow(skillEvents, skillIds, C_SKILLS_WIDTH, C_SKILLS_HEIGHT);
+			int iconRowIndex=0;
+			//print(characterSkillIconRow.getPixels(),C_SKILLS_WIDTH,C_SKILLS_HEIGHT);
+			for(int y = C_SKILLS_ICONS_Y_FROM; y <= C_SKILLS_ICONS_Y_UNTIL; y++) {
+				for(int x = C_SKILLS_ICONS_X_FROM; x <= C_SKILLS_ICONS_X_UNTIL; x++) {
+					pixels[x+y*this.width] = characterSkillIconRow.getPixels()[iconRowIndex];
+					iconRowIndex++;
+				}
+			}
+			for(Event e : characterSkillIconRow.getEvents()) {
+				this.connector.addEvent(C_SKILLS_ICONS_X_FROM+e.getX()+this.offsetLeft,C_SKILLS_ICONS_Y_FROM+e.getY()+this.offsetTop, ICON_SIZE, ICON_SIZE, e);
+			}
 		}
 	}
 	
@@ -282,6 +287,7 @@ public class EntityInformationContainer extends InformationContainer{
 	}
 	private void applyConfig(EntityInformationContainerConfig config) {
 	
+		this.prefix = config.prefix;
 		this.tabs = config.getTabs();
 		this.offsetLeft = config.getOffsetLeft();
 		this.offsetTop = config.getOffsetTop();
@@ -299,15 +305,17 @@ public class EntityInformationContainer extends InformationContainer{
 		private final int height;
 		private final int offsetLeft;
 		private final int offsetTop;
+		private final String prefix;
 		private final CharacterTab[] tabs;
 		
-		public EntityInformationContainerConfig(int width, int height, int offsetLeft, int offsetTop, CharacterTab[] tabs) {
+		public EntityInformationContainerConfig(String prefix, int width, int height, int offsetLeft, int offsetTop, CharacterTab[] tabs) {
 			super();
 			this.width = width;
 			this.height = height;
 			this.offsetLeft = offsetLeft;
 			this.offsetTop = offsetTop;
 			this.tabs = tabs;
+			this.prefix = prefix;
 		}
 
 		public int getWidth() {
@@ -329,5 +337,11 @@ public class EntityInformationContainer extends InformationContainer{
 		public CharacterTab[] getTabs() {
 			return tabs;
 		}
+	}
+	
+
+
+	public String getPrefix() {
+		return this.prefix;
 	}
 }

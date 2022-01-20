@@ -1,0 +1,46 @@
+{
+	"id":5,
+	"name":"Merciless Massacre",
+	"description":"User enters a state of pure hatred and fury.",
+	"active":true,
+	"power":0,
+	"damageType":9,
+	"targetType":5,
+	"radius":0,
+	"effects":[{
+		"type":1,
+		"turns":3,
+		"intensity":0,
+		"status":0,
+		"statChange":{
+			"stat":3,
+			"multiplier":0.2,
+			"prof":0,
+			"amnt":0
+		},{
+			"stat":6,
+			"multiplier":0.2,
+			"prof":0,
+			"amnt":0
+		}
+	},{
+		"type":0,
+		"turns":3,
+		"intensity":0,
+		"status":6,
+		"statChange":null
+	}],
+	"event":{
+		"eventId":"SCH",
+		"skill":5
+	},
+	"multipliers":[{
+		"prof":3,
+		"percentage":0.15
+	}],
+	"distance":0,
+	"manaCost":60,
+	"lifeCost":0,
+	"acionCost":0,
+	"accuracy":100
+}

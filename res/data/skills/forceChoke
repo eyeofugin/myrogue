@@ -1,0 +1,41 @@
+{
+	"id":4,
+	"name":"Force Choke",
+	"description":"User roots target, inflicts damage and lowers defenses.",
+	"active":true,
+	"power":20,
+	"damageType":6,
+	"targetType":0,
+	"radius":0,
+	"effects":[{
+		"type":0,
+		"turns":1,
+		"intensity":0,
+		"status":8,
+		"statChange":null
+	},{
+		"type":1,
+		"turns":1,
+		"intensity":0,
+		"status":0,
+		"statChange":{
+			"stat":9,
+			"multiplier":-0.2,
+			"prof":0,
+			"amnt":0
+		}
+	}],
+	"event":{
+		"eventId":"SCH",
+		"skill":4
+	},
+	"multipliers":[{
+		"prof":3,
+		"percentage":0.1
+	}],
+	"distance":2,
+	"manaCost":40,
+	"lifeCost":0,
+	"acionCost":2,
+	"accuracy":95
+}

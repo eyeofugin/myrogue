@@ -13,6 +13,10 @@ public class Resources {
 	public static final byte SKELETON = 4;
 	public static final byte ENDWALL = 5;
 	public static final byte SPONGEBOB= 6;
+	public static final byte DARTH_SION = 7;
+	public static final byte DARTH_VADER = 8;
+	public static final byte LUKE = 9;
+	public static final byte BOBA = 10;
 	public static final ArrayList<int[]> TEXTURES = new ArrayList<>();
 	
 	public static final byte NONE = 0;
@@ -27,6 +31,8 @@ public class Resources {
 	public static final byte CONFIRM_ACTION = 4;
 	public static final byte END_TURN_ACTION = 5;
 	public static final byte CANCEL_ACTION = 6;
+	public static final byte UP = 7;
+	public static final byte DOWN = 8;
 	public static final ArrayList<int[]> PORTRAITSx32 = new ArrayList<>();
 	
 	public static final TextEditorConfig textEditorConfig = TextEditor.conf5x8;
