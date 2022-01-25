@@ -5,15 +5,13 @@ import java.util.List;
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
-import rogue.game.combat.skills.BaseSkill;
+import rogue.game.combat.skills.Skill;
 import rogue.game.world.objects.Entity;
 import rogue.game.world.objects.Entity.CharacterTab;
 import rogue.game.world.objects.Equipment;
 import rogue.game.world.objects.PlayableCharacter;
 import util.IconRow;
 import util.MyColor;
-import util.StndColumn;
-import util.StndTable;
 import util.TextAlignment;
 import util.TextEditor.TextEditorConfig;
 
@@ -235,9 +233,9 @@ public class EntityInformationContainer extends InformationContainer{
 		}
 	}
 	private void printSkills() {
-		BaseSkill[] characterSkills = this.copy.getSkills();
+		Skill[] characterSkills = this.copy.getSkills();
 		if(characterSkills!=null) {
-			byte[] skillIds = new byte[characterSkills.length];
+			int[] skillIds = new int[characterSkills.length];
 			Event[] skillEvents = new Event[characterSkills.length];
 			for(int i = 0; i < characterSkills.length; i++) {
 				skillIds[i] = characterSkills[i].getId();

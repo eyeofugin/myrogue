@@ -18,7 +18,7 @@ public class BaseActionContainer extends InformationContainer{
 	public static final String CANCEL = "cancel";
 
 	private Map<String,Event> events = new HashMap<>();
-	private Map<String,Byte> icons = new HashMap<>();;
+	private Map<String,Integer> icons = new HashMap<>();;
 	
 	
 	public BaseActionContainer(Connector connector) {
@@ -44,7 +44,7 @@ public class BaseActionContainer extends InformationContainer{
 	}
 	private void paint() {
 		Event[] events = new Event[this.events.size()];
-		byte[] icons = new byte[events.length];
+		int[] icons = new int[events.length];
 		int i = 0;
 		if(this.events.containsKey(BaseActionContainer.ATTACK)) {
 			events[i] = this.events.get(BaseActionContainer.ATTACK);
@@ -80,7 +80,7 @@ public class BaseActionContainer extends InformationContainer{
 			this.connector.addEvent(Property.BUTTON_PANEL_X_FROM+e.getX()+this.offsetLeft,Property.BUTTON_PANEL_Y_FROM+e.getY()+this.offsetTop, Property.TILE_SIZE, Property.TILE_SIZE, e);
 		}
 	}
-	public void addEvent(String key, Event e, byte icon) {
+	public void addEvent(String key, Event e, int icon) {
 		this.events.put(key, e);
 		this.icons.put(key,icon);
 		paint();

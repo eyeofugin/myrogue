@@ -10,6 +10,7 @@ import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.framework.states.State;
 import rogue.game.Init;
+import rogue.game.pvp.CharacterLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.Arena;
 import rogue.game.world.objects.Entity.CharacterTemplate;
@@ -141,14 +142,23 @@ public class ArenaState extends State{
 		Team t1 = new Team();
 		t1.setTeamNr(Property.TEAM_1);
 		List<PlayableCharacter> chars1 = new ArrayList<PlayableCharacter>();
-		chars1.add(new PlayableCharacter(0,0,Resources.DARTH_SION,"knight",Property.TEAM_1,Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector,CharacterTemplate.KNIGHT));
-		chars1.add(new PlayableCharacter(0,0,Resources.BOBA,"knight2",Property.TEAM_1,Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector,CharacterTemplate.KNIGHT));
+		PlayableCharacter sion = CharacterLibrary.get(Resources.DARTH_SION);
+		sion.setTeam(Property.TEAM_1);
+		PlayableCharacter boba = CharacterLibrary.get(Resources.BOBA);
+		boba.setTeam(Property.TEAM_1);
+		chars1.add(sion);
+		chars1.add(boba);
 		t1.setCharacters(chars1);
 		
 		Team t2 = new Team();
 		t2.setTeamNr(Property.TEAM_2);
 		List<PlayableCharacter> chars2 = new ArrayList<PlayableCharacter>();
-		chars2.add(new PlayableCharacter(0,0,Resources.LUKE,"skeleton",Property.TEAM_2,Resources.SKELETONMALE,MovementOption.PLAYER,this.connector,CharacterTemplate.NONE));
+		PlayableCharacter vader = CharacterLibrary.get(Resources.DARTH_VADER);
+		vader.setTeam(Property.TEAM_2);
+		PlayableCharacter luke = CharacterLibrary.get(Resources.LUKE);
+		luke.setTeam(Property.TEAM_2);
+		chars2.add(vader);
+		chars2.add(luke);
 		t2.setCharacters(chars2);
 		
 		this.teams.add(t1);

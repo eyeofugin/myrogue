@@ -32,7 +32,7 @@ public class DungeonState extends State{
 	
 	public DungeonState(Connector connector) {
 		super(connector);
-		player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Property.TEAM_1,Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector,CharacterTemplate.KNIGHT);
+	//	player = new PlayableCharacter(3,3,Resources.KNIGHT,"player",Property.TEAM_1,Resources.KNIGHTMALE,MovementOption.PLAYER,this.connector,CharacterTemplate.KNIGHT);
 		this.world = new World(player,connector);
 		this.activeCharacterCanvas = new EntityInformationContainer(player,EntityInformationContainer.PLAYER_CONFIG,Resources.textEditorConfig,connector);
 		//this.hud = new HUD();

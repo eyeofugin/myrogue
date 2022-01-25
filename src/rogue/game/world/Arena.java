@@ -10,10 +10,10 @@ import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.CombatManager;
-import rogue.game.combat.skills.ActiveSkill;
-import rogue.game.combat.skills.BaseSkill;
-import rogue.game.combat.skills.BaseSkill.TargetType;
+import rogue.game.combat.skills.Skill.TargetType;
+import rogue.game.combat.skills.Skill.SkillType;
 import rogue.game.combat.skills.Skill;
+import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.BattleLog;
@@ -43,7 +43,7 @@ public class Arena {
 	private List<Entity> entities = new ArrayList<Entity>();;
 	private Highlight[][] highlights;
 	private SecondLayerObject[][] objects;
-	private byte[][] sprites;
+	private int[][] sprites;
 
 	private EntityInformationContainer largeCanvas;
 	private EntityInformationContainer smallCanvas;
@@ -67,7 +67,7 @@ public class Arena {
 		smallCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
 		this.highlights = new Highlight[data.getTileData().length][data.getTileData()[0].length];
 		this.buttonPanel = new BaseActionContainer(connector);
-		this.sprites = new byte[data.getTileData().length][data.getTileData()[0].length];
+		this.sprites = new int[data.getTileData().length][data.getTileData()[0].length];
 		this.log = new BattleLog(Resources.textEditorConfig,this.connector);
 	}
 	
@@ -94,6 +94,7 @@ public class Arena {
 	}
 	public void openViewForTeamNr(int nr) {
 		this.activeTeam=nr;
+		removeSelectPlayer();
 		for(Entity e : this.entities) {
 			if(e.getTeam()==nr && PlayableCharacter.class.isInstance(e)) {
 				PlayableCharacter pc = PlayableCharacter.class.cast(e);
@@ -214,7 +215,7 @@ public class Arena {
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------object-handling---------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
-	private void moveObject(SecondLayerObject o, int x, int y,boolean manual) {
+	private void moveObject(SecondLayerObject o, int x, int y,boolean manual, boolean tp) {
 		int currentX = o.getX();
 		int currentY = o.getY();
 		o.setX(x);
@@ -231,16 +232,18 @@ public class Arena {
 		objects[x][y] = o;
 		if(manual) {
 			Entity e = Entity.class.cast(o);
-			e.useMovement(distance);
+			if(!tp)
+				e.useMovement(distance);
 			removeMovements();
 //			setSelectPlayerEvent(o, x, y);			
 		}else if(Entity.class.isInstance(o)){
 			Entity e = Entity.class.cast(o);
 //			updateContext(e,x,y);
-			e.useMovement(distance);
+			if(!tp)
+				e.useMovement(distance);
 		}
 	}
-	private void onMoveCharacter(int x, int y) {
+	private void onMoveCharacter(int x, int y,boolean isTp) {
 		int currentX = this.activeLarge.getX();
 		int currentY = this.activeLarge.getY();
 		
@@ -248,8 +251,8 @@ public class Arena {
 		this.activeLarge.setY(y);
 		
 		int dist = calcDistance(currentX, currentY, x, y);
-		
-		this.activeLarge.useMovement(dist);
+		if(!isTp)
+			this.activeLarge.useMovement(dist);
 		removeMovements();
 		highLightActive();
 		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge), x, y);
@@ -323,10 +326,14 @@ public class Arena {
 		removeTheDead();
 	}
 	private void onSelectLargeEntity(PlayableCharacter pc) {
+		if(pc.getTeam()!=this.activeTeam)
+			return;
 		this.activeLarge = pc;
 		highLightActive();
 	}
 	private void onSelectSmallEntity(Entity e) {
+		if(PlayableCharacter.class.isInstance(e)&&e.getTeam()==this.activeTeam)
+			return;
 		this.activeSmall = e;
 	}
 	private void onTabChange(Event e) {
@@ -343,18 +350,25 @@ public class Arena {
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------skill-handling----------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
-	private void onSkillChosen(ActiveSkill s) {
+	private void onSkillChosen(Skill s) {
 		clear();
+		if(s.getType().equals(SkillType.PASSIVE))
+			return;
 		int currentX = this.activeLarge.getX();
 		int currentY = this.activeLarge.getY();
+		
 		int skillRange = s.getDistance();
-		if(s.getTargetType().equals(TargetType.SURROUNDING)) {
+		if(s.getTarget().equals(TargetType.SURROUNDING)||s.getTarget().equals(TargetType.SELF)) {
 			onTargetChosen(s,currentX,currentY);
 			return;
 		}
 		for(int x = currentX-skillRange; x <= currentX+skillRange; x++) {
 			for(int y = currentY-skillRange; y <= currentY+skillRange;y++) {
 				if(x>0 && y>0) {
+					if(s.getTarget().equals(TargetType.SINGLE_FREE) && 
+							!getMovementViabilityFor(x, y, this.activeTeam).equals(MovementOption.VALID)) {
+						continue;
+					}
 					highlightTile(x,y,Highlight.SKLL_GREEN);
 					Event e = new Event();
 					e.setEventId(Connector.TARGET_CHOSEN+x+""+y);
@@ -367,13 +381,11 @@ public class Arena {
 		}
 
 	}
-	private void onTargetChosen(ActiveSkill s,int targetX,int targetY) {
+
+	private void onTargetChosen(Skill s,int targetX,int targetY) {
 		clear();
 		
-		if(s.getTargetType()==null) {}
-		
-		
-		switch (s.getTargetType()) {
+		switch (s.getTarget()) {
 		case SINGLE_TARGET:
 			markSingleSkillSpot(s.getRadius(),targetX,targetY);
 			break;
@@ -383,13 +395,17 @@ public class Arena {
 		case SURROUNDING:
 			markSkillSurrounding(s.getRadius(),s.getDistance());
 			break;
+		case SINGLE_FREE:
+			markSingleSkillSpot(s.getRadius(),targetX,targetY);
+			break;
+		case SELF:
+			highlightTile(this.activeLarge.getX(),this.activeLarge.getY(),Highlight.SKLL_GREEN);
+			break;
 		case NONE:
-			
 			break;
 		default:
 			break;
 		}
-		
 		Event e = new Event();
 		e.setEventId(Connector.CONFIRM_SKILL);
 		e.setSkill(s.getId());
@@ -405,10 +421,11 @@ public class Arena {
 		for(int x = targetx-radius;x<=targetx+radius;x++) {
 			for(int y = targety-radius;y<=targety+radius;y++) {
 				if(x>0 && y>0) {
-					highlightTile(x, y, Highlight.SKLL_GREEN);
+					highlightTile(x, y, Highlight.SKLL_GREEN);	
 				}
 			}
 		}
+		highlightTile(targetx,targety,Highlight.SKILL_SELECT);
 	}
 	private void markSkillLine(Point a, Point b) {
 		int dx = a.x - b.x;
@@ -445,20 +462,30 @@ public class Arena {
 		}
 	}
 	private void onExecuteSkill(Event e) {
-	//	CombatManager.executeSkill(this.activeLarge,getAffectedTargets(),BaseSkill.getActiveSkill(e.getSkill()),this.log);
+		Skill s = SkillLibrary.getSkill(e.getSkill());
+		boolean success = CombatManager.executeSkill(this.activeLarge,getAffectedTargets(),s,this.log);
 		update();
+		if(success && (s.getType().equals(SkillType.MOVEMENT) || 
+				s.hasTP())) {
+			Point p = getSkillSelect();
+			if(p!=null)
+				onMoveCharacter(p.x, p.y, true);
+			highLightActive();
+		}
 		addSprites(e.getSkill());
 		removeMovements();
 		removeTheDead();
 		this.buttonPanel.removeEvent(BaseActionContainer.CONFIRM);
 		this.buttonPanel.removeEvent(BaseActionContainer.CANCEL);
+		resetSelectPlayerEvents();
 	}
 	private void onCancelSkill(Event e) {
 		removeMovements();
 		this.buttonPanel.removeEvent(BaseActionContainer.CONFIRM);
 		this.buttonPanel.removeEvent(BaseActionContainer.CANCEL);
+		resetSelectPlayerEvents();
 	}
-	private void addSprites(byte spriteId) {
+	private void addSprites(int spriteId) {
 		for(int i = 0; i < highlights.length; i++) {
 			for(int j = 0; j < highlights[0].length; j++) {
 				this.sprites[i][j] = spriteId;
@@ -469,7 +496,7 @@ public class Arena {
 		List<SecondLayerObject> obj=new ArrayList<>();
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y = 0; y < highlights[0].length; y++) {
-				if(highlights[x][y]!=null && highlights[x][y].equals(Highlight.SKLL_GREEN)) {
+				if(highlights[x][y]!=null && (highlights[x][y].equals(Highlight.SKLL_GREEN)||highlights[x][y].equals(Highlight.SKILL_SELECT))) {
 					if(this.objects[x][y]!=null) {
 						obj.add(this.objects[x][y]);
 					}
@@ -480,6 +507,16 @@ public class Arena {
 			}
 		}
 		return obj;
+	}
+	private Point getSkillSelect() {
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null && highlights[x][y].equals(Highlight.SKILL_SELECT)) {
+					return new Point(x,y);
+				}
+			}
+		}
+		return null;
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------utility-----------------------------------------------------------------------------------------------------//
@@ -497,6 +534,9 @@ public class Arena {
 		selectPlayerEvent.setEventId(Connector.SELECT_PLAYER);
 		selectPlayerEvent.setCharacter(pc);
 		this.connector.addEvent(getRelationalX(x),getRelationalY(y),Property.TILE_SIZE,Property.TILE_SIZE,selectPlayerEvent);
+	}
+	private void removeSelectPlayer() {
+		this.connector.removeEvent(Connector.SELECT_PLAYER);
 	}
 	private Entity getEntityAt(int x, int y) {
 		for(Entity e : this.entities) {
@@ -536,7 +576,10 @@ public class Arena {
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y = 0; y < highlights[0].length; y++) {
 				if(highlights[x][y]!=null &&
-						(highlights[x][y].equals(Highlight.MVMNT_BLUE)||highlights[x][y].equals(Highlight.CMBT_RED)||highlights[x][y].equals(Highlight.SKLL_GREEN))) {
+						(highlights[x][y].equals(Highlight.MVMNT_BLUE)||
+								highlights[x][y].equals(Highlight.CMBT_RED)||
+								highlights[x][y].equals(Highlight.SKLL_GREEN)||
+								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
 					highlights[x][y] = null;
 				}
 			}
@@ -552,6 +595,7 @@ public class Arena {
 	}
 	private void endTurn() {
 		removeMovements();
+		removeSelectPlayer();
 		this.activeLarge.refresh();
 	}
 	private void removeHighlightsOfType(Highlight h) {
@@ -560,6 +604,14 @@ public class Arena {
 				if(highlights[x][y]!=null && highlights[x][y].equals(h)) {
 					highlights[x][y] = null;
 				}
+			}
+		}
+	}
+	private void resetSelectPlayerEvents() {
+		for(Entity e : this.entities) {
+			if(PlayableCharacter.class.isInstance(e) && e.getTeam()==this.activeTeam) {
+				PlayableCharacter pc  = PlayableCharacter.class.cast(e);
+				setSelectPlayerEvent(pc, pc.getX(), pc.getY());
 			}
 		}
 	}
@@ -600,7 +652,7 @@ public class Arena {
 		}else if(e.getEventId().equals(		Connector.SHOW_ATTACK)) {
 			showAttackOptions();
 		}else if(e.getEventId().equals(		Connector.MOVE_PLAYER)) {
-			onMoveCharacter(e.getX(),e.getY());
+			onMoveCharacter(e.getX(),e.getY(),false);
 		}else if(e.getEventId().equals(		Connector.ATTACK)) {
 			basicAttack(e);
 		}else if(e.getEventId().equals(		Connector.INFO_OBJECT)) {
@@ -608,9 +660,9 @@ public class Arena {
 		}else if(e.getEventId().contains(	Connector.TAB_CHANGE)) {
 			onTabChange(e);
 		}else if(e.getEventId().equals(		Connector.SKILL_CHOSEN)) {
-			onSkillChosen(BaseSkill.getActiveSkill(e.getSkill()));
+			onSkillChosen(SkillLibrary.getSkill(e.getSkill()));
 		}else if(e.getEventId().startsWith(	Connector.TARGET_CHOSEN)) {
-			onTargetChosen(BaseSkill.getActiveSkill(e.getSkill()),e.getX(),e.getY());
+			onTargetChosen(SkillLibrary.getSkill(e.getSkill()),e.getX(),e.getY());
 		}else if(e.getEventId().equals(		Connector.CONFIRM_SKILL)) {
 			onExecuteSkill(e);
 		}else if(e.getEventId().equals(		Connector.CANCEL_SKILL)) {

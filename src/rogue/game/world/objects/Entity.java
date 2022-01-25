@@ -5,16 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.annotations.SerializedName;
-
 import rogue.framework.eventhandling.Connector;
-import rogue.game.combat.skills.BaseSkill;
-import rogue.game.combat.skills.BaseSkill.DamageType;
+import rogue.game.combat.skills.Skill.DamageType;
+import rogue.game.combat.skills.Skill;
+import rogue.game.combat.skills.Skill.Effect;
+import rogue.game.combat.skills.SkillLibrary;
 import util.MovementOption;
 
 public class Entity extends SecondLayerObject{
 	
-	private BaseSkill[] skills;
+	private Skill[] skills;
 	private List<Equipment> equipments = new ArrayList<>();
 	private CharacterTab activeTab = CharacterTab.STATS;
 	
@@ -25,8 +25,11 @@ public class Entity extends SecondLayerObject{
 	private int currentLife;
 	private int maxMana;
 	private int currentMana;
+	private int range;
 	private DamageType stdDamageType;
+	private Proficiency stdDamageProf;
 	
+	private List<Effect> currentEffects = new ArrayList<>();
 	private Map<Proficiency,Integer> proficiencies;
 	private Map<DamageType,Integer> resistances;
 	private Map<DamageType,Double> multipliers;
@@ -43,10 +46,10 @@ public class Entity extends SecondLayerObject{
 		super();
 	}
 	
-	public Entity(int x, int y, byte id, Connector connector, String name, byte portraitId, MovementOption movement) {
+	public Entity(int x, int y, int id, Connector connector, String name, int portraitId, MovementOption movement) {
 	}
 	
-	public Entity(int x, int y, byte id, Connector connector, String name,CharacterTemplate t, int team, byte portraitId, MovementOption movement) {
+	public Entity(int x, int y, int id, Connector connector, String name,CharacterTemplate t, int team, int portraitId, MovementOption movement) {
 		super(id,x,y,portraitId,name,movement,connector);
 		loadSkills(t);
 		loadStats(t);
@@ -60,26 +63,47 @@ public class Entity extends SecondLayerObject{
 		this.maxMovement=3;
 		this.currentMovement=3;
 	}
+	public Entity(int id, int portraitId, String name, MovementOption movement, int team, Connector connector,
+			int maxLife,int maxMana,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
+			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
+		super(id,0,0,portraitId,name,movement,connector);
+		this.currentLife = maxLife;
+		this.maxLife = maxLife;
+		this.currentMana = maxMana;
+		this.maxMana = maxMana;
+		this.maxActions=maxActions;
+		this.currentActions=maxActions;
+		this.maxMovement=maxMovement;
+		this.currentMovement=maxMovement;
+		this.range=range;
+		this.skills=skills;
+		this.stdDamageType=std;
+		this.stdDamageProf=stdP;
+		this.resistances=resistances;
+		this.proficiencies=proficiencies;
+		this.multipliers=multipliers;
+		
+	}
 	
 	private void loadSkills(CharacterTemplate t) {
 		if(t.equals(CharacterTemplate.NONE)) {
-			this.setSkills(new BaseSkill[] {
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE)});
+			this.setSkills(new Skill[] {
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE)});
 		}else if(t.equals(CharacterTemplate.KNIGHT)) {
-			this.setSkills(new BaseSkill[] {
-					BaseSkill.getSkill(BaseSkill.SLASH),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE),
-					BaseSkill.getSkill(BaseSkill.NONE)});
+			this.setSkills(new Skill[] {
+					SkillLibrary.getSkill(SkillLibrary.HATEFUL_SWING),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE),
+					SkillLibrary.getSkill(SkillLibrary.NONE)});
 		}
 	}
 	private void loadStats(CharacterTemplate t) {
@@ -99,15 +123,10 @@ public class Entity extends SecondLayerObject{
 		NPC,
 	}
 	public static enum Proficiency{
-		@SerializedName("0")
 		PRECISION,
-		@SerializedName("1")
 		STRENGTH,
-		@SerializedName("2")
 		INTELLIGENCE,
-		@SerializedName("3")
 		FAITH,
-		@SerializedName("4")
 		LETHALITY
 	}
 	public EntityType getEntityType() {
@@ -130,6 +149,9 @@ public class Entity extends SecondLayerObject{
 			return true;
 		}
 		return false;
+	}
+	public void addEffect(Effect e) {
+		this.currentEffects.add(e);
 	}
 	
 //Getters and Setters
@@ -206,10 +228,10 @@ public class Entity extends SecondLayerObject{
 	public void setEquipments(List<Equipment> equipments) {
 		this.equipments = equipments;
 	}
-	public BaseSkill[] getSkills() {
+	public Skill[] getSkills() {
 		return skills;
 	}
-	public void setSkills(BaseSkill[]skills) {
+	public void setSkills(Skill[]skills) {
 		this.skills = skills;
 	}
 	public int getLevel() {

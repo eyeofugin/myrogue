@@ -12,7 +12,7 @@ public class Event {
 	private PlayableCharacter character;
 	private SecondLayerObject object;
 	private Entity entity;
-	private byte skill;
+	private int skill;
 	private CharacterTab tab;
 	
 	private int x,y;
@@ -53,10 +53,10 @@ public class Event {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public byte getSkill() {
+	public int getSkill() {
 		return skill;
 	}
-	public void setSkill(byte skill) {
+	public void setSkill(int skill) {
 		this.skill = skill;
 	}
 	//	@Override

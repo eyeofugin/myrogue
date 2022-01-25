@@ -55,7 +55,7 @@ public class Connector {
 	public void removeEvent(String s) {
 		for(int x = 0; x < this.events.length; x++) {
 			for(int y = 0; y < this.events[0].length; y++) {
-				if(this.events[x][y].getEventId().equals(s)) {
+				if(this.events[x][y]!=null&&this.events[x][y].getEventId().equals(s)) {
 					this.eventsList.remove(this.events[x][y]);
 					this.events[x][y] =null;
 					return;

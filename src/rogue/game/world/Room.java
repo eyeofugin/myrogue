@@ -10,11 +10,8 @@ import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.CombatManager;
-import rogue.game.combat.skills.ActiveSkill;
-import rogue.game.combat.skills.BaseSkill;
-import rogue.game.combat.skills.BaseSkill.TargetType;
-import rogue.game.combat.skills.DamageSkill;
 import rogue.game.combat.skills.Skill;
+import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.BattleLog;
@@ -47,7 +44,7 @@ public class Room {
 	protected ArrayList<Entity> entities;
 	protected SecondLayerObject[][] objects;
 	private Highlight[][] highlights;
-	private byte[][] sprites;
+	private int[][] sprites;
 	private BattleLog log;
 	protected final static int xPlayerStart = 12;
 	protected final static int yPlayerStart = 12;
@@ -71,7 +68,7 @@ public class Room {
 		this.activeNpcCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
 		this.entityCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
 		this.buttonPanel = new BaseActionContainer(connector);
-		this.sprites = new byte[data.getTileData().length][data.getTileData()[0].length];
+		this.sprites = new int[data.getTileData().length][data.getTileData()[0].length];
 		//initEnemies();
 	}
 	
@@ -134,11 +131,11 @@ public class Room {
 		}
 	}
 	protected void initEnemies() {
-		NPC enemy = new NPC(4,5,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,Property.TEAM_2,MovementOption.ENEMY,this.connector);
-		entities.add(enemy);
-		objects[enemy.getX()][enemy.getY()] = enemy;
-
-		initEntityInformationEvents();
+//		NPC enemy = new NPC(4,5,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,Property.TEAM_2,MovementOption.ENEMY,this.connector);
+//		entities.add(enemy);
+//		objects[enemy.getX()][enemy.getY()] = enemy;
+//
+//		initEntityInformationEvents();
 		
 		
 	}
@@ -352,33 +349,33 @@ public class Room {
 		}
 		return mvmntMap;
 	}
-	private void onSkillChosen(ActiveSkill s) {
-		int currentX = this.activeCharacter.getX();
-		int currentY = this.activeCharacter.getY();
-		int skillRange = s.getDistance();
-		if(s.getTargetType().equals(TargetType.SURROUNDING)) {
-			onTargetChosen(s,currentX,currentY);
-			return;
-		}
-		for(int x = currentX-skillRange; x <= currentX+skillRange; x++) {
-			for(int y = currentY-skillRange; y <= currentY+skillRange;y++) {
-				if(x>0 && y>0) {
-					highlightTile(x,y,Highlight.SKLL_GREEN);
-					Event e = new Event();
-					e.setEventId("castSkillSelected"+x+""+y);
-					e.setX(x);
-					e.setY(y);
-					e.setSkill(s.getId());
-					this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);
-				}
-			}
-		}
+	private void onSkillChosen(Skill s) {
+//		int currentX = this.activeCharacter.getX();
+//		int currentY = this.activeCharacter.getY();
+//		int skillRange = s.getDistance();
+//		if(s.getTargetType().equals(TargetType.SURROUNDING)) {
+//			onTargetChosen(s,currentX,currentY);
+//			return;
+//		}
+//		for(int x = currentX-skillRange; x <= currentX+skillRange; x++) {
+//			for(int y = currentY-skillRange; y <= currentY+skillRange;y++) {
+//				if(x>0 && y>0) {
+//					highlightTile(x,y,Highlight.SKLL_GREEN);
+//					Event e = new Event();
+//					e.setEventId("castSkillSelected"+x+""+y);
+//					e.setX(x);
+//					e.setY(y);
+//					e.setSkill(s.getId());
+//					this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);
+//				}
+//			}
+//		}
 	}
 	private void onExecuteSkill(Event e) {
-		BaseSkill baseSkill = BaseSkill.getActiveSkill(e.getSkill());
-		if(DamageSkill.class.isInstance(baseSkill)) {
-			CombatManager.executeDamageSkill(this.activeCharacter,getAffectedTargets(),DamageSkill.class.cast(baseSkill),this.log);
-		}
+		Skill baseSkill = SkillLibrary.getSkill(e.getSkill());
+//		if(DamageSkill.class.isInstance(baseSkill)) {
+//			CombatManager.executeDamageSkill(this.activeCharacter,getAffectedTargets(),DamageSkill.class.cast(baseSkill),this.log);
+//		}
 		if(activeNpc!=null) 
 			this.activeNpcCanvas.checkUdate(activeNpc);
 		if(activeEntity!=null) 
@@ -395,40 +392,40 @@ public class Room {
 		this.buttonPanel.removeEvent(BaseActionContainer.CANCEL);
 	}
 	
-	private void onTargetChosen(ActiveSkill s,int targetX,int targetY) {
+	private void onTargetChosen(Skill s,int targetX,int targetY) {
 		
-		if(s.getTargetType()==null) {}
-		
-		
-		switch (s.getTargetType()) {
-		case SINGLE_TARGET:
-			markSingleSkillSpot(s.getRadius(),targetX,targetY);
-			break;
-		case LINE:
-			//System.out.println("char x:"+this.activeCharacter.getX()+" y:"+this.activeCharacter.getY());
-			//System.out.println("target x:"+targetX+" y:"+targetY);
-			markSkillLine(new Point(this.activeCharacter.getX(),this.activeCharacter.getY()),new Point(targetX,targetY));
-			break;
-		case SURROUNDING:
-			markSkillSurrounding(s.getRadius(),s.getDistance());
-			break;
-		case NONE:
-			
-			break;
-		default:
-			break;
-		}
-		
-		Event e = new Event();
-		e.setEventId("confirmSkill");
-		e.setSkill(s.getId());
-		
-		Event e2 = new Event();
-		e2.setEventId("cancelSkill");
-		e2.setSkill(s.getId());
-		
-		this.buttonPanel.addEvent(BaseActionContainer.CONFIRM, e, Resources.CONFIRM_ACTION);
-		this.buttonPanel.addEvent(BaseActionContainer.CANCEL, e2, Resources.CANCEL_ACTION);
+//		if(s.getTargetType()==null) {}
+//		
+//		
+//		switch (s.getTargetType()) {
+//		case SINGLE_TARGET:
+//			markSingleSkillSpot(s.getRadius(),targetX,targetY);
+//			break;
+//		case LINE:
+//			//System.out.println("char x:"+this.activeCharacter.getX()+" y:"+this.activeCharacter.getY());
+//			//System.out.println("target x:"+targetX+" y:"+targetY);
+//			markSkillLine(new Point(this.activeCharacter.getX(),this.activeCharacter.getY()),new Point(targetX,targetY));
+//			break;
+//		case SURROUNDING:
+//			markSkillSurrounding(s.getRadius(),s.getDistance());
+//			break;
+//		case NONE:
+//			
+//			break;
+//		default:
+//			break;
+//		}
+//		
+//		Event e = new Event();
+//		e.setEventId("confirmSkill");
+//		e.setSkill(s.getId());
+//		
+//		Event e2 = new Event();
+//		e2.setEventId("cancelSkill");
+//		e2.setSkill(s.getId());
+//		
+//		this.buttonPanel.addEvent(BaseActionContainer.CONFIRM, e, Resources.CONFIRM_ACTION);
+//		this.buttonPanel.addEvent(BaseActionContainer.CANCEL, e2, Resources.CANCEL_ACTION);
 	}
 	private void markSingleSkillSpot(int radius, int targetx, int targety) {
 		for(int x = targetx-radius;x<=targetx+radius;x++) {
@@ -542,7 +539,7 @@ public class Room {
 		}
 		this.highlights[x][y] = h;
 	}
-	private void addSprites(byte spriteId) {
+	private void addSprites(int spriteId) {
 		for(int i = 0; i < highlights.length; i++) {
 			for(int j = 0; j < highlights[0].length; j++) {
 				this.sprites[i][j] = spriteId;
@@ -688,11 +685,11 @@ public class Room {
 		}
 		if(e.getEventId().equals("castSkill")) {
 			clear();
-			onSkillChosen(BaseSkill.getActiveSkill(e.getSkill()));
+			onSkillChosen(SkillLibrary.getSkill(e.getSkill()));
 		}
 		if(e.getEventId().startsWith("castSkillSelected")) {
 			clear();
-			onTargetChosen(BaseSkill.getActiveSkill(e.getSkill()),e.getX(),e.getY());
+			onTargetChosen(SkillLibrary.getSkill(e.getSkill()),e.getX(),e.getY());
 		}
 		if(e.getEventId().equals("confirmSkill")) {
 			onExecuteSkill(e);

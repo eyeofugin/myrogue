@@ -8,7 +8,7 @@ public abstract class SecondLayerObject extends Tile{
 	private Connector connector;
 	private String name = "dummy";
 	private MovementOption movement;
-	private byte portraitId = 0;
+	private int portraitId = 0;
 	private int x = -1;
 	private int y = -1;
 	
@@ -16,7 +16,7 @@ public abstract class SecondLayerObject extends Tile{
 		super();
 	}
 	
-	public SecondLayerObject(byte id, int x, int y, byte portraitId, String name, MovementOption movement, Connector connector) {
+	public SecondLayerObject(int id, int x, int y, int portraitId, String name, MovementOption movement, Connector connector) {
 		super(id);
 		this.x = x;
 		this.y = y;
@@ -38,10 +38,10 @@ public abstract class SecondLayerObject extends Tile{
 	public void setY(int y) {
 		this.y = y;
 	}
-	public byte getPortraitId() {
+	public int getPortraitId() {
 		return this.portraitId;
 	}
-	public void setPortraitId(byte b) {
+	public void setPortraitId(int b) {
 		this.portraitId = b;
 	}
 	public String getName() {

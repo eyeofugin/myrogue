@@ -24,7 +24,7 @@ public enum MyColor {
 		if(target<0) {return MyColor.RED;}
 		else{return MyColor.GREEN;}
 	}
-	public static MyColor getMinimapColorForTiles(byte id) {
+	public static MyColor getMinimapColorForTiles(int id) {
 		switch (id) {
 		case Resources.BRICK:
 			return DARKGREY;
@@ -37,7 +37,7 @@ public enum MyColor {
 		}
 		return VOID;
 	}
-	public static MyColor getMinimapColorForEntities(byte id) {
+	public static MyColor getMinimapColorForEntities(int id) {
 		//System.out.println(id);
 		switch (id) {
 		case Resources.KNIGHTMALE:

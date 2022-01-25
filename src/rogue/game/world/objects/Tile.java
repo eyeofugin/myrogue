@@ -2,16 +2,16 @@ package rogue.game.world.objects;
 
 public class Tile {
 
-	private byte tileID;
+	private int tileID;
 	
 	public Tile() {
 		
 	}
-	public Tile(byte id) {
+	public Tile(int id) {
 		this.tileID = id;
 	}
 	
-	public byte getId() {
+	public int getId() {
 		return this.tileID;
 	}
 }

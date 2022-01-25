@@ -57,6 +57,9 @@ public class BattleLog extends InformationContainer{
 	public void formulateEffect(String target, int damage) {
 		addRow(target + " was dealt " + damage + " damage.");
 	}
+	public void formulateMiss() {
+		addRow("Missed.");
+	}
 	private static int[] getDimensions() {
 		return new int[] {Property.LOG_WIDTH,Property.LOG_HEIGHT};
 	}
