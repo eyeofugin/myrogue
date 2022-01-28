@@ -2,6 +2,7 @@ package rogue.game.world.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,16 +24,18 @@ public class Entity extends SecondLayerObject{
 //Stats
 	private int maxLife;
 	private int currentLife;
+	private int lifeRegain;
 	private int maxMana;
 	private int currentMana;
+	private int manaRegain;
 	private int range;
 	private DamageType stdDamageType;
 	private Proficiency stdDamageProf;
 	
 	private List<Effect> currentEffects = new ArrayList<>();
-	private Map<Proficiency,Integer> proficiencies;
-	private Map<DamageType,Integer> resistances;
-	private Map<DamageType,Double> multipliers;
+	private Map<Proficiency,Integer> proficiencies = new HashMap<>();
+	private Map<DamageType,Integer> resistances = new HashMap<>();
+	private Map<DamageType,Double> multipliers = new HashMap<>();
 	
 	
 //Playing
@@ -64,12 +67,14 @@ public class Entity extends SecondLayerObject{
 		this.currentMovement=3;
 	}
 	public Entity(int id, int portraitId, String name, MovementOption movement, int team, Connector connector,
-			int maxLife,int maxMana,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
+			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
 			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
 		super(id,0,0,portraitId,name,movement,connector);
 		this.currentLife = maxLife;
 		this.maxLife = maxLife;
+		this.lifeRegain=lifeRegain;
 		this.currentMana = maxMana;
+		this.manaRegain=manaRegain;
 		this.maxMana = maxMana;
 		this.maxActions=maxActions;
 		this.currentActions=maxActions;
@@ -123,11 +128,18 @@ public class Entity extends SecondLayerObject{
 		NPC,
 	}
 	public static enum Proficiency{
-		PRECISION,
-		STRENGTH,
-		INTELLIGENCE,
-		FAITH,
-		LETHALITY
+		PRECISION("Precision"),
+		STRENGTH("Strength"),
+		INTELLIGENCE("Intelligence"),
+		FAITH("Faith"),
+		LETHALITY("Lethality");
+		private final String value;
+		private Proficiency(String s) {
+			this.value = s;
+		}
+		public String value() {
+			return this.value;
+		}
 	}
 	public EntityType getEntityType() {
 		return null;
@@ -269,18 +281,23 @@ public class Entity extends SecondLayerObject{
 		
 		switch(resource) {
 		case "life":
-			return calcCurrentResourceString(this.currentLife>0?this.currentLife:0, this.maxLife);
+			return calcCurrentResourceString(this.currentLife>0?this.currentLife:0, this.maxLife, this.lifeRegain);
 		case "mana":
-			return calcCurrentResourceString(this.currentMana>0?this.currentMana:0, this.maxMana);
+			return calcCurrentResourceString(this.currentMana>0?this.currentMana:0, this.maxMana, this.manaRegain);
 		case "movement":
-			return "m " + calcCurrentResourceString(this.currentMovement,this.maxMovement);
+			return "m " + calcCurrentResourceStringShort(this.currentMovement,this.maxMovement);
 		case "action":
-			return "a " + calcCurrentResourceString(this.currentActions,this.maxActions);
+			return "a " + calcCurrentResourceStringShort(this.currentActions,this.maxActions);
 		default:
 			return " ";
 		}
 	}
-	private String calcCurrentResourceString(int current, int max) {
+	private String calcCurrentResourceString(int current, int max, int regain) {
+		String temp = calcCurrentResourceStringShort(current, max);
+		temp+="("+regain+")";
+		return temp;
+	}
+	private String calcCurrentResourceStringShort(int current, int max) {
 		int lDiff = Integer.toString(max).length()-Integer.toString(current).length();
 
 		int addToCurrentL = lDiff;
@@ -336,6 +353,32 @@ public class Entity extends SecondLayerObject{
 	}
 	public DamageType getBasicDamageType() {
 		return this.stdDamageType;
+	}
+	
+	
+
+	public Map<Proficiency, Integer> getProficiencies() {
+		return proficiencies;
+	}
+
+	public void setProficiencies(Map<Proficiency, Integer> proficiencies) {
+		this.proficiencies = proficiencies;
+	}
+
+	public Map<DamageType, Integer> getResistances() {
+		return resistances;
+	}
+
+	public void setResistances(Map<DamageType, Integer> resistances) {
+		this.resistances = resistances;
+	}
+
+	public Map<DamageType, Double> getMultipliers() {
+		return multipliers;
+	}
+
+	public void setMultipliers(Map<DamageType, Double> multipliers) {
+		this.multipliers = multipliers;
 	}
 
 	@Override

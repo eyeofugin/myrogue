@@ -18,7 +18,7 @@ public class CharacterLibrary {
 	public static void init() {
 		characters.put(Resources.DARTH_VADER,new PlayableCharacter(
 				Resources.DARTH_VADER,"Darth Vader",Resources.P_VADER,0,
-				100,50,3,3,1,
+				100,5,50,10,3,3,1,
 				getSkills(SkillLibrary.HATEFUL_SWING,SkillLibrary.FORCE_CHOKE,SkillLibrary.WEAPON_THROW,SkillLibrary.MERCILESS_MASSACRE,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.SLASHING,
 				Proficiency.STRENGTH,
@@ -27,7 +27,7 @@ public class CharacterLibrary {
 				proficiencies(75, 85, 20, 0, 30)));
 		characters.put(Resources.DARTH_SION,new PlayableCharacter(
 				Resources.DARTH_SION,"Darth Sion",Resources.P_D_SION,0,
-				140,50,3,2,1,
+				140,20,50,5,3,2,1,
 				getSkills(SkillLibrary.HATEFUL_SWING,SkillLibrary.CONDEMN,SkillLibrary.UNSTOPPABLE,SkillLibrary.LAST_RESERVE,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.SLASHING,
 				Proficiency.STRENGTH,
@@ -36,7 +36,7 @@ public class CharacterLibrary {
 				proficiencies(65, 75, 15, 0, 15)));
 		characters.put(Resources.LUKE,new PlayableCharacter(
 				Resources.LUKE,"Luke Skywalker",Resources.P_LUKE,0,
-				50,60,4,3,1,
+				50,15,60,18,4,3,1,
 				getSkills(SkillLibrary.RIGHTEOUS_SWING,SkillLibrary.FORCE_PROJECTION,SkillLibrary.FORCE_PUSH,SkillLibrary.SHOCKWAVE_JUMP,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.SLASHING,
 				Proficiency.FAITH,
@@ -45,7 +45,7 @@ public class CharacterLibrary {
 				proficiencies(55, 95, 10, 0, 15)));
 		characters.put(Resources.BOBA,new PlayableCharacter(
 				Resources.BOBA,"Boba Fett",Resources.P_BOBA,0,
-				50,40,4,3,3,
+				50,5,40,5,4,3,3,
 				getSkills(SkillLibrary.FLAMETHROWER,SkillLibrary.BACTA_PAD,SkillLibrary.JETPACK_BOOST,SkillLibrary.ROCKET,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.BURNING,
 				Proficiency.PRECISION,

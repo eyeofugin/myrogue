@@ -149,18 +149,25 @@ public class Skill {
 		SUMMON
 	}
 	public static enum DamageType{
-		PIERCING,
-		SLASHING,
-		BLUDGEONING,
-		BURNING,
-		FREEZING,
-		DARK,
-		LIGHT,
-		PSYCHIC,
-		SHOCK,
-		ALL,
-		HEAL,
-		NONE
+		PIERCING("Piercing"),
+		SLASHING("Slashing"),
+		BLUDGEONING("Bludgeoning"),
+		BURNING("Burning"),
+		FREEZING("Freezing"),
+		DARK("Dark"),
+		LIGHT("Light"),
+		PSYCHIC("Psychic"),
+		SHOCK("Shock"),
+		ALL("All"),
+		HEAL("Heal"),
+		NONE("None");
+		private String value;
+		private DamageType(String s) {
+			this.value=s;
+		}
+		public String value() {
+			return this.value;
+		}
 	}
 	public static enum TargetType{
 		SINGLE_TARGET,

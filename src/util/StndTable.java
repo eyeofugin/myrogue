@@ -25,7 +25,7 @@ public class StndTable extends InformationContainer{
 		for(int i : sizes) {sum+=i;}
 		
 		this.width = sum + 10;
-		this.height = columns.length*(Property.BASELINEDISTANCE+baseLineSize)-Property.BASELINEDISTANCE;
+		this.height = columns.length*(Property.BASELINEDISTANCE+baseLineSize)-Property.BASELINEDISTANCE > 0 ? columns.length*(Property.BASELINEDISTANCE+baseLineSize)-Property.BASELINEDISTANCE : 0;
 	}
 	public void addHeader(StndColumn header) {
 		this.header = header;

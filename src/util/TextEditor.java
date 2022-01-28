@@ -75,6 +75,8 @@ public class TextEditor {
 		symbols.put("z", Symbol.z.pixels);
 		symbols.put(".", Symbol.point.pixels);
 		symbols.put("/", Symbol.slash.pixels);
+		symbols.put("(", Symbol.bracketopen.pixels);
+		symbols.put(")", Symbol.bracketclose.pixels);
 		
 		return symbols;
 	}
@@ -146,6 +148,8 @@ public class TextEditor {
 		symbols.put("Z", Symbol.Z5x3.pixels);
 		symbols.put(".", Symbol.point5x3.pixels);
 		symbols.put("/", Symbol.slash5x3.pixels);
+		symbols.put("(", Symbol.bracketopen5x3.pixels);
+		symbols.put(")", Symbol.bracketclose5x3.pixels);
 		
 		return symbols;
 	}
@@ -217,6 +221,8 @@ public class TextEditor {
 		symbols.put("Z", Symbol.Z5x8.pixels);
 		symbols.put(".", Symbol.point5x8.pixels);
 		symbols.put("/", Symbol.slash5x8.pixels);
+		symbols.put("(", Symbol.bracketopen5x8.pixels);
+		symbols.put(")", Symbol.bracketclose5x8.pixels);
 		
 		return symbols;
 	}
@@ -393,9 +399,10 @@ public class TextEditor {
 		for(int i : result) {
 			if(i == 0 || i == -16777216 || i == -12450784) {
 				result[resultIndex] = backgroundColor;
-			}
-			if(i == -1) {
+			}else if(i == -1 || i == -1710619) {
 				result[resultIndex] = fontcolor;
+			}else {
+				//System.out.println(i);
 			}
 			resultIndex++;
 		}

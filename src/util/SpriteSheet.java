@@ -11,9 +11,9 @@ public class SpriteSheet {
 	public final int WIDTH, HEIGHT;
 	public int[] pixels;
 
-	public static SpriteSheet fonts = new SpriteSheet("res/textures/Fonts.png", 48,42);
-	public static SpriteSheet fonts5x3 = new SpriteSheet("res/textures/Fonts5x3.png",33,32);
-	public static SpriteSheet fonts5x8 = new SpriteSheet("res/textures/Fonts5x8.png",50,60);
+	public static SpriteSheet fonts = new SpriteSheet("res/fonts/Fonts.png", 48,42);
+	public static SpriteSheet fonts5x3 = new SpriteSheet("res/fonts/Fonts5x3.png",33,32);
+	public static SpriteSheet fonts5x8 = new SpriteSheet("res/fonts/Fonts5x8.png",50,60);
 
 	public SpriteSheet(String path, int width, int height) {
 		this.HEIGHT = height;

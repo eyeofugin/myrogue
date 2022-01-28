@@ -34,16 +34,22 @@ public enum MyColor {
 			return BLACK;
 		case Resources.WALL:
 			return WHITE;
+		case Resources.MEADOW:
+			return TRUEGREEN;
+		case Resources.TREE:
+			return GREEN;
 		}
 		return VOID;
 	}
-	public static MyColor getMinimapColorForEntities(int id) {
+	public static MyColor getMinimapColorForTeam(int id) {
 		//System.out.println(id);
 		switch (id) {
-		case Resources.KNIGHTMALE:
+		case 1:
 			return BLUE;
-		case Resources.SKELETONMALE:
+		case 2:
 			return RED;
+		case 3:
+			return YELLOW;
 		}
 		return VOID;
 	}

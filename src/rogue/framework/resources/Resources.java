@@ -10,6 +10,8 @@ public class Resources {
 	public static final int BRICK = 1;
 	public static final int WALL = 2;
 	public static final int ENDWALL = 3;
+	public static final int MEADOW = 4;
+	public static final int TREE = 5;
 	public static final ArrayList<int[]> TEXTURES = new ArrayList<>();
 	
 	public static final int KNIGHT = 0;
@@ -47,13 +49,12 @@ public class Resources {
 	
 	public static final ArrayList<int[]> CHARACTERS = new ArrayList<>();
 	
-	public static final int NONE = 0;
-	public static final int KNIGHTMALE = 1;
-	public static final int SKELETONMALE = 2;
+	public static final int DUMMY = 0;
+	public static final int SKELETONMALE = 1;
+	public static final int P_BOBA = 2;
 	public static final int P_VADER = 3;
 	public static final int P_D_SION = 4;
 	public static final int P_LUKE = 5;
-	public static final int P_BOBA = 6;
 	
 	public static final ArrayList<int[]> PORTRAITSx64 = new ArrayList<>();
 	

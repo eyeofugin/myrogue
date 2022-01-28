@@ -251,7 +251,7 @@ public class Room {
 			for(int y = 0; y < data.getTileData()[0].length*4;y++) {
 				map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForTiles(data.getTileData()[y/4][x/4].getId()).VALUE;
 				if(this.objects[x/4][y/4]!=null) {
-					map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForEntities(this.objects[x/4][y/4].getPortraitId()).VALUE;
+					map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForTeam(this.objects[x/4][y/4].getPortraitId()).VALUE;
 				}
 			}
 		}

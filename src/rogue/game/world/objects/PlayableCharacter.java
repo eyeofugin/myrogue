@@ -17,9 +17,9 @@ public class PlayableCharacter extends Entity{
 		super(x, y, id, connector,name,CharacterTemplate.NONE,team,portraitId,movement);
 	}
 	public PlayableCharacter(int id, String name, int portraitId, int team,
-			int maxLife,int maxMana,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
+			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
 			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
-		super(id,portraitId,name,MovementOption.PLAYER,team,null,maxLife,maxMana,maxActions,maxMovement,range,skills,std,stdP,resistances,multipliers,proficiencies);
+		super(id,portraitId,name,MovementOption.PLAYER,team,null,maxLife,lifeRegain,maxMana,manaRegain,maxActions,maxMovement,range,skills,std,stdP,resistances,multipliers,proficiencies);
 	}
 	
 	public EntityType getEntityType() {

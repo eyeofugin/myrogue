@@ -45,7 +45,8 @@ public class Symbol {
 	
 	public static Symbol point =	initPoint();
 	public static Symbol slash = 	initSlash();
-	
+	public static Symbol bracketopen = initBracketOpen();
+	public static Symbol bracketclose = initBracketClose();
 	
 	public static Symbol A5x3 = 		new Symbol(33,	0,2,	0,4,	SpriteSheet.fonts5x3);
 	public static Symbol B5x3 = 		new Symbol(33,	3,5,	0,4,	SpriteSheet.fonts5x3);
@@ -112,6 +113,8 @@ public class Symbol {
 	
 	public static Symbol point5x3 =		initPoint5x3();
 	public static Symbol slash5x3 = 	initSlash5x3();
+	public static Symbol bracketopen5x3 = initBracketOpen5x3();
+	public static Symbol bracketclose5x3 =initBracketClose5x3();
 	
 	public static Symbol zero5x8 = 		new Symbol(50,	0,4,	0,7,	SpriteSheet.fonts5x8);
 	public static Symbol one5x8 = 		new Symbol(50,	5,9,	0,7,	SpriteSheet.fonts5x8);
@@ -179,6 +182,8 @@ public class Symbol {
 	
 	public static Symbol point5x8 =		initPoint5x8();
 	public static Symbol slash5x8 = 	initSlash5x8();
+	public static Symbol bracketopen5x8 = initBracketOpen5x8();
+	public static Symbol bracketclose5x8 =initBracketClose5x8();
 	
 	public Symbol(int sheetBaseWidth, int xfrom,int xuntil,int yfrom,int yuntil, SpriteSheet sheet) {
 		this.WIDTH = (xuntil-xfrom)+1;
@@ -216,6 +221,27 @@ public class Symbol {
 								 0, 0,-1, 0, 0, 0, 0, 0};
 		return new Symbol(pixels,8,7);
 	}
+	private static Symbol initBracketOpen() {
+		int[] pixels = new int[]{0, 0, 0, 0, 0, 0,-1,-1,
+								 0, 0, 0, 0, 0,-1, 0, 0,
+								 0, 0, 0, 0, 0,-1, 0, 0,
+								 0, 0, 0, 0, 0,-1, 0, 0,
+								 0, 0, 0, 0, 0,-1, 0, 0,
+								 0, 0, 0, 0, 0,-1, 0, 0,
+								 0, 0, 0, 0, 0, 0,-1,-1};
+		return new Symbol(pixels,8,7);
+	}
+	private static Symbol initBracketClose() {
+		int[] pixels = new int[]{-1,-1, 0, 0, 0, 0, 0, 0,
+								 0, 0,-1, 0, 0, 0, 0, 0,
+								 0, 0,-1, 0, 0, 0, 0, 0,
+								 0, 0,-1, 0, 0, 0, 0, 0,
+								 0, 0,-1, 0, 0, 0, 0, 0,
+								 0, 0,-1, 0, 0, 0, 0, 0,
+								 -1,-1, 0, 0, 0, 0, 0, 0};
+		return new Symbol(pixels,8,7);
+	}
+	
 	private static Symbol initPoint5x3() {
 		int[] pixels = new int[]{0,  0, 0,
 				 				 0,  0, 0,
@@ -241,7 +267,7 @@ public class Symbol {
 				 				 0, 0, 0, 0, 0,
 				 				 -1,0, 0, 0, 0, 
 				 				 0, 0, 0, 0, 0};
-		 return new Symbol(pixels, 5,3);
+		 return new Symbol(pixels, 5,8);
 	}
 	private static Symbol initSlash5x8() {
 		int[] pixels = new int[]{	0, 0, 0, 0,-1,
@@ -252,6 +278,44 @@ public class Symbol {
 								   -1, 0, 0, 0, 0,
 								   -1, 0, 0, 0, 0, 
 									0, 0, 0, 0, 0};
+		return new Symbol(pixels,5,8);
+	}
+	private static Symbol initBracketOpen5x8() {
+		int[] pixels = new int[]{	0, 0, 0, 0,-1,
+									0, 0, 0,-1, 0,
+									0, 0,-1, 0, 0,
+									0, 0,-1, 0, 0,
+									0, 0,-1, 0, 0,
+								    0, 0, 0,-1, 0,
+								    0, 0, 0, 0,-1, 
+									0, 0, 0, 0, 0};
+		return new Symbol(pixels,5,8);
+	}
+	private static Symbol initBracketClose5x8() {
+		int[] pixels = new int[]{  -1, 0, 0, 0, 0,
+									0,-1, 0, 0, 0,
+									0, 0,-1, 0, 0,
+									0, 0,-1, 0, 0,
+									0, 0,-1, 0, 0,
+								    0,-1, 0, 0, 0,
+								   -1, 0, 0, 0, 0, 
+									0, 0, 0, 0, 0};
+		return new Symbol(pixels,5,8);
+	}
+	private static Symbol initBracketOpen5x3() {
+		int[] pixels = new int[]{ 	0,  0, -1,
+									0, -1,  0,
+									0, -1,  0,
+									0, 0,  -1,
+									0,  0,  0};
+		return new Symbol(pixels,5,3);
+	}
+	private static Symbol initBracketClose5x3() {
+		int[] pixels = new int[]{ 	-1,  0, 0,
+				  					0, -1,  0,
+				  					0, -1,  0,
+				  					-1,  0,  0,
+				  					0,  0,  0};
 		return new Symbol(pixels,5,3);
 	}
 }

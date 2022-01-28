@@ -206,7 +206,7 @@ public class Arena {
 				map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForTiles(data.getTileData()[y/4][x/4].getId()).VALUE;
 				Entity e = getEntityAt(x/4,y/4);
 				if(e!=null) {
-					map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForEntities(e.getPortraitId()).VALUE;
+					map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForTeam(e.getTeam()).VALUE;
 				}
 			}
 		}

@@ -13,21 +13,23 @@ public class Loader {
 		Resources.TEXTURES.add(Resources.BRICK,new Sprite("res/textures/brick.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.WALL,new Sprite("res/textures/wall.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.ENDWALL,new Sprite("res/textures/wall.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.MEADOW,new Sprite("res/textures/meadow.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.TREE,new Sprite("res/textures/tree.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		
-		Resources.TEXTURES.add(Resources.SPONGEBOB,new Sprite("res/characters/spongebob.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
-		Resources.TEXTURES.add(Resources.DARTH_SION,new Sprite("res/characters/sion.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
-		Resources.TEXTURES.add(Resources.DARTH_VADER,new Sprite("res/characters/vader.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
-		Resources.TEXTURES.add(Resources.LUKE,new Sprite("res/characters/luke.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
-		Resources.TEXTURES.add(Resources.BOBA,new Sprite("res/characters/boba.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
-		Resources.TEXTURES.add(Resources.KNIGHT,new Sprite("res/characters/knight.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
-		Resources.TEXTURES.add(Resources.SKELETON,new Sprite("res/characters/skeleton.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.KNIGHT,new Sprite("res/characters/knight.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.SKELETON,new Sprite("res/characters/skeleton.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.SPONGEBOB,new Sprite("res/characters/spongebob.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.DARTH_SION,new Sprite("res/characters/sion.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.DARTH_VADER,new Sprite("res/characters/vader.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.LUKE,new Sprite("res/characters/luke.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.BOBA,new Sprite("res/characters/boba.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		
-		Resources.CHARACTERS.add(Resources.KNIGHTMALE,new Sprite("res/portraits/knightPortraitMale.png",64,64).getPixels());
-		Resources.CHARACTERS.add(Resources.SKELETONMALE,new Sprite("res/portraits/skeletonPortraitMale.png",64,64).getPixels());
-		Resources.CHARACTERS.add(Resources.P_VADER,new Sprite("res/portraits/p_vader.png",64,64).getPixels());
-		Resources.CHARACTERS.add(Resources.P_D_SION,new Sprite("res/portraits/p_d_sion.png",64,64).getPixels());
-		Resources.CHARACTERS.add(Resources.P_LUKE,new Sprite("res/portraits/p_luke.png",64,64).getPixels());
-		Resources.CHARACTERS.add(Resources.P_BOBA,new Sprite("res/portraits/p_boba.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.DUMMY,new Sprite("res/skills/lockedskill.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.SKELETONMALE,new Sprite("res/portraits/skeletonPortraitMale.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_BOBA,new Sprite("res/portraits/p_boba.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_VADER,new Sprite("res/portraits/p_vader.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_D_SION,new Sprite("res/portraits/p_d_sion.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_LUKE,new Sprite("res/portraits/p_luke.png",64,64).getPixels());
 			
 		Resources.PORTRAITSx32.add(Resources.MOVEMENT_ACTION,new Sprite("res/icons/movement.png",32,32).getPixels());
 		Resources.PORTRAITSx32.add(Resources.ATTACK_ACTION,new Sprite("res/icons/attack.png",32,32).getPixels());
