@@ -30,6 +30,38 @@ public class SkillLibrary {
 	public static int ROCKET = 20;
 	public static int JETPACK_BOOST = 21;
 	public static int BACTA_PAD = 22;
+	public static int ALL_TERRAIN = 23;
+	public static int ALLY_HEAL = 24;
+	public static int ALLY_SHIELD = 25;
+	public static int ARAGOG = 26;
+	public static int AREAFIRE = 27;
+	public static int ARROW_BARRAGE = 28;
+	public static int ARROW_SHOTS = 29;
+	public static int AVADA_KEDAVRA = 30;
+	public static int BATARANG = 31;
+	public static int BEHEAD = 32;
+	public static int BE_TOSSED = 33;
+	public static int BLIND = 34;
+	public static int BLUDGER = 35;
+	public static int BONDING = 36;
+	public static int CAMOUFLAGE = 37;
+	public static int CEREBRO = 38;
+	public static int COUNT_KILLS = 39;
+	public static int CLAW_TO_LIFE = 40;
+	public static int CROW_SCOUT = 41;
+	public static int CRUCIO = 42;
+	public static int DAGGER_THROW = 43;
+	public static int DEMONIC_FORM = 44;
+	public static int DISARM = 45;
+	public static int DISGUISE = 46;
+	public static int EDUCATIONAL_DECREE_NO_4 = 47;
+	public static int EMPTY_REVOLVER = 48;
+	public static int ENERGY_BIND = 49;
+	public static int ENHANCEMENT_RUNE = 50;
+	public static int EQUIPMENT_UPGRADE = 51;
+	public static int EVASIVE = 52;
+	public static int EVERYTHING_BURNS = 53;
+	
 
 	public static Map<Integer,Skill> skills = new HashMap<>();
 	

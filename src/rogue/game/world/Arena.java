@@ -179,7 +179,7 @@ public class Arena {
 					for(int x = 0; x < Property.TILE_SIZE; x++) {
 						int relX = ((e.getX()+(-1)*xOffset)*Property.TILE_SIZE)+x;
 						int relY = ((e.getY()+(-1)*yOffset)*Property.TILE_SIZE)+y;
-						int color = Resources.TEXTURES.get(e.getId())[x+y*Property.TILE_SIZE];
+						int color = Resources.CHARACTERS.get(e.getId())[x+y*Property.TILE_SIZE];
 						if(color!=-12450784 && color!=-3947581) {
 							p[relX+relY*Property.ROOM_SIZE] = color;	
 						}
