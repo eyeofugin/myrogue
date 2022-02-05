@@ -57,8 +57,17 @@ public class BattleLog extends InformationContainer{
 	public void formulateEffect(String target, int damage) {
 		addRow(target + " was dealt " + damage + " damage.");
 	}
+	public void formulateHeal(String target, int damage) {
+		addRow(target + " healed " + damage + " damage.");
+	}
 	public void formulateMiss() {
 		addRow("Missed.");
+	}
+	public void formulateIndesctructible(String target) {
+		addRow(target + " is indesctructible.");
+	}
+	public void formulate(String target, String condition) {
+		addRow(target +" is " + condition + ".");
 	}
 	private static int[] getDimensions() {
 		return new int[] {Property.LOG_WIDTH,Property.LOG_HEIGHT};

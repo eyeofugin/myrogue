@@ -1,5 +1,6 @@
 package rogue.game.world;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -35,15 +36,17 @@ public class Arena {
 	private Connector connector;
 	private Point[][] teamPlacements=new Point[][] {
 		null,
-		new Point[] {new Point(10,5),new Point(11,5),new Point(9,11)},
-		new Point[] {new Point(10,10),new Point(11,10),new Point(9,10)}
+		new Point[] {new Point(10,2),new Point(11,2),new Point(9,2)}, 
+		new Point[] {new Point(10,13),new Point(11,13),new Point(9,13)}
 	};
 	protected int xOffset = 0;
 	protected int yOffset = 0;
+	private int width=0,height=0;
 	
 	private List<Entity> entities = new ArrayList<Entity>();;
 	private Highlight[][] highlights;
 	private SecondLayerObject[][] objects;
+	private boolean[][] visionField;
 	private int[][] sprites;
 
 	private EntityInformationContainer largeCanvas;
@@ -63,7 +66,10 @@ public class Arena {
 	public Arena(RoomData data, Connector connector) {
 		this.data = data; 
 		this.connector = connector;
-		this.objects = new SecondLayerObject[data.getTileData().length][data.getTileData()[0].length];
+		this.width=data.getTileData().length;
+		this.height=data.getTileData()[0].length;
+		this.objects = new SecondLayerObject[this.width][this.height];
+		this.visionField = new boolean[this.width][this.height];
 		largeCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.PLAYER_CONFIG, Resources.textEditorConfig, connector);
 		smallCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
 		this.highlights = new Highlight[data.getTileData().length][data.getTileData()[0].length];
@@ -113,6 +119,7 @@ public class Arena {
 		}
 		highLightActive();
 		this.activeSmall=new Entity();
+		refreshVision();
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------update------------------------------------------------------------------------------------------------------//
@@ -167,15 +174,39 @@ public class Arena {
 				int xInTile = x%Property.TILE_SIZE;
 				int yInTile = y%Property.TILE_SIZE;
 				Tile t = data.getTileData()[tileY+yOffset][tileX+xOffset];
-				p[x + y*Property.ROOM_SIZE] = Resources.TEXTURES.get(t.getId())[xInTile+yInTile*Property.TILE_SIZE];
+				if(this.visionField[tileX+xOffset][tileY+yOffset]) {
+					p[x + y*Property.ROOM_SIZE] = Resources.TEXTURES.get(t.getId())[xInTile+yInTile*Property.TILE_SIZE];
+				}else {
+					Color color = new Color(Resources.TEXTURES.get(t.getId())[xInTile+yInTile*Property.TILE_SIZE]);
+					Color darker = darken(color,0.1);
+					p[x + y*Property.ROOM_SIZE] = darker.getRGB();
+				}
+				
 			}
 		}
 		return p;
 	}
+    private Color darken(final Color color, final double percentage) {
+        if (percentage < 0.01 || percentage > 1.00) {
+            throw new IllegalArgumentException("Percentage must be between [0.01 - 1.00]");
+        }
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
+
+        r = (int) (r * (1.00 - percentage));
+        g = (int) (g * (1.00 - percentage));
+        b = (int) (b * (1.00 - percentage));
+        return new Color(r, g, b, color.getAlpha());
+    }
 	private int[] renderEntities(int[] p) {
 		for(Entity e : entities) {
 			if((e.getX()>=xOffset)&&(e.getX()<=xOffset+Property.ROOM_VIEW_TILE_COUNT) &&
 				(e.getY()>=yOffset)&&(e.getY()<=yOffset+Property.ROOM_VIEW_TILE_COUNT)) {
+				
+				if(e.getTeam()!=this.activeTeam && !this.visionField[e.getX()][e.getY()]) {
+					continue;
+				}
 				for(int y = 0; y < Property.TILE_SIZE; y++) {
 					for(int x = 0; x < Property.TILE_SIZE; x++) {
 						int relX = ((e.getX()+(-1)*xOffset)*Property.TILE_SIZE)+x;
@@ -194,7 +225,7 @@ public class Arena {
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y =0; y < highlights[0].length; y++) {
 				if(highlights[x][y]!=null
-						&& x>=xOffset && y>=yOffset) {
+						&& x>=xOffset && y>=yOffset && x<16+xOffset && y<16+yOffset) {
 					highlights[x][y].printHighlight(p, x, y, xOffset, yOffset);
 				}
 			}
@@ -206,13 +237,117 @@ public class Arena {
 			for(int y = 0; y < data.getTileData()[0].length*4;y++) {
 				map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForTiles(data.getTileData()[y/4][x/4].getId()).VALUE;
 				Entity e = getEntityAt(x/4,y/4);
-				if(e!=null) {
+				if(e!=null && this.visionField[e.getX()][e.getY()]) {
 					map[x+y*Property.MINIMAP_WIDTH]=MyColor.getMinimapColorForTeam(e.getTeam()).VALUE;
 				}
 			}
 		}
 		return map;
 	}
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	//---------------------------vision------------------------------------------------------------------------------------------------------//
+	//---------------------------------------------------------------------------------------------------------------------------------------//
+	private void refreshVision() {
+		this.visionField = new boolean[this.width][this.height];
+		for(Entity e : this.entities) {
+			if(e.getTeam()==this.activeTeam) {
+				getVision(e.getX(),e.getY(),e.getVisionDistance());
+			}
+		}
+		//print();
+	}
+	private void getVision(int x, int y, int vis) {
+		int[][] visionValues = getVisionValues();
+		this.visionField[x][y]= true;
+		for(int i = x-vis; i <= x+vis; i++) {
+			for(int j = y-vis; j <= y+vis; j++) {
+				if(i>=0&&i<this.width  &&  j<this.height&&j>=0) {
+					checkVisionOf(i,j,x,y,visionValues,true,x,y);
+				}
+			}
+		}
+	}
+	private void checkVisionOf(int x, int y, int startx, int starty, int[][] visF, boolean free, int cx, int cy) {
+		int dy = starty-y;
+		int dx = startx-x;
+		int xs = dx>0? -1:1;
+		int ys = dy>0? -1:1;
+		double m = dx==0?0:(double)dy/dx;
+		
+		if(dx==0||m<=-2||m>=2) {
+			starty+=ys;
+		}else if(m>=-0.5&&m<=0.5) {
+			startx+=xs;
+		}else {
+			startx+=xs;
+			starty+=ys;
+		}
+		
+		if(!free) {
+			if(this.visionField[startx][starty]!=true)
+				this.visionField[startx][starty] = false;
+		}else {
+			if(proxCheck(startx,starty,cx,cy)) {
+				this.visionField[startx][starty]=true;
+				if(1==check(startx,starty,visF,cx,cy))
+					free=false;
+			}else if(check(startx,starty,visF,cx,cy)!=0) {
+				if(this.visionField[startx][starty]!=true) {
+					this.visionField[startx][starty]=false;
+					free=false;
+				}
+			}else {
+				this.visionField[startx][starty]=true;
+			}
+		}
+		if(startx!=x || starty!=y) {
+			checkVisionOf(x, y, startx, starty, visF, free, cx, cy);
+		}
+	}
+	private int[][] getVisionValues(){
+		int[][] visionValues = new int[this.width][this.height];
+		for(int x = 0; x < visionValues.length; x++) {
+			for(int y = 0; y < visionValues[0].length; y++) {
+				Tile t = data.getTileData()[y][x];
+				if(t.getId()==Resources.TREE || t.getId()==Resources.TALLGRASS) {
+					visionValues[x][y] = 1;
+				}
+			}
+		}
+		return visionValues;
+	}
+	private int check(int x, int y, int[][] visF, int cx, int cy) {
+		return visF[x][y];
+	}
+	private boolean proxCheck(int x, int y, int x2, int y2) {
+		if(Math.max(x2-x>=0?x2-x:x-x2,y2-y>=0?y2-y:y-y2)==1) {
+			return true;
+		}
+		return false;
+	}
+	
+	private void print() {
+		for(int y = 0; y < this.height; y++) {
+			for(int x = 0; x < this.width; x++) {
+				String c = this.visionField[x][y]?".":"0";
+				System.out.print(c);
+			}
+			System.out.println();
+		}
+	}
+	private void vision(Skill s) {
+		
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null &&
+						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
+								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
+					this.visionField[x][y] = true;
+				}
+			}
+		}
+	}
+	
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------object-handling---------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
@@ -257,6 +392,7 @@ public class Arena {
 		removeMovements();
 		highLightActive();
 		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge), x, y);
+		refreshVision();
 		
 	}
 	private void removeTheDead() {
@@ -392,12 +528,15 @@ public class Arena {
 						continue;
 					}
 					highlightTile(x,y,Highlight.SKLL_GREEN);
+					if(x-xOffset<0||x-xOffset>15  ||  y-yOffset<0||y-yOffset>15) {
+						continue;
+					}
 					Event e = new Event();
-					e.setEventId(Connector.TARGET_CHOSEN+x+""+y);
-					e.setX(x);
-					e.setY(y);
+					e.setEventId(Connector.TARGET_CHOSEN+(x-xOffset)+""+(y-yOffset));
+					e.setX(x-xOffset);
+					e.setY(y-yOffset);
 					e.setSkill(s.getId());
-					this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);
+					this.connector.addEvent(getRelationalX(x-xOffset), getRelationalY(y-yOffset), Property.TILE_SIZE, Property.TILE_SIZE, e);
 				}
 			}
 		}
@@ -499,6 +638,9 @@ public class Arena {
 			if(s.getType().equals(SkillType.SUMMON)) {
 				summon(s);
 			}
+			if(s.getType().equals(SkillType.VISION)) {
+				vision(s);
+			}
 		}
 		addSprites(e.getSkill());
 		removeMovements();
@@ -575,7 +717,7 @@ public class Arena {
 		return null;
 	}
 	private MovementOption getMovementViabilityFor(int x, int y, int teamNr) {
-		if(data.getTileData()[y][x].getId()==Resources.WALL) {
+		if(data.getTileData()[y][x].getId()==Resources.WALL||data.getTileData()[y][x].getId()==Resources.TREE) {
 			return MovementOption.OBSTACLE;
 		}
 		if(data.getTileData()[y][x].getId()==Resources.VOID) {

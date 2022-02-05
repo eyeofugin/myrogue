@@ -23,7 +23,7 @@ public class CharacterLibrary {
 				DamageType.SLASHING,
 				Proficiency.STRENGTH,
 				resistance(50, 20, 80, 70, 40, 50, 30, 10, 50),
-				multipliers(1.0, 0.4, 1.7, 0.2, 0.0, 1.0, 0.0, 0.0, 1.2),
+				multipliers(1.0, 0.4, 1.7, 0.2, 0.0, 1.0, 0.0, 0.0, 1.2,1.0),
 				proficiencies(75, 85, 20, 0, 30)));
 		characters.put(Resources.DARTH_SION,new PlayableCharacter(
 				Resources.DARTH_SION,"Darth Sion",Resources.P_D_SION,0,
@@ -32,16 +32,16 @@ public class CharacterLibrary {
 				DamageType.SLASHING,
 				Proficiency.STRENGTH,
 				resistance(70, 80, 90, 50, 40, 65, 35, 85, 90),
-				multipliers(1.0, 0.5, 1.4, 0.2, 0.0, 1.0, 0.0, 1.1, 1.1),
+				multipliers(1.0, 0.5, 1.4, 0.2, 0.0, 1.0, 0.0, 1.1, 1.1,1.0),
 				proficiencies(65, 75, 15, 0, 15)));
 		characters.put(Resources.LUKE,new PlayableCharacter(
 				Resources.LUKE,"Luke Skywalker",Resources.P_LUKE,0,
 				50,15,60,18,4,3,1,
-				getSkills(SkillLibrary.RIGHTEOUS_SWING,SkillLibrary.FORCE_PROJECTION,SkillLibrary.FORCE_PUSH,SkillLibrary.SHOCKWAVE_JUMP,SkillLibrary.NONE,SkillLibrary.NONE),
+				getSkills(SkillLibrary.RIGHTEOUS_SWING,SkillLibrary.FORCE_VISION,SkillLibrary.FORCE_PUSH,SkillLibrary.SHOCKWAVE_JUMP,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.SLASHING,
 				Proficiency.FAITH,
 				resistance(50, 45, 75, 40, 80, 35, 20, 60, 35),
-				multipliers(1.0, 0.2, 0.0, 0.2, 1.6, 1.0, 0.0, 1.2, 1.2),
+				multipliers(1.0, 0.2, 0.0, 0.2, 1.6, 1.0, 0.0, 1.2, 1.2,1.0),
 				proficiencies(55, 95, 10, 0, 15)));
 		characters.put(Resources.BOBA,new PlayableCharacter(
 				Resources.BOBA,"Boba Fett",Resources.P_BOBA,0,
@@ -50,7 +50,7 @@ public class CharacterLibrary {
 				DamageType.BURNING,
 				Proficiency.PRECISION,
 				resistance(90, 75, 40, 55, 40, 90, 20, 60, 95),
-				multipliers(1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0),
+				multipliers(1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0,1.0),
 				proficiencies(55, 95, 10, 0, 15)));
 	}
 	public static PlayableCharacter get(int id) {
@@ -79,7 +79,7 @@ public class CharacterLibrary {
 		resistances.put(DamageType.SLASHING, slash);
 		return resistances;
 	}
-	protected static Map<DamageType,Double> multipliers(double bludge,double burn,double dark,double freeze,double light,double pierce,double psych,double shock,double slash){
+	protected static Map<DamageType,Double> multipliers(double bludge,double burn,double dark,double freeze,double light,double pierce,double psych,double shock,double slash,double heal){
 		Map<DamageType,Double> mult = new HashMap<>();
 		mult.put(DamageType.BLUDGEONING, bludge);
 		mult.put(DamageType.BURNING, burn);
@@ -90,6 +90,7 @@ public class CharacterLibrary {
 		mult.put(DamageType.PSYCHIC, psych);
 		mult.put(DamageType.SHOCK, shock);
 		mult.put(DamageType.SLASHING, slash);
+		mult.put(DamageType.HEAL,heal);
 		return mult;
 	}
 	protected static Map<Proficiency,Integer> proficiencies(int strength, int faith, int intelligence, int lethality, int precision){

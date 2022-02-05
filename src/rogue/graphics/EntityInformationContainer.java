@@ -280,7 +280,7 @@ public class EntityInformationContainer extends InformationContainer{
 			StndTable resistTable = setUpStatTable(this.copy.getResistances(),new int[] {90,30},new String[] {"Resistance","amnt"});
 			printTable(resistTable,RESISTTABLE_Y_FROM,RESISTTABLE_X_FROM,RESISTTABLE_X_UNTIL);
 			
-			StndTable multTable = setUpStatTable(this.copy.getMultipliers(),new int[] {90,30},new String[] {"Multiplier","amnt"});
+			StndTable multTable = setUpStatTable(this.copy.getMultipliersForTable(),new int[] {90,30},new String[] {"Multiplier","amnt"});
 			printTable(multTable,MULTTABLE_Y_FROM,MULTTABLE_X_FROM,MULTTABLE_X_UNTIL);
 				
 			

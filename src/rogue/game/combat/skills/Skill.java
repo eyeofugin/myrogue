@@ -85,10 +85,32 @@ public class Skill {
 		}
 		return new Skill(id,name,description,SkillType.DAMAGE,target,damageType,radius,distance,eList,mList,manaCost,lifeCost,actionCost,accuracy,power,0);
 	}
+	public static Skill getHealSkill(int id, String name, String description, TargetType target,
+			 Effect[] effects, Multiplier[] multipliers,
+			int power,int accuracy,int distance,int radius,int manaCost,int lifeCost,int actionCost) {
+		List<Effect> eList = new ArrayList<>();
+		if(effects!=null) {
+			for(Effect e : effects) {
+				eList.add(e);
+			}
+		}
+		List<Multiplier> mList = new ArrayList<>();
+		if(multipliers!=null) {
+			for(Multiplier m :multipliers) {
+				mList.add(m);
+			}
+		}
+		return new Skill(id,name,description,SkillType.HEALING,target,DamageType.HEAL,radius,distance,eList,mList,manaCost,lifeCost,actionCost,accuracy,power,0);
+	}
 	public static Skill getSummonSkill(int id, String name, String description, int distance, int radius,
 			int manaCost, int lifeCost, int actionCost, int summonId) {
 		
 		return new Skill(id,name,description,SkillType.SUMMON,TargetType.SINGLE_FREE,null,radius,distance,null,null,manaCost,lifeCost,actionCost,100,0,summonId);
+	}
+	public static Skill getVisionSkill(int id, String name, String description, int distance, int radius,
+			int manaCost, int lifeCost, int actionCost) {
+		
+		return new Skill(id,name,description,SkillType.VISION,TargetType.SINGLE_TARGET,null,radius,distance,null,null,manaCost,lifeCost,actionCost,100,0,0);
 	}
 	public static Skill getPassive(int id, String name, String description,
 			DamageType damageType, Effect[] effects, Multiplier[] multipliers,int power,
@@ -146,6 +168,8 @@ public class Skill {
 		ENHANCEMENT,
 		PASSIVE,
 		MOVEMENT,
+		VISION,
+		HEALING,
 		SUMMON
 	}
 	public static enum DamageType{

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.game.combat.skills.Skill;
@@ -32,6 +33,7 @@ public class Entity extends SecondLayerObject{
 	private int currentMana;
 	private int manaRegain;
 	private int range;
+	private int visionDistance = 5;
 	private DamageType stdDamageType;
 	private Proficiency stdDamageProf;
 	
@@ -72,7 +74,7 @@ public class Entity extends SecondLayerObject{
 			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
 			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
 		super(id,0,0,portraitId,name,movement,connector);
-		this.currentLife = maxLife;
+		this.currentLife = maxLife-10;
 		this.maxLife = maxLife;
 		this.lifeRegain=lifeRegain;
 		this.currentMana = maxMana;
@@ -163,7 +165,7 @@ public class Entity extends SecondLayerObject{
 		this.currentEffects.add(e);
 		if(e.getType().equals(EffectType.STAT_CHANGE)) {
 			applyStatChange(e);
-		}if(e.getStatus().equals(StatusInfliction.CLEAR)) {
+		}if(e.getStatus()!=null && e.getStatus().equals(StatusInfliction.CLEAR)) {
 			removeStatusEffects();
 		}
 	}
@@ -208,6 +210,20 @@ public class Entity extends SecondLayerObject{
 	public boolean useAction(int amnt) {
 		if(amnt<=this.currentActions) {
 			this.currentActions-=amnt;
+			return true;
+		}
+		return false;
+	}
+	public boolean useMana(int amnt) {
+		if(amnt<=this.currentMana) {
+			this.currentMana-=amnt;
+			return true;
+		}
+		return false;
+	}
+	public boolean useLife(int amnt) {
+		if(amnt<=this.currentLife) {
+			this.currentLife-=amnt;
 			return true;
 		}
 		return false;
@@ -352,6 +368,14 @@ public class Entity extends SecondLayerObject{
 		return currentEffects;
 	}
 
+	public int getVisionDistance() {
+		return visionDistance;
+	}
+
+	public void setVisionDistance(int visionDistance) {
+		this.visionDistance = visionDistance;
+	}
+
 	public void setCurrentEffects(List<Effect> currentEffects) {
 		this.currentEffects = currentEffects;
 	}
@@ -465,6 +489,30 @@ public class Entity extends SecondLayerObject{
 		return this.stdDamageType;
 	}
 	
+	public boolean isUnstoppable() {
+		for(Skill s : this.skills) {
+			if(s.getId()==SkillLibrary.UNSTOPPABLE){
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean isIndestructible() {
+		for(Effect e:this.currentEffects) {
+			if(e.getStatus().equals(StatusInfliction.INDESCTRUCTIBLE)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean isCursed() {
+		for(Effect e:this.currentEffects) {
+			if(e.getStatus().equals(StatusInfliction.CURSED)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 
 	public Map<Proficiency, Integer> getProficiencies() {
@@ -485,6 +533,15 @@ public class Entity extends SecondLayerObject{
 
 	public Map<DamageType, Double> getMultipliers() {
 		return multipliers;
+	}
+	public Map<DamageType,Double> getMultipliersForTable(){
+		Map<DamageType,Double> copy = new HashMap<>();
+		for(Entry<DamageType,Double> e: this.multipliers.entrySet()) {
+			if(e.getValue()!=1.0) {
+				copy.put(e.getKey(),e.getValue());
+			}
+		}
+		return copy;
 	}
 
 	public void setMultipliers(Map<DamageType, Double> multipliers) {

@@ -21,7 +21,7 @@ public class SkillLibrary {
 	public static int MERCILESS_MASSACRE = 11;
 	public static int RIGHTEOUS_SWING = 12;
 	public static int FORCE_PUSH = 13;
-	public static int FORCE_PROJECTION = 14;
+	public static int FORCE_VISION = 14;
 	public static int SHOCKWAVE_JUMP = 15;
 	public static int UNSTOPPABLE = 16;
 	public static int CONDEMN = 17;
@@ -134,10 +134,20 @@ public class SkillLibrary {
 										0,
 										null,
 										new StatChange(
-												DamageType.DARK,
-												0.3,
 												null,
-												0)
+												0,
+												Proficiency.STRENGTH,
+												30)
+										),
+								new Effect(EffectType.STAT_CHANGE,
+										3,
+										0,
+										null,
+										new StatChange(
+												null,
+												0,
+												Proficiency.FAITH,
+												20)
 										)
 						},
 						new Multiplier[] {},
@@ -173,13 +183,12 @@ public class SkillLibrary {
 						20,100,
 						1,0,
 						30,0,2));
-		skills.put(FORCE_PROJECTION, Skill.getSummonSkill(
-				FORCE_PROJECTION,
+		skills.put(FORCE_VISION, Skill.getVisionSkill(
+				FORCE_VISION,
 				"Force Projection",
 				"",
-				5,0,
-				30,0,3,
-				32));
+				5,1,
+				30,0,3));
 		skills.put(SHOCKWAVE_JUMP, Skill.getDamageSkill(
 				SHOCKWAVE_JUMP,
 				"Shockwave Jump",
@@ -223,7 +232,7 @@ public class SkillLibrary {
 						new Effect(EffectType.STATUS_INFLICTION,3,0,StatusInfliction.CURSED,null)},
 				null, 
 				0, 0, 
-				80, 0, 2));
+				80, 50, 2));
 		skills.put(FLAMETHROWER,Skill.getDamageSkill(FLAMETHROWER,
 				"Flamethrower",
 				"",
@@ -251,12 +260,11 @@ public class SkillLibrary {
 				new Effect[] {new Effect(EffectType.TELEPORT,0,0,null,null)}, null,
 				3, 0, 
 				30, 0, 2));
-		skills.put(BACTA_PAD, Skill.getDamageSkill(
+		skills.put(BACTA_PAD, Skill.getHealSkill(
 				BACTA_PAD,
 				"Bacta Pad",
 				"",
 				TargetType.SINGLE_TARGET,
-				DamageType.HEAL,
 				null,null,
 				30,100,
 				1,0,

@@ -17,6 +17,7 @@ public class Loader {
 		Resources.TEXTURES.add(Resources.ENDWALL,new Sprite("res/textures/wall.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.MEADOW,new Sprite("res/textures/meadow.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.TREE,new Sprite("res/textures/tree.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.TALLGRASS,new Sprite("res/textures/tallgrass.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		
 		Resources.CHARACTERS.add(Resources.KNIGHT,new Sprite("res/characters/knight.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.SKELETON,new Sprite("res/characters/skeleton.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
@@ -74,7 +75,7 @@ public class Loader {
 		Resources.PORTRAITSx32.add(SkillLibrary.MERCILESS_MASSACRE,new Sprite("res/skills/mercilessmassacre.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.RIGHTEOUS_SWING,new Sprite("res/skills/righteousswing.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.FORCE_PUSH,new Sprite("res/skills/forcepush.png",32,32).getPixels());	
-		Resources.PORTRAITSx32.add(SkillLibrary.FORCE_PROJECTION,new Sprite("res/skills/forceprojection.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FORCE_VISION,new Sprite("res/skills/forceprojection.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.SHOCKWAVE_JUMP,new Sprite("res/skills/shockwavejump.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.UNSTOPPABLE,new Sprite("res/skills/unstoppable.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.CONDEMN,new Sprite("res/skills/condemn.png",32,32).getPixels());	
