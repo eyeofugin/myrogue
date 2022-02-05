@@ -3,6 +3,7 @@ package rogue.game.combat.skills;
 import java.util.HashMap;
 import java.util.Map;
 
+import rogue.framework.resources.Resources;
 import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.Skill.TargetType;
 import rogue.game.combat.skills.Skill.Effect;
@@ -11,6 +12,7 @@ import rogue.game.combat.skills.Skill.Effect.EffectType;
 import rogue.game.combat.skills.Skill.Effect.StatChange;
 import rogue.game.combat.skills.Skill.Effect.StatusInfliction;
 import rogue.game.world.objects.Entity.Proficiency;
+import rogue.game.world.objects.ObjectLibrary;
 
 public class SkillLibrary {
 	
@@ -61,7 +63,59 @@ public class SkillLibrary {
 	public static int EQUIPMENT_UPGRADE = 51;
 	public static int EVASIVE = 52;
 	public static int EVERYTHING_BURNS = 53;
-	
+	public static int FELL_IN_THE_POT = 54;
+	public static int FERRETFORMATION = 55;
+	public static int FIRE_ARMOR = 56;
+	public static int FIREBALL = 57;
+	public static int FIRE_RING = 58;
+	public static int FLAME_WHIP = 59;
+	public static int FLUFFY = 60;
+	public static int GIANT_HAWK = 61;
+	public static int GRAPPLING_HOOK = 62;
+	public static int GRAWP = 63;
+	public static int GUARD_AREA = 64;
+	public static int HIPPOGRYFF = 65;
+	public static int HOLLOW_MAN = 66;
+	public static int HORCRUX = 67;
+	public static int ILLUSION = 68;
+	public static int IMPERIO = 69;
+	public static int I_SHALL_NOT_TELL_LIES = 70;
+	public static int LIGHTNING_STRIKE = 71;
+	public static int LORD_VILLE = 72;
+	public static int FIST_BARRAGE = 73;
+	public static int NORMAL_FORM = 74;
+	public static int OCCULT_KNOWLEDGE = 75;
+	public static int PETRIFY = 76;
+	public static int PHOENIX_TELEPORTATION = 77;
+	public static int PLANT = 78;
+	public static int RABBIT_SLED = 79;
+	public static int ROCK_THROW = 80;
+	public static int ROPES = 81;
+	public static int RUNE_TRAP = 82;
+	public static int SCAN = 83;
+	public static int SEND_IDEFIX = 84;
+	public static int SHADOW_ARMOR = 85;
+	public static int SHADOW_SPEARS = 86;
+	public static int SHADOW_WALK = 87;
+	public static int SHADOW_WALL = 88;
+	public static int SHADOW_WAVE = 89;
+	public static int SKULLDUGGERY = 90;
+	public static int SMOKE_SCREEN = 91;
+	public static int STUPOR = 92;
+	public static int TALL_GRASS = 93;
+	public static int TARNING = 94;
+	public static int TAUNT = 95;
+	public static int TELEPORT = 96;
+	public static int TEND_THE_GARDEN = 97;
+	public static int THROW_GRANADE = 98;
+	public static int TOSSIN = 99;
+	public static int TRACKING = 100;
+	public static int TRUE_VISION = 101;
+	public static int VOODOO_SHIT = 102;
+	public static int WEAPON_SWING = 103;
+	public static int WIND_WALL = 104;
+	public static int WOOD_WALK = 105;
+	public static int ZOMBIE_MINIONS = 106;
 
 	public static Map<Integer,Skill> skills = new HashMap<>();
 	
@@ -269,6 +323,123 @@ public class SkillLibrary {
 				30,100,
 				1,0,
 				20,0,3));
+		skills.put(ALL_TERRAIN, Skill.getPassive(
+				ALL_TERRAIN,
+				"All terrain",
+				"",
+				DamageType.NONE,
+				null,null, 0, 0, 0, 0, 0));
+		skills.put(ALLY_HEAL, Skill.getHealSkill(ALLY_HEAL,
+				"Ally Heal",
+				"",
+				TargetType.SINGLE_TARGET,
+				null,
+				null,
+				20, 100, 
+				2, 0, 20, 0, 1));
+		skills.put(ALLY_SHIELD, Skill.getEnhancementSkill(ALLY_SHIELD,
+				"Ally Shield",
+				"",
+				TargetType.SINGLE_TARGET,
+				new Effect[] {
+						new Effect(EffectType.STATUS_INFLICTION,2,0,StatusInfliction.INDESCTRUCTIBLE,null)
+				},
+				null,
+				2, 0,
+				30, 0, 2));
+		skills.put(ARAGOG, null);
+		skills.put(AREAFIRE, null);
+		skills.put(ARROW_BARRAGE, null);
+		skills.put(ARROW_SHOTS,null);
+		skills.put(AVADA_KEDAVRA,null);
+		skills.put(BATARANG,null);
+		skills.put(BEHEAD,null);
+		skills.put(BE_TOSSED,null);
+		skills.put(BLIND,null);
+		skills.put(BLUDGER,Skill.getDamageSkill(BLUDGER,
+				"Bludger",
+				"",
+				TargetType.LINE,
+				DamageType.BLUDGEONING,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,2,1,StatusInfliction.PARALYSED,null)}, null,
+				20, 60, 5, 0, 10, 0, 1));
+		skills.put(BONDING,null);
+		skills.put(CAMOUFLAGE,null);
+		skills.put(CEREBRO,null);
+		skills.put(COUNT_KILLS,null);
+		skills.put(CLAW_TO_LIFE,null);
+		skills.put(CROW_SCOUT,null);
+		skills.put(CRUCIO,null);
+		skills.put(DAGGER_THROW,null);
+		skills.put(DEMONIC_FORM,null);
+		skills.put(DISARM,null);
+		skills.put(DISGUISE,null);
+		skills.put(EDUCATIONAL_DECREE_NO_4,null);
+		skills.put(EMPTY_REVOLVER,null);
+		skills.put(ENERGY_BIND,null);
+		skills.put(ENHANCEMENT_RUNE,null);
+		skills.put(EQUIPMENT_UPGRADE,null);
+		skills.put(EVASIVE,null);
+		skills.put(EVERYTHING_BURNS,null);
+		skills.put(FELL_IN_THE_POT,null);
+		skills.put(FERRETFORMATION,null);
+		skills.put(FIRE_ARMOR,null);
+		skills.put(FIREBALL,null);
+		skills.put(FIRE_RING,null);
+		skills.put(FLAME_WHIP,null);
+		skills.put(FLUFFY,null);
+		skills.put(GIANT_HAWK,null);
+		skills.put(GRAPPLING_HOOK,null);
+		skills.put(GRAWP,null);
+		skills.put(GUARD_AREA,null);
+		skills.put(HIPPOGRYFF,null);
+		skills.put(HOLLOW_MAN,null);
+		skills.put(HORCRUX,null);
+		skills.put(ILLUSION,null);
+		skills.put(IMPERIO,null);
+		skills.put(I_SHALL_NOT_TELL_LIES,null);
+		skills.put(LIGHTNING_STRIKE,null);
+		skills.put(LORD_VILLE,null);
+		skills.put(FIST_BARRAGE,null);
+		skills.put(NORMAL_FORM,null);
+		skills.put(OCCULT_KNOWLEDGE,null);
+		skills.put(PETRIFY,null);
+		skills.put(PHOENIX_TELEPORTATION,null);
+		skills.put(PLANT,null);
+		skills.put(RABBIT_SLED,null);
+		skills.put(ROCK_THROW,null);
+		skills.put(ROPES,null);
+		skills.put(RUNE_TRAP,null);
+		skills.put(SCAN,Skill.getVisionSkill(SCAN, "Scan", "", 6, 2, 60, 0, 2));
+		skills.put(SEND_IDEFIX,null);
+		skills.put(SHADOW_ARMOR,null);
+		skills.put(SHADOW_SPEARS,null);
+		skills.put(SHADOW_WALK,null);
+		skills.put(SHADOW_WALL,null);
+		skills.put(SHADOW_WAVE,null);
+		skills.put(SKULLDUGGERY,null);
+		skills.put(SMOKE_SCREEN,Skill.getSummonObjSkill(
+				SMOKE_SCREEN,
+				"Smoke Screen",
+				"",
+				3, 1,
+				20, 0, 1,
+				Resources.SMOKE_SCREEN));
+		skills.put(STUPOR,null);
+		skills.put(TALL_GRASS,null);
+		skills.put(TARNING,null);
+		skills.put(TAUNT,null);
+		skills.put(TELEPORT,null);
+		skills.put(TEND_THE_GARDEN,null);
+		skills.put(THROW_GRANADE,null);
+		skills.put(TOSSIN,null);
+		skills.put(TRACKING,null);
+		skills.put(TRUE_VISION,null);
+		skills.put(VOODOO_SHIT,null);
+		skills.put(WEAPON_SWING,null);
+		skills.put(WIND_WALL,null);
+		skills.put(WOOD_WALK,null);
+		skills.put(ZOMBIE_MINIONS,null);
 		
 	}
 	public static Skill getSkill(int id) {

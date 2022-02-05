@@ -529,7 +529,7 @@ public class Room {
 			if(e.getName().equals(s)) {
 				return MovementOption.SELF;
 			}
-			return e.getMovement();
+			return MovementOption.PLAYER;
 		}
 		return MovementOption.VALID;
 	}

@@ -2,7 +2,7 @@ package rogue.game.world.objects;
 
 public class Tile {
 
-	private int tileID;
+	protected int tileID;
 	
 	public Tile() {
 		

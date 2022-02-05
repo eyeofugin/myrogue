@@ -13,6 +13,7 @@ public class Resources {
 	public static final int MEADOW = 4;
 	public static final int TREE = 5;
 	public static final int TALLGRASS = 6;
+	public static final int SMOKE_SCREEN = 7;
 	public static final ArrayList<int[]> TEXTURES = new ArrayList<>();
 	
 	public static final int KNIGHT = 0;

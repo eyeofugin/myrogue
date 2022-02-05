@@ -105,7 +105,12 @@ public class Skill {
 	public static Skill getSummonSkill(int id, String name, String description, int distance, int radius,
 			int manaCost, int lifeCost, int actionCost, int summonId) {
 		
-		return new Skill(id,name,description,SkillType.SUMMON,TargetType.SINGLE_FREE,null,radius,distance,null,null,manaCost,lifeCost,actionCost,100,0,summonId);
+		return new Skill(id,name,description,SkillType.SUMMONNPC,TargetType.SINGLE_FREE,null,radius,distance,null,null,manaCost,lifeCost,actionCost,100,0,summonId);
+	}
+	public static Skill getSummonObjSkill(int id, String name, String description, int distance, int radius,
+			int manaCost, int lifeCost, int actionCost, int summonId) {
+		
+		return new Skill(id,name,description,SkillType.SUMMON,TargetType.SINGLE_TARGET,null,radius,distance,null,null,manaCost,lifeCost,actionCost,100,0,summonId);
 	}
 	public static Skill getVisionSkill(int id, String name, String description, int distance, int radius,
 			int manaCost, int lifeCost, int actionCost) {
@@ -170,6 +175,7 @@ public class Skill {
 		MOVEMENT,
 		VISION,
 		HEALING,
+		SUMMONNPC,
 		SUMMON
 	}
 	public static enum DamageType{
@@ -199,6 +205,7 @@ public class Skill {
 		LINE,
 		SURROUNDING,
 		SELF,
+		ALL_ENEMY,
 		NONE,
 	}
 	public static class Effect{

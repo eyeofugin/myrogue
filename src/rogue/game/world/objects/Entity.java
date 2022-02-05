@@ -24,7 +24,6 @@ public class Entity extends SecondLayerObject{
 	private CharacterTab activeTab = CharacterTab.STATS;
 	
 	protected int level = 0;
-	protected int team;
 //Stats
 	private int maxLife;
 	private int currentLife;
@@ -58,9 +57,8 @@ public class Entity extends SecondLayerObject{
 	}
 	
 	public Entity(int x, int y, int id, Connector connector, String name,CharacterTemplate t, int team, int portraitId, MovementOption movement) {
-		super(id,x,y,portraitId,name,movement,connector);
+		super(id,x,y,portraitId,name,team,connector);
 		loadSkills(t);
-		this.team = team;
 		this.currentLife = 10;
 		this.maxLife = 10;
 		this.currentMana = 5;
@@ -73,7 +71,7 @@ public class Entity extends SecondLayerObject{
 	public Entity(int id, int portraitId, String name, MovementOption movement, int team, Connector connector,
 			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
 			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
-		super(id,0,0,portraitId,name,movement,connector);
+		super(id,0,0,portraitId,name,team,connector);
 		this.currentLife = maxLife-10;
 		this.maxLife = maxLife;
 		this.lifeRegain=lifeRegain;
@@ -356,13 +354,6 @@ public class Entity extends SecondLayerObject{
 	public void setLevel(int level) {
 		this.level = level;
 	}
-	public int getTeam() {
-		return team;
-	}
-
-	public void setTeam(int team) {
-		this.team = team;
-	}
 
 	public List<Effect> getCurrentEffects() {
 		return currentEffects;
@@ -499,7 +490,7 @@ public class Entity extends SecondLayerObject{
 	}
 	public boolean isIndestructible() {
 		for(Effect e:this.currentEffects) {
-			if(e.getStatus().equals(StatusInfliction.INDESCTRUCTIBLE)) {
+			if(e.getStatus()!=null && e.getStatus().equals(StatusInfliction.INDESCTRUCTIBLE)) {
 				return true;
 			}
 		}
@@ -512,6 +503,18 @@ public class Entity extends SecondLayerObject{
 			}
 		}
 		return false;
+	}
+	public Effect getRelocation() {
+		for(Effect e: this.currentEffects) {
+			if(e.getType().equals(EffectType.OBJECT_PUSH) || e.getType().equals(EffectType.OBJECT_PULL)) {
+				return e;
+			}
+		}
+		return null;
+	}
+	public void removeRelocations() {
+		this.currentEffects.removeIf(e->e.getType().equals(EffectType.OBJECT_PULL)||
+										e.getType().equals(EffectType.OBJECT_PUSH));
 	}
 	
 

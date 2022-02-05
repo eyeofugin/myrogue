@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
@@ -12,6 +13,8 @@ import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.CombatManager;
 import rogue.game.combat.skills.Skill;
+import rogue.game.combat.skills.Skill.Effect;
+import rogue.game.combat.skills.Skill.Effect.EffectType;
 import rogue.game.combat.skills.Skill.SkillType;
 import rogue.game.combat.skills.Skill.TargetType;
 import rogue.game.combat.skills.SkillLibrary;
@@ -19,8 +22,10 @@ import rogue.game.npc.NPCLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.BattleLog;
+import rogue.game.world.objects.Enhancement;
 import rogue.game.world.objects.Entity;
 import rogue.game.world.objects.NPC;
+import rogue.game.world.objects.ObjectLibrary;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
 import rogue.game.world.objects.Tile;
@@ -140,6 +145,7 @@ public class Arena {
 		
 		int[] map = new int[Property.ROOM_SIZE*Property.ROOM_SIZE];
 		map=renderRoom(map);
+		map=renderEnhancements(map);
 		map=renderEntities(map);
 		map=renderHighlights(map);
 		compartments.add(map);
@@ -214,6 +220,27 @@ public class Arena {
 						int color = Resources.CHARACTERS.get(e.getId())[x+y*Property.TILE_SIZE];
 						if(color!=-12450784 && color!=-3947581) {
 							p[relX+relY*Property.ROOM_SIZE] = color;	
+						}
+					}
+				}
+			}
+		}
+		return p;
+	}
+	private int[] renderEnhancements(int[] p) {
+		for(int x = 0; x < this.objects.length; x++) {
+			for(int y =0; y < this.objects[0].length; y++) {
+				if(Enhancement.class.isInstance(this.objects[x][y])
+						&& x>=xOffset && y>=yOffset && x<16+xOffset && y<16+yOffset) {
+					Enhancement enh = Enhancement.class.cast(this.objects[x][y]);
+					for(int ty = 0; ty < Property.TILE_SIZE; ty++) {
+						for(int tx = 0; tx < Property.TILE_SIZE; tx++) {
+							int relX = ((enh.getX()+(-1)*xOffset)*Property.TILE_SIZE)+tx;
+							int relY = ((enh.getY()+(-1)*yOffset)*Property.TILE_SIZE)+ty;
+							int color = Resources.TEXTURES.get(enh.getId())[tx+ty*Property.TILE_SIZE];
+							if(color!=-12450784 && color!=-3947581) {
+								p[relX+relY*Property.ROOM_SIZE] = color;	
+							}
 						}
 					}
 				}
@@ -312,6 +339,9 @@ public class Arena {
 				if(t.getId()==Resources.TREE || t.getId()==Resources.TALLGRASS) {
 					visionValues[x][y] = 1;
 				}
+				if(Enhancement.class.isInstance(this.objects[x][y])) {
+					visionValues[x][y] = Enhancement.class.cast(this.objects[x][y]).isVisible()?1:0;
+				}
 			}
 		}
 		return visionValues;
@@ -377,6 +407,25 @@ public class Arena {
 //			updateContext(e,x,y);
 			if(!tp)
 				e.useMovement(distance);
+		}
+	}
+	private void manageRelocations() {
+		for(Entity e : this.entities) {
+			Effect effect = e.getRelocation();
+			if(effect!=null) {
+				if(effect.getType().equals(EffectType.OBJECT_PULL)) {
+					Point a = getNextPointTowards(new Point(e.getX(),e.getY()),new Point(this.activeLarge.getX(),this.activeLarge.getY()));
+					if(getMovementViabilityFor(a.x, a.y, 1).equals(MovementOption.VALID)) {
+						moveObject(e, a.x, a.y, false, false);
+					}
+				}else {
+					Point a = getNextPointFrom(new Point(e.getX(),e.getY()),new Point(this.activeLarge.getX(),this.activeLarge.getY()));
+					if(getMovementViabilityFor(a.x, a.y, 1).equals(MovementOption.VALID)) {
+						moveObject(e, a.x, a.y, false, false);
+					}
+				}
+				e.removeRelocations();
+			}
 		}
 	}
 	private void onMoveCharacter(int x, int y,boolean isTp) {
@@ -484,7 +533,7 @@ public class Arena {
 		removeHighlightsOfType(Highlight.SELECT_WHITE);
 		highlightTile(this.activeLarge.getX(), this.activeLarge.getY(), Highlight.SELECT_WHITE);
 	}
-	private void summon(Skill s) {
+	private void summonNpc(Skill s) {
 		
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y = 0; y < highlights[0].length; y++) {
@@ -504,6 +553,24 @@ public class Arena {
 				}
 			}
 		}
+		refreshVision();
+	}
+	private void summon(Skill s) {
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null &&
+						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
+								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
+					Enhancement enh = new Enhancement();
+					enh.setSolid(ObjectLibrary.getEnhancement(s.getSummonedId()).isSolid());
+					enh.setVisible(ObjectLibrary.getEnhancement(s.getSummonedId()).isVisible());
+					enh.setId(ObjectLibrary.getEnhancement(s.getSummonedId()).getId());
+					enh.setX(x);enh.setY(y);
+					this.objects[x][y] = enh;
+				}
+			}
+		}
+		refreshVision();
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------skill-handling----------------------------------------------------------------------------------------------//
@@ -590,20 +657,21 @@ public class Arena {
 		highlightTile(targetx,targety,Highlight.SKILL_SELECT);
 	}
 	private void markSkillLine(Point a, Point b) {
-		int dx = a.x - b.x;
-		int dy = a.y - b.y;
-		int xs = dx>0? -1:1;
-		int ys = dy>0? -1:1;
-		double m = dx==0?0:(double)dy/dx;
-		
-		if(dx==0||m<=-2||m>=2) {
-			a.y+=ys;
-		}else if(m>=-0.5&&m<=0.5) {
-			a.x+=xs;
-		}else {
-			a.x+=xs;
-			a.y+=ys;
-		}
+		a = getNextPointTowards(a, b);
+//		int dx = a.x - b.x;
+//		int dy = a.y - b.y;
+//		int xs = dx>0? -1:1;
+//		int ys = dy>0? -1:1;
+//		double m = dx==0?0:(double)dy/dx;
+//		
+//		if(dx==0||m<=-2||m>=2) {
+//			a.y+=ys;
+//		}else if(m>=-0.5&&m<=0.5) {
+//			a.x+=xs;
+//		}else {
+//			a.x+=xs;
+//			a.y+=ys;
+//		}
 		
 		highlightTile(a.x, a.y, Highlight.SKLL_GREEN);
 		
@@ -625,7 +693,7 @@ public class Arena {
 	}
 	private void onExecuteSkill(Event e) {
 		Skill s = SkillLibrary.getSkill(e.getSkill());
-		boolean success = CombatManager.executeSkill(this.activeLarge,getAffectedTargets(),s,this.log);
+		boolean success = CombatManager.executeSkill(this.activeLarge,getAffectedTargets(s),s,this.log);
 		update();
 		if(success) {
 			if((s.getType().equals(SkillType.MOVEMENT) || 
@@ -635,12 +703,16 @@ public class Arena {
 					onMoveCharacter(p.x, p.y, true);
 				highLightActive();
 			}
+			if(s.getType().equals(SkillType.SUMMONNPC)) {
+				summonNpc(s);
+			}
 			if(s.getType().equals(SkillType.SUMMON)) {
 				summon(s);
 			}
 			if(s.getType().equals(SkillType.VISION)) {
 				vision(s);
 			}
+			manageRelocations();
 		}
 		addSprites(e.getSkill());
 		removeMovements();
@@ -662,7 +734,10 @@ public class Arena {
 			}
 		}
 	}
-	private List<SecondLayerObject> getAffectedTargets() {
+	private List<SecondLayerObject> getAffectedTargets(Skill s) {
+		if(s.getTarget().equals(TargetType.ALL_ENEMY)) {
+			return this.entities.stream().filter(e->e.getTeam()!=this.activeTeam).collect(Collectors.toList());
+		}
 		List<SecondLayerObject> obj=new ArrayList<>();
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y = 0; y < highlights[0].length; y++) {
@@ -792,6 +867,40 @@ public class Arena {
 				setSelectPlayerEvent(pc, pc.getX(), pc.getY());
 			}
 		}
+	}
+	private Point getNextPointFrom(Point a,Point b) {
+		int dx = a.x - b.x;
+		int dy = a.y - b.y;
+		int xs = dx>0? -1:1;
+		int ys = dy>0? -1:1;
+		double m = dx==0?0:(double)dy/dx;
+		
+		if(dx==0||m<=-2||m>=2) {
+			a.y-=ys;
+		}else if(m>=-0.5&&m<=0.5) {
+			a.x-=xs;
+		}else {
+			a.x-=xs;
+			a.y-=ys;
+		}
+		return a;
+	}
+	private Point getNextPointTowards(Point a,Point b) {
+		int dx = a.x - b.x;
+		int dy = a.y - b.y;
+		int xs = dx>0? -1:1;
+		int ys = dy>0? -1:1;
+		double m = dx==0?0:(double)dy/dx;
+		
+		if(dx==0||m<=-2||m>=2) {
+			a.y+=ys;
+		}else if(m>=-0.5&&m<=0.5) {
+			a.x+=xs;
+		}else {
+			a.x+=xs;
+			a.y+=ys;
+		}
+		return a;
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------events------------------------------------------------------------------------------------------------------//

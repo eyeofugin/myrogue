@@ -5,7 +5,6 @@ import java.util.Map;
 import rogue.framework.eventhandling.Connector;
 import rogue.game.combat.skills.Skill;
 import rogue.game.combat.skills.Skill.DamageType;
-import rogue.game.world.objects.Entity.Proficiency;
 import util.MovementOption;
 
 public class NPC extends Entity{

@@ -69,6 +69,9 @@ public class BattleLog extends InformationContainer{
 	public void formulate(String target, String condition) {
 		addRow(target +" is " + condition + ".");
 	}
+	public void formulateDeath(String target) {
+		addRow(target + " died.");
+	}
 	private static int[] getDimensions() {
 		return new int[] {Property.LOG_WIDTH,Property.LOG_HEIGHT};
 	}

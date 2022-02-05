@@ -37,12 +37,14 @@ public class CombatManager {
 			return executeMovementOrSummon(p,s,log);
 		case PASSIVE:
 			return executePassive(p,os,s,log);
-		case SUMMON:
+		case SUMMONNPC:
 			return executeMovementOrSummon(p,s,log);
 		case HEALING:
 			return executeHeal(p,os,s,log);
 		case VISION:
 			return true;
+		case SUMMON:
+			return executeMovementOrSummon(p,s,log);
 		}
 		return false;
 
@@ -67,11 +69,16 @@ public class CombatManager {
 				int damage = (int)(rdmize(rawDamage) * ((100+lethality)  /  (100+(double)rdmize(defense))));
 				defender.damage(damage);
 				log.formulateEffect(o.getName(),damage);
+				if(defender.getCurrentLife()<1) {
+					log.formulateDeath(o.getName());
+				}
 				
 				if(s.getEffects()!=null) {
 					for(Effect e : s.getEffects()) {
 						if(e.getType().equals(EffectType.STATUS_INFLICTION)||
-								e.getType().equals(EffectType.STAT_CHANGE))
+								e.getType().equals(EffectType.STAT_CHANGE)||
+								e.getType().equals(EffectType.OBJECT_PUSH)||
+								e.getType().equals(EffectType.OBJECT_PULL))
 							defender.addEffect(e);
 					}
 				}
@@ -159,35 +166,13 @@ public class CombatManager {
 		
 		int normalMeleeDamage = attacker.getProficiency(Proficiency.STRENGTH);
 		int normalMeleeDefense = defender.getResistance(attacker.getBasicDamageType());
-		System.out.println(normalMeleeDamage + "||" + normalMeleeDefense);
 		
 		int damage = (int)(rdmize(normalMeleeDamage) * (10/(10+(double)rdmize(normalMeleeDefense))));
-		System.out.println("damage: " + damage);
 		
 		defender.damage(damage);
-		System.out.println("life: " + defender.getCurrentLife());
-	
 		
 		log.formulateEffect(o.getName(), damage);
 	}
-//	static public void executeDamageSkill(SecondLayerObject p, List<SecondLayerObject> os,Skill s, BattleLog log) {
-//		
-//		log.formulateUse(s.getName(), p.getName());
-//		Entity attacker = Entity.class.cast(p);
-//		int damage = 0;//s.getDamage(attacker);
-//		for(SecondLayerObject o: os) {
-//			Entity defender = Entity.class.cast(o);
-//			
-//			
-//			int defense = defender.getResistance(s.getDamageType());
-//			
-//			int total = (int)(rdmize(damage) * (10/(10+(double)rdmize(defense))));
-//			
-//			defender.damage(total);
-//			
-//			log.formulateEffect(o.getName(), damage);
-//		}
-//	}
 	static private int rdmize(int a) {
 		return a + ThreadLocalRandom.current().nextInt(-5, 5);
 		

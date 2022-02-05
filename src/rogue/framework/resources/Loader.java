@@ -3,6 +3,7 @@ package rogue.framework.resources;
 import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.npc.NPCLibrary;
 import rogue.game.pvp.CharacterLibrary;
+import rogue.game.world.objects.ObjectLibrary;
 
 public class Loader {
 	public static void load() {
@@ -10,6 +11,7 @@ public class Loader {
 		SkillLibrary.init();
 		CharacterLibrary.init();
 		NPCLibrary.init();
+		ObjectLibrary.init();
 		
 		Resources.TEXTURES.add(Resources.VOID,new Sprite("res/textures/void.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.BRICK,new Sprite("res/textures/brick.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
@@ -18,6 +20,7 @@ public class Loader {
 		Resources.TEXTURES.add(Resources.MEADOW,new Sprite("res/textures/meadow.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.TREE,new Sprite("res/textures/tree.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.TALLGRASS,new Sprite("res/textures/tallgrass.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.SMOKE_SCREEN,new Sprite("res/textures/smokescreen.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		
 		Resources.CHARACTERS.add(Resources.KNIGHT,new Sprite("res/characters/knight.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.SKELETON,new Sprite("res/characters/skeleton.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
@@ -84,8 +87,90 @@ public class Loader {
 		Resources.PORTRAITSx32.add(SkillLibrary.ROCKET,new Sprite("res/skills/rocket.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.JETPACK_BOOST,new Sprite("res/skills/jetpackboost.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.BACTA_PAD,new Sprite("res/skills/bactapad.png",32,32).getPixels());	
-		
-		
+		Resources.PORTRAITSx32.add(SkillLibrary.ALL_TERRAIN,new Sprite("res/skills/allterrain.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ALLY_HEAL,new Sprite("res/skills/allyheal.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ALLY_SHIELD,new Sprite("res/skills/allyshield.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ARAGOG,new Sprite("res/skills/aragog.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.AREAFIRE,new Sprite("res/skills/areafire.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ARROW_BARRAGE,new Sprite("res/skills/arrowbarrage.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ARROW_SHOTS,new Sprite("res/skills/arrowshots.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.AVADA_KEDAVRA,new Sprite("res/skills/avadakedavra.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.BATARANG,new Sprite("res/skills/batarang.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.BEHEAD,new Sprite("res/skills/behead.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.BE_TOSSED,new Sprite("res/skills/betossed.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.BLIND,new Sprite("res/skills/blind.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.BLUDGER,new Sprite("res/skills/bludger.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.BONDING,new Sprite("res/skills/bonding.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.CAMOUFLAGE,new Sprite("res/skills/camouflage.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.CEREBRO,new Sprite("res/skills/cerebro.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.COUNT_KILLS,new Sprite("res/skills/countkills.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.CLAW_TO_LIFE,new Sprite("res/skills/crawltolife.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.CROW_SCOUT,new Sprite("res/skills/crowscout.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.CRUCIO,new Sprite("res/skills/crucio.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.DAGGER_THROW,new Sprite("res/skills/daggerthrow.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.DEMONIC_FORM,new Sprite("res/skills/demonicform.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.DISARM,new Sprite("res/skills/deweaponize.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.DISGUISE,new Sprite("res/skills/disguise.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.EDUCATIONAL_DECREE_NO_4,new Sprite("res/skills/educationaldecreeno72.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.EMPTY_REVOLVER,new Sprite("res/skills/emptyrevolver.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ENERGY_BIND,new Sprite("res/skills/energybind.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ENHANCEMENT_RUNE,new Sprite("res/skills/enhancementrune.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.EQUIPMENT_UPGRADE,new Sprite("res/skills/equipmentupgrade.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.EVASIVE,new Sprite("res/skills/evasive.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.EVERYTHING_BURNS,new Sprite("res/skills/everythingburns.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FELL_IN_THE_POT,new Sprite("res/skills/fellinthepot.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FERRETFORMATION,new Sprite("res/skills/ferretformation.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FIRE_ARMOR,new Sprite("res/skills/firearmor.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FIREBALL,new Sprite("res/skills/fireball.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FIRE_RING,new Sprite("res/skills/firering.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FLAME_WHIP,new Sprite("res/skills/flamewhip.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FLUFFY,new Sprite("res/skills/fluffy.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.GIANT_HAWK,new Sprite("res/skills/gianthawk.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.GRAPPLING_HOOK,new Sprite("res/skills/grapplinghook.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.GRAWP,new Sprite("res/skills/grawp.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.GUARD_AREA,new Sprite("res/skills/guardarea.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.HIPPOGRYFF,new Sprite("res/skills/hippogryff.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.HOLLOW_MAN,new Sprite("res/skills/hollow.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.HORCRUX,new Sprite("res/skills/horkrux.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ILLUSION,new Sprite("res/skills/illusion.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.IMPERIO,new Sprite("res/skills/imperio.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.I_SHALL_NOT_TELL_LIES,new Sprite("res/skills/ishallnottelllies.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.LIGHTNING_STRIKE,new Sprite("res/skills/lightningstrike.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.LORD_VILLE,new Sprite("res/skills/lordville.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.FIST_BARRAGE,new Sprite("res/skills/messup.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.NORMAL_FORM,new Sprite("res/skills/normalform.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.OCCULT_KNOWLEDGE,new Sprite("res/skills/occultknowledge.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.PETRIFY,new Sprite("res/skills/petrify.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.PHOENIX_TELEPORTATION,new Sprite("res/skills/phoenixportation.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.PLANT,new Sprite("res/skills/plant.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.RABBIT_SLED,new Sprite("res/skills/rabbitsled.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ROCK_THROW,new Sprite("res/skills/rockthrow.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ROPES,new Sprite("res/skills/roperoot.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.RUNE_TRAP,new Sprite("res/skills/runetrap.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SCAN,new Sprite("res/skills/scan.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SEND_IDEFIX,new Sprite("res/skills/sendidefix.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SHADOW_ARMOR,new Sprite("res/skills/shadowarmor.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SHADOW_SPEARS,new Sprite("res/skills/shadowspears.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SHADOW_WALK,new Sprite("res/skills/shadowwalk.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SHADOW_WALL,new Sprite("res/skills/shadowwall.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SHADOW_WAVE,new Sprite("res/skills/shadowwave.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SKULLDUGGERY,new Sprite("res/skills/skulduggery.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.SMOKE_SCREEN,new Sprite("res/skills/smokescreen.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.STUPOR,new Sprite("res/skills/stupor.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.TALL_GRASS,new Sprite("res/skills/tallgrass.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.TARNING,new Sprite("res/skills/tarning.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.TAUNT,new Sprite("res/skills/taunt.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.TELEPORT,new Sprite("res/skills/teleport.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.TEND_THE_GARDEN,new Sprite("res/skills/tendingthegarden.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.THROW_GRANADE,new Sprite("res/skills/throwgranade.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.TOSSIN,new Sprite("res/skills/tossin.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.TRACKING,new Sprite("res/skills/tracking.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.TRUE_VISION,new Sprite("res/skills/truevision.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.VOODOO_SHIT,new Sprite("res/skills/voodooshit.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.WEAPON_SWING,new Sprite("res/skills/weaponswing.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.WIND_WALL,new Sprite("res/skills/windwall.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.WOOD_WALK,new Sprite("res/skills/woodwalk.png",32,32).getPixels());	
+		Resources.PORTRAITSx32.add(SkillLibrary.ZOMBIE_MINIONS,new Sprite("res/skills/zombieminions.png",32,32).getPixels());	
 		
 	}
 }
