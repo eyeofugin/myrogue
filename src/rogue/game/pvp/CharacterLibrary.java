@@ -56,7 +56,7 @@ public class CharacterLibrary {
 	public static PlayableCharacter get(int id) {
 		return characters.get(id);
 	}
-	private static Skill[] getSkills(int s1, int s2, int s3, int s4, int s5, int s6) {
+	protected static Skill[] getSkills(int s1, int s2, int s3, int s4, int s5, int s6) {
 		return new Skill[] {
 			SkillLibrary.getSkill(s1),
 			SkillLibrary.getSkill(s2),
@@ -66,7 +66,7 @@ public class CharacterLibrary {
 			SkillLibrary.getSkill(s6)
 		};
 	}
-	private static Map<DamageType,Integer> resistance(int bludge,int burn,int dark,int freeze,int light,int pierce,int psych,int shock,int slash){
+	protected static Map<DamageType,Integer> resistance(int bludge,int burn,int dark,int freeze,int light,int pierce,int psych,int shock,int slash){
 		Map<DamageType,Integer> resistances = new HashMap<>();
 		resistances.put(DamageType.BLUDGEONING, bludge);
 		resistances.put(DamageType.BURNING, burn);
@@ -79,7 +79,7 @@ public class CharacterLibrary {
 		resistances.put(DamageType.SLASHING, slash);
 		return resistances;
 	}
-	private static Map<DamageType,Double> multipliers(double bludge,double burn,double dark,double freeze,double light,double pierce,double psych,double shock,double slash){
+	protected static Map<DamageType,Double> multipliers(double bludge,double burn,double dark,double freeze,double light,double pierce,double psych,double shock,double slash){
 		Map<DamageType,Double> mult = new HashMap<>();
 		mult.put(DamageType.BLUDGEONING, bludge);
 		mult.put(DamageType.BURNING, burn);
@@ -92,7 +92,7 @@ public class CharacterLibrary {
 		mult.put(DamageType.SLASHING, slash);
 		return mult;
 	}
-	private static Map<Proficiency,Integer> proficiencies(int strength, int faith, int intelligence, int lethality, int precision){
+	protected static Map<Proficiency,Integer> proficiencies(int strength, int faith, int intelligence, int lethality, int precision){
 		Map<Proficiency,Integer> proficiencies = new HashMap<>();
 		proficiencies.put(Proficiency.STRENGTH,strength);
 		proficiencies.put(Proficiency.FAITH,faith);

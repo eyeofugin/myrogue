@@ -2,13 +2,18 @@ package rogue.graphics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.skills.Skill;
 import rogue.game.combat.skills.Skill.DamageType;
+import rogue.game.combat.skills.Skill.Effect;
+import rogue.game.combat.skills.Skill.Effect.EffectType;
+import rogue.game.combat.skills.Skill.Effect.StatChange;
 import rogue.game.world.objects.Entity;
 import rogue.game.world.objects.Entity.CharacterTab;
 import rogue.game.world.objects.Entity.Proficiency;
@@ -70,6 +75,14 @@ public class EntityInformationContainer extends InformationContainer{
 	private static int MULTTABLE_X_UNTIL			= 394;
 	private static int MULTTABLE_Y_FROM 			= 125;
 	
+	private static int STATUSTABLE_X_FROM			= 5;
+	private static int STATUSTABLE_X_UNTIL			= 204;
+	private static int STATUSTABLE_Y_FROM 			= 255;
+	
+	private static int STATTABLE_X_FROM				= 205;
+	private static int STATTABLE_X_UNTIL			= 404;
+	private static int STATTABLE_Y_FROM 			= 255;
+	
 	//skills
 	private static int ICON_SIZE					= 32;
 	private static int C_SKILLS_WIDTH 				= 420;
@@ -80,14 +93,14 @@ public class EntityInformationContainer extends InformationContainer{
 	private static int C_SKILLS_ICONS_X_UNTIL 		= C_SKILLS_ICONS_X_FROM+C_SKILLS_WIDTH-1;
 	
 	public static final EntityInformationContainerConfig PLAYER_CONFIG = 
-			new EntityInformationContainerConfig("MAIN_CANVAS",420, 660, 1500, 0, new CharacterTab[] {
+			new EntityInformationContainerConfig("MAIN_CANVAS",420, 600, 1500, 0, new CharacterTab[] {
 					CharacterTab.STATS,
 					CharacterTab.SKILLS,
 					CharacterTab.ITEMS,
 					CharacterTab.GEAR
 			});
 	public static final EntityInformationContainerConfig ENTITY_CONFIG = 
-			new EntityInformationContainerConfig("SMALL_CANVAS",420, 420, 1500, 660, new CharacterTab[] {
+			new EntityInformationContainerConfig("SMALL_CANVAS",420, 480, 1500, 600, new CharacterTab[] {
 					CharacterTab.STATS,
 					CharacterTab.SKILLS,
 			});
@@ -140,10 +153,10 @@ public class EntityInformationContainer extends InformationContainer{
 	private void printHeader() {
 		writeLine(this.copy.getName(), 			HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeLine(this.copy.getLevelString(),	HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW1_Y_FROM,HEADER_ROW1_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
-		writeBar(								HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,copy.getCurrentResourcePercentage("life"),MyColor.TRUEGREEN);
-		fillWithGraphics(						HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,getTextLine(copy.getCurrentResourceString("life"), LIFEBAR_WIDTH, LIFEBAR_HEIGHT, 1, MyColor.BLACK),false);
+		writeBar(								HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,copy.getCurrentResourcePercentage("life"),MyColor.GREEN);
+		fillWithGraphics(						HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,getTextLine(copy.getCurrentResourceString("life"), LIFEBAR_WIDTH, LIFEBAR_HEIGHT, 1, MyColor.WHITE),false);
 		writeBar(								HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,copy.getCurrentResourcePercentage("mana"),MyColor.BLUE);
-		fillWithGraphics(						HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,getTextLine(copy.getCurrentResourceString("mana"), MANABAR_WIDTH, MANABAR_HEIGHT, 1, MyColor.BLACK),false);
+		fillWithGraphics(						HEADER_COLUMN1_X_FROM,HEADER_COLUMN1_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,getTextLine(copy.getCurrentResourceString("mana"), MANABAR_WIDTH, MANABAR_HEIGHT, 1, MyColor.WHITE),false);
 		writeLine(this.copy.getCurrentResourceString("movement"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW2_Y_FROM,HEADER_ROW2_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 		writeLine(this.copy.getCurrentResourceString("action"),HEADER_COLUMN2_X_FROM,HEADER_COLUMN2_X_UNTIL,HEADER_ROW3_Y_FROM,HEADER_ROW3_Y_UNTIL,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 	}
@@ -198,70 +211,84 @@ public class EntityInformationContainer extends InformationContainer{
 			endX+=tabSize;
 		}
 	}
+	private <K,V> StndTable setUpStatTable(Map<K,V> map, int[] sizes,String[] names) {
+		List<StndColumn> lines = new ArrayList<>();
+		for(Entry<K,V> entry : map.entrySet()) {
+			StndColumn col = new StndColumn(new String[] {
+					entry.getKey()+"",
+					entry.getValue()+""
+			});
+			lines.add(col);
+		}
+		StndTable table = new StndTable(array(lines),this.editor,sizes);
+		table.addHeader(new StndColumn(names));
+		table.finish();
+		
+		return table;
+	}
+	private void printTable(StndTable table, int yFrom, int xFrom, int xUntil) {
+		int tableHeight= table.getHeight();
+		int tableIndex = 0;
+		for(int y = yFrom; y < (yFrom + tableHeight); y++) {
+			for(int x = xFrom; x <= xUntil; x++) {
+				pixels[x+y*this.width] = table.getPixels()[tableIndex];
+				tableIndex++;
+			}
+		}	
+	}
+	private StndTable setUpEffectTable(List<Effect> effects,EffectType effect, int[] sizes, String[] names) {
+		List<StndColumn> lines = new ArrayList<>();
+		for(Effect e : this.copy.getCurrentEffects()) {
+			if(e.getType().equals(effect)) {
+				if(e.getType().equals(EffectType.STATUS_INFLICTION)) {
+					StndColumn column = new StndColumn(new String[] {
+							e.getStatus().value(),
+							e.getIntensity()+"",
+							e.getTurns()+""
+						});
+						lines.add(column);
+				}else if(e.getType().equals(EffectType.STAT_CHANGE)){
+					StatChange sc = e.getStatChange();
+					String[] entries = new String[3];
+					if(sc.getProf()!=null) {
+						entries[0] = sc.getProf().value();
+						entries[1] = sc.getAmnt()+"";
+						entries[2] = e.getTurns()+"";	
+					}
+					if(sc.getStat()!=null) {
+						entries[0] = sc.getStat().value();
+						entries[1] = sc.getAmnt()+"";
+						entries[2] = e.getTurns()+"";	
+					}
+					StndColumn column = new StndColumn(entries);
+						lines.add(column);
+				}
+				
+			}
+		}
+		StndTable table = new StndTable(array(lines),this.editor,sizes);
+		table.addHeader(new StndColumn(names));
+		table.finish();
+		return table;
+	}
 	private void printStats() {
 		if(!this.copy.getName().equals("dummy")) {
-			List<StndColumn> profLines = new ArrayList<>();
-			for(Entry<Proficiency,Integer> entry : this.copy.getProficiencies().entrySet()) {
-				StndColumn col = new StndColumn(new String[] {
-						entry.getKey().value(),
-						entry.getValue()+""
-				});
-				profLines.add(col);
-			}
-			StndTable profTable = new StndTable(array(profLines),this.editor,new int[] {90,30});
-			profTable.addHeader(new StndColumn(new String[] {"Proficiency","amnt"}));
-			profTable.finish();
+//			
+			StndTable profTable = setUpStatTable(this.copy.getProficiencies(),new int[] {90,30},new String[] {"Proficiency","amnt"});
+			printTable(profTable,PROFTABLE_Y_FROM,PROFTABLE_X_FROM,PROFTABLE_X_UNTIL);
 			
-			List<StndColumn> resistLines = new ArrayList<>();
-			for(Entry<DamageType,Integer> entry : this.copy.getResistances().entrySet()) {
-				StndColumn col = new StndColumn(new String[] {
-						entry.getKey().value(),
-						entry.getValue()+""
-				});
-				resistLines.add(col);
-			}
-			StndTable resistTable = new StndTable(array(resistLines),this.editor,new int[] {90,30});
-			resistTable.addHeader(new StndColumn(new String[] {"Resistance","amnt"}));
-			resistTable.finish();
+			StndTable resistTable = setUpStatTable(this.copy.getResistances(),new int[] {90,30},new String[] {"Resistance","amnt"});
+			printTable(resistTable,RESISTTABLE_Y_FROM,RESISTTABLE_X_FROM,RESISTTABLE_X_UNTIL);
 			
-			List<StndColumn> multLines = new ArrayList<>();
-			for(Entry<DamageType,Double> entry : this.copy.getMultipliers().entrySet()) {
-				StndColumn col = new StndColumn(new String[] {
-						entry.getKey().value(),
-						entry.getValue()+""
-				});
-				multLines.add(col);
-			}
-			StndTable multTable = new StndTable(array(multLines),this.editor,new int[] {90,30});
-			multTable.addHeader(new StndColumn(new String[] {"Multiplier","amnt"}));
-			multTable.finish();
+			StndTable multTable = setUpStatTable(this.copy.getMultipliers(),new int[] {90,30},new String[] {"Multiplier","amnt"});
+			printTable(multTable,MULTTABLE_Y_FROM,MULTTABLE_X_FROM,MULTTABLE_X_UNTIL);
+				
 			
-			int tableHeight= profTable.getHeight();
-			int tableIndex = 0;
-			for(int y = PROFTABLE_Y_FROM; y < (PROFTABLE_Y_FROM + tableHeight); y++) {
-				for(int x = PROFTABLE_X_FROM; x <= PROFTABLE_X_UNTIL; x++) {
-					pixels[x+y*this.width] = profTable.getPixels()[tableIndex];
-					tableIndex++;
-				}
-			}	
+			StndTable statusTable = setUpEffectTable(this.copy.getCurrentEffects(), EffectType.STATUS_INFLICTION, new int[] {90,50,50},new String[] {"Status","Power","Turns"});
+			printTable(statusTable,STATUSTABLE_Y_FROM,STATUSTABLE_X_FROM,STATUSTABLE_X_UNTIL);
 			
-			tableHeight= resistTable.getHeight();
-			tableIndex = 0;
-			for(int y = RESISTTABLE_Y_FROM; y < (RESISTTABLE_Y_FROM + tableHeight); y++) {
-				for(int x = RESISTTABLE_X_FROM; x <= RESISTTABLE_X_UNTIL; x++) {
-					pixels[x+y*this.width] = resistTable.getPixels()[tableIndex];
-					tableIndex++;
-				}
-			}	
-			
-			tableHeight= multTable.getHeight();
-			tableIndex = 0;
-			for(int y = MULTTABLE_Y_FROM; y < (MULTTABLE_Y_FROM + tableHeight); y++) {
-				for(int x = MULTTABLE_X_FROM; x <= MULTTABLE_X_UNTIL; x++) {
-					pixels[x+y*this.width] = multTable.getPixels()[tableIndex];
-					tableIndex++;
-				}
-			}	
+			StndTable statTable = setUpEffectTable(this.copy.getCurrentEffects(),EffectType.STAT_CHANGE,new int[] {90,50,50},new String[] {"Stat","Change","Turns"});
+			printTable(statTable,STATTABLE_Y_FROM,STATTABLE_X_FROM,STATTABLE_X_UNTIL);
 		}
 	}
 	private StndColumn[] array(List<StndColumn> columns) {
@@ -320,6 +347,7 @@ public class EntityInformationContainer extends InformationContainer{
 		copy.setProficiencies(c.getProficiencies());
 		copy.setResistances(c.getResistances());
 		copy.setMultipliers(c.getMultipliers());
+		copy.setCurrentEffects(c.getCurrentEffects());
 		this.portrait = Resources.PORTRAITSx64.get(c.getPortraitId());
 	}
 	private static int[] getDimensions(EntityInformationContainerConfig e){

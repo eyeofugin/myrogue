@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import rogue.framework.eventhandling.Connector;
-import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.Skill;
+import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.Skill.Effect;
+import rogue.game.combat.skills.Skill.Effect.EffectType;
+import rogue.game.combat.skills.Skill.Effect.StatChange;
+import rogue.game.combat.skills.Skill.Effect.StatusInfliction;
 import rogue.game.combat.skills.SkillLibrary;
 import util.MovementOption;
 
@@ -55,7 +58,6 @@ public class Entity extends SecondLayerObject{
 	public Entity(int x, int y, int id, Connector connector, String name,CharacterTemplate t, int team, int portraitId, MovementOption movement) {
 		super(id,x,y,portraitId,name,movement,connector);
 		loadSkills(t);
-		loadStats(t);
 		this.team = team;
 		this.currentLife = 10;
 		this.maxLife = 10;
@@ -111,7 +113,62 @@ public class Entity extends SecondLayerObject{
 					SkillLibrary.getSkill(SkillLibrary.NONE)});
 		}
 	}
-	private void loadStats(CharacterTemplate t) {
+	public void endOfTurn() {
+		for(Effect effect : this.currentEffects) {
+			effect.turn();
+			if(effect.getType().equals(EffectType.STATUS_INFLICTION)) 
+				tickStatus(effect);
+			if(effect.getType().equals(EffectType.STAT_CHANGE) && effect.getTurns()==0) {
+				endStatChange(effect);
+			}
+		}
+		this.currentEffects.removeIf(e->e.getTurns()==0);
+	}
+	public void tickStatus(Effect e) {
+		switch(e.getStatus()) {
+		case BLEEDING:
+			this.damage(e.getIntensity());
+			break;
+		case BURNING:
+			this.damage(e.getIntensity());
+			break;
+		case FROZEN:
+			this.damage(e.getIntensity());
+			break;
+		case BLESSED:
+			this.heal(e.getIntensity());
+			break;
+		default: break;
+		}
+	}
+	public void endStatChange(Effect e) {
+		StatChange sc = e.getStatChange();
+		if(sc.getStat()!=null) {
+			revertChangeResist(sc.getStat(), sc.getMultiplier());
+		}
+		if(sc.getProf()!=null) {
+			changeProf(sc.getProf(), -1*sc.getAmnt());
+		}
+	}
+	public void applyStatChange(Effect e) {
+		StatChange sc = e.getStatChange();
+		if(sc.getStat()!=null) {
+			changeResist(sc.getStat(), sc.getMultiplier());
+		}
+		if(sc.getProf()!=null) {
+			changeProf(sc.getProf(), sc.getAmnt());
+		}
+	}
+	public void addEffect(Effect e) {
+		this.currentEffects.add(e);
+		if(e.getType().equals(EffectType.STAT_CHANGE)) {
+			applyStatChange(e);
+		}if(e.getStatus().equals(StatusInfliction.CLEAR)) {
+			removeStatusEffects();
+		}
+	}
+	private void removeStatusEffects() {
+		this.currentEffects.removeIf(e->e.getType().equals(EffectType.STATUS_INFLICTION));
 	}
 	public static enum CharacterTemplate{
 		KNIGHT,
@@ -145,8 +202,8 @@ public class Entity extends SecondLayerObject{
 		return null;
 	}
 	public void refresh() {
-		this.currentActions=this.maxActions;
-		this.currentMovement=this.maxMovement;
+		this.currentActions=this.maxActions-actionInfliction();
+		this.currentMovement=this.maxMovement-movementInfliction();
 	}
 	public boolean useAction(int amnt) {
 		if(amnt<=this.currentActions) {
@@ -162,9 +219,40 @@ public class Entity extends SecondLayerObject{
 		}
 		return false;
 	}
-	public void addEffect(Effect e) {
-		this.currentEffects.add(e);
+	private int actionInfliction() {
+		int infl = 0;
+		for(Effect e:this.currentEffects) {
+			if(e.getStatus().equals(StatusInfliction.FROZEN)) {
+				infl+=this.maxActions;
+			}
+			if(e.getStatus().equals(StatusInfliction.PARALYSED)) {
+				infl+=e.getIntensity();
+			}
+			if(e.getStatus().equals(StatusInfliction.STUNNED)) {
+				infl+=this.maxActions;
+			}
+		}
+		return infl;
 	}
+	private int movementInfliction() {
+		int infl = 0;
+		for(Effect e:this.currentEffects) {
+			if(e.getStatus().equals(StatusInfliction.FROZEN)) {
+				infl+=this.maxMovement;
+			}
+			if(e.getStatus().equals(StatusInfliction.PARALYSED)) {
+				infl+=e.getIntensity();
+			}
+			if(e.getStatus().equals(StatusInfliction.STUNNED)) {
+				infl+=this.maxMovement;
+			}
+			if(e.getStatus().equals(StatusInfliction.ROOTED)) {
+				infl+=this.maxMovement;
+			}
+		}
+		return infl;
+	}
+
 	
 //Getters and Setters
 	
@@ -260,6 +348,14 @@ public class Entity extends SecondLayerObject{
 		this.team = team;
 	}
 
+	public List<Effect> getCurrentEffects() {
+		return currentEffects;
+	}
+
+	public void setCurrentEffects(List<Effect> currentEffects) {
+		this.currentEffects = currentEffects;
+	}
+
 	public String getLevelString() {
 		return "level "+ level;
 	}
@@ -317,6 +413,15 @@ public class Entity extends SecondLayerObject{
 		p+=getEquipmentProficiency(prof);
 		return p;
 	}
+	public void changeProf(Proficiency prof, int amnt) {
+		this.proficiencies.put(prof,this.proficiencies.get(prof)+amnt);
+	}
+	public void changeResist(DamageType dmg, double multiplier) {
+		this.resistances.put(dmg, (int)(this.resistances.get(dmg)*multiplier));
+	}
+	public void revertChangeResist(DamageType dmg, double multiplier) {
+		this.resistances.put(dmg,(int)(this.resistances.get(dmg)/multiplier));
+	}
 	private int getEquipmentProficiency(Proficiency prof) {
 		int p = 0;
 		for(Equipment e : getEquipments()) {
@@ -350,6 +455,11 @@ public class Entity extends SecondLayerObject{
 	}
 	public void damage(int damage) {
 		this.currentLife-=damage;
+	}
+	public void heal(int heal) {
+		this.currentLife+=heal;
+		if(this.currentLife>this.maxLife)
+			this.currentLife=this.maxLife;
 	}
 	public DamageType getBasicDamageType() {
 		return this.stdDamageType;

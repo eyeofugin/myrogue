@@ -1,6 +1,7 @@
 package rogue.framework.resources;
 
 import rogue.game.combat.skills.SkillLibrary;
+import rogue.game.npc.NPCLibrary;
 import rogue.game.pvp.CharacterLibrary;
 
 public class Loader {
@@ -8,6 +9,7 @@ public class Loader {
 		
 		SkillLibrary.init();
 		CharacterLibrary.init();
+		NPCLibrary.init();
 		
 		Resources.TEXTURES.add(Resources.VOID,new Sprite("res/textures/void.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.BRICK,new Sprite("res/textures/brick.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
@@ -23,6 +25,32 @@ public class Loader {
 		Resources.CHARACTERS.add(Resources.DARTH_VADER,new Sprite("res/characters/vader.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.LUKE,new Sprite("res/characters/luke.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.BOBA,new Sprite("res/characters/boba.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.BALROG,new Sprite("res/characters/balrog.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.BATMAN,new Sprite("res/characters/batman.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.BAUMBART,new Sprite("res/characters/baumbart.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.CHINA,new Sprite("res/characters/china.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.DOBBY,new Sprite("res/characters/dobby.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.DUMBLEDORE,new Sprite("res/characters/dumbledore.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.GIMLI,new Sprite("res/characters/gimli.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.GRAESSLICH,new Sprite("res/characters/graesslich.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.HAGRID,new Sprite("res/characters/hagrid.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.HELLBOY,new Sprite("res/characters/hellboy.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.LEGOLAS,new Sprite("res/characters/legolas.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.MOODY,new Sprite("res/characters/moody.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.OBELIX,new Sprite("res/characters/obelix.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.PROFESSOR,new Sprite("res/characters/professor.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.R2D2,new Sprite("res/characters/r2d2.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.RADAGAST,new Sprite("res/characters/radagast.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.SAMWISE,new Sprite("res/characters/samwise.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.SERPINE,new Sprite("res/characters/serpine.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.SKULDUGGERY,new Sprite("res/characters/skulduggery.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.SOLOMON,new Sprite("res/characters/solomon.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.TALZIN,new Sprite("res/characters/talzin.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.UMBRIDGE,new Sprite("res/characters/umbridge.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.V,new Sprite("res/characters/v.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.VOLDEMORT,new Sprite("res/characters/voldemort.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.WHITESCYTHE,new Sprite("res/characters/whitescythe.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.LUKE_ASTRAL,new Sprite("res/characters/luke.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		
 		Resources.PORTRAITSx64.add(Resources.DUMMY,new Sprite("res/skills/lockedskill.png",64,64).getPixels());
 		Resources.PORTRAITSx64.add(Resources.SKELETONMALE,new Sprite("res/portraits/skeletonPortraitMale.png",64,64).getPixels());

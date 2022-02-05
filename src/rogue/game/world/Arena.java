@@ -10,10 +10,11 @@ import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.CombatManager;
-import rogue.game.combat.skills.Skill.TargetType;
-import rogue.game.combat.skills.Skill.SkillType;
 import rogue.game.combat.skills.Skill;
+import rogue.game.combat.skills.Skill.SkillType;
+import rogue.game.combat.skills.Skill.TargetType;
 import rogue.game.combat.skills.SkillLibrary;
+import rogue.game.npc.NPCLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.BattleLog;
@@ -34,7 +35,7 @@ public class Arena {
 	private Connector connector;
 	private Point[][] teamPlacements=new Point[][] {
 		null,
-		new Point[] {new Point(10,11),new Point(11,11),new Point(9,11)},
+		new Point[] {new Point(10,5),new Point(11,5),new Point(9,11)},
 		new Point[] {new Point(10,10),new Point(11,10),new Point(9,10)}
 	};
 	protected int xOffset = 0;
@@ -347,6 +348,27 @@ public class Arena {
 		removeHighlightsOfType(Highlight.SELECT_WHITE);
 		highlightTile(this.activeLarge.getX(), this.activeLarge.getY(), Highlight.SELECT_WHITE);
 	}
+	private void summon(Skill s) {
+		
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null &&
+						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
+								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
+					
+					NPC npc = NPCLibrary.getNpc(s.getSummonedId());
+					npc.setX(x);npc.setY(y);
+					this.entities.add(npc);
+					Event event = new Event();
+					event.setObject(npc);
+					event.setEventId(Connector.INFO_OBJECT);
+					event.setX(x);
+					event.setY(y);
+					this.connector.addContext(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, event);
+				}
+			}
+		}
+	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------skill-handling----------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
@@ -418,6 +440,7 @@ public class Arena {
 		this.buttonPanel.addEvent(BaseActionContainer.CANCEL, e2, Resources.CANCEL_ACTION);
 	}
 	private void markSingleSkillSpot(int radius, int targetx, int targety) {
+		System.out.println(targetx + " " + targety);
 		for(int x = targetx-radius;x<=targetx+radius;x++) {
 			for(int y = targety-radius;y<=targety+radius;y++) {
 				if(x>0 && y>0) {
@@ -465,12 +488,17 @@ public class Arena {
 		Skill s = SkillLibrary.getSkill(e.getSkill());
 		boolean success = CombatManager.executeSkill(this.activeLarge,getAffectedTargets(),s,this.log);
 		update();
-		if(success && (s.getType().equals(SkillType.MOVEMENT) || 
-				s.hasTP())) {
-			Point p = getSkillSelect();
-			if(p!=null)
-				onMoveCharacter(p.x, p.y, true);
-			highLightActive();
+		if(success) {
+			if((s.getType().equals(SkillType.MOVEMENT) || 
+					s.hasTP())){
+				Point p = getSkillSelect();
+				if(p!=null)
+					onMoveCharacter(p.x, p.y, true);
+				highLightActive();
+			}
+			if(s.getType().equals(SkillType.SUMMON)) {
+				summon(s);
+			}
 		}
 		addSprites(e.getSkill());
 		removeMovements();
@@ -585,6 +613,13 @@ public class Arena {
 			}
 		}
 	}
+	private void endForTeam() {
+		for(Entity e: this.entities) {
+			if(e.getTeam()==this.activeTeam) {
+				e.endOfTurn();
+			}
+		}
+	}
 	private int calcDistance(int cx, int cy, int x, int y) {
 		return Math.max((Math.abs(cx-x)),(Math.abs(cy-y)));
 	}
@@ -594,6 +629,7 @@ public class Arena {
 		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge),this.activeLarge.getX(),this.activeLarge.getY());
 	}
 	private void endTurn() {
+		endForTeam();
 		removeMovements();
 		removeSelectPlayer();
 		this.activeLarge.refresh();

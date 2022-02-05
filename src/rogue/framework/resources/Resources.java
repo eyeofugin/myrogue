@@ -46,6 +46,7 @@ public class Resources {
 	public static final int V = 29;
 	public static final int VOLDEMORT = 30;
 	public static final int WHITESCYTHE = 31;
+	public static final int LUKE_ASTRAL = 32;
 	
 	public static final ArrayList<int[]> CHARACTERS = new ArrayList<>();
 	

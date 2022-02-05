@@ -109,7 +109,7 @@ public class SkillLibrary {
 						new Effect[] {
 								new Effect(EffectType.STATUS_INFLICTION,1,0,StatusInfliction.STUNNED,null),
 								new Effect(EffectType.STAT_CHANGE,1,0,null,new StatChange(
-												DamageType.ALL,-0.2,null,0)),
+												DamageType.ALL,0.8,null,0)),
 								new Effect(EffectType.OBJECT_PULL,0,1,null,null)
 						},
 						new Multiplier[] {
@@ -179,7 +179,7 @@ public class SkillLibrary {
 				"",
 				5,0,
 				30,0,3,
-				0));
+				32));
 		skills.put(SHOCKWAVE_JUMP, Skill.getDamageSkill(
 				SHOCKWAVE_JUMP,
 				"Shockwave Jump",

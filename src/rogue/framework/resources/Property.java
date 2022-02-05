@@ -24,18 +24,18 @@ public class Property {
 	public static final int END_OF_ROOM_BACKGROUND_X = 1500;
 	
 	public static final int START_OF_ACTIVE_CHAR_Y = 0;
-	public static final int END_OF_ACTIVE_CHAR_Y = 660;
+	public static final int END_OF_ACTIVE_CHAR_Y = 600;
 	public static final int START_OF_ACTIVE_CHAR_X = 1500;
 	public static final int END_OF_ACTIVE_CHAR_X = 1920;
 	public static final int ACTIVE_CHAR_WIDTH = 420;
-	public static final int ACTIVE_CHAR_HEIGHT = 660;
+	public static final int ACTIVE_CHAR_HEIGHT = 600;
 	
-	public static final int START_OF_ACTIVE_NPC_Y = 660;
+	public static final int START_OF_ACTIVE_NPC_Y = 600;
 	public static final int END_OF_ACTIVE_NPC_Y = 980;
 	public static final int START_OF_ACTIVE_NPC_X = 1500;
 	public static final int END_OF_ACTIVE_NPC_X = 1920;
 	public static final int ACTIVE_NPC_WIDTH = 420;
-	public static final int ACTIVE_NPC_HEIGHT = 320;
+	public static final int ACTIVE_NPC_HEIGHT = 480;
 	
 	public static final int BUTTON_PANEL_X_FROM = 1500;
 	public static final int BUTTON_PANEL_X_UNTIL = 1920;

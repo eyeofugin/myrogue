@@ -191,6 +191,9 @@ public class Skill {
 			this.status=status;
 			this.statChange=change;
 		}
+		public void turn() {
+			this.turns--;
+		}
 		
 		public EffectType getType() {
 			return type;
@@ -233,18 +236,25 @@ public class Skill {
 			NONE
 		}
 		public static enum StatusInfliction{
-			BLEEDING,
-			STUNNED,
-			PARALYSED,
-			BURNING,
-			FROZEN,
-			BLESSED,
-			CURSED,
-			CONFUSED,
-			ROOTED,
-			INDESCTRUCTIBLE,
-			CLEAR,
-			REMOVE_OBSTACLE
+			BLEEDING("Bleeding"),
+			STUNNED("Stunned"),
+			PARALYSED("Paralysed"),
+			BURNING("Burning"),
+			FROZEN("Frozen"),
+			BLESSED("Blessed"),
+			CURSED("Cursed"),
+			CONFUSED("Confused"),
+			ROOTED("Rooted"),
+			INDESCTRUCTIBLE("Indestructible"),
+			CLEAR("Clear"),
+			REMOVE_OBSTACLE("Remove Obstacle");
+			private String value;
+			private StatusInfliction(String s) {
+				this.value = s;
+			}
+			public String value() {
+				return this.value;
+			}
 		}
 		public static class StatChange{
 			private DamageType stat;
