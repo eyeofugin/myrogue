@@ -34,6 +34,7 @@ import rogue.graphics.EntityInformationContainer;
 import util.Highlight;
 import util.MovementOption;
 import util.MyColor;
+import util.calc.path.AStarPathfinder;
 
 public class Arena {
 	
@@ -465,7 +466,7 @@ public class Arena {
 						
 						MovementOption move = getMovementViabilityFor(x,y,this.activeLarge.getTeam());
 						
-						if(move.equals(MovementOption.VALID)) {
+						if(move.equals(MovementOption.VALID) || (this.activeLarge.isAllTerrain() && move.equals(MovementOption.WATER))) {
 							highlightTile(x,y,Highlight.MVMNT_BLUE);
 							Event e = new Event();
 							e.setX(x);
@@ -795,6 +796,9 @@ public class Arena {
 		if(data.getTileData()[y][x].getId()==Resources.WALL||data.getTileData()[y][x].getId()==Resources.TREE) {
 			return MovementOption.OBSTACLE;
 		}
+		if(data.getTileData()[y][x].getId()==Resources.WATER) {
+			return MovementOption.WATER;
+		}
 		if(data.getTileData()[y][x].getId()==Resources.VOID) {
 			return MovementOption.VOID;
 		}
@@ -831,11 +835,63 @@ public class Arena {
 		}
 	}
 	private void endForTeam() {
+		turnsForNPC();
 		for(Entity e: this.entities) {
 			if(e.getTeam()==this.activeTeam) {
 				e.endOfTurn();
 			}
 		}
+	}
+	private void turnsForNPC() {
+		for(Entity e: this.entities) {
+			if(NPC.class.isInstance(e)&&e.getTeam()==this.activeTeam) {
+				NPC npc = NPC.class.cast(e);
+				boolean[][] mvmntMap = getMvmntMapFor(e.getTeam(), e.getX(), e.getY());
+				Entity closestEnemy = getClosestEnemy(mvmntMap,npc.getX(),npc.getY());
+				if(proxCheck(npc.getX(), npc.getY(), closestEnemy.getX(), closestEnemy.getY())) {
+					CombatManager.normalMelee(npc, closestEnemy, this.log);
+				}else {
+					Point step = AStarPathfinder.calcPath(mvmntMap, npc.getX(), npc.getY(), closestEnemy.getX(), closestEnemy.getY());
+					moveObject(npc, step.x, step.y, false, false);
+				}
+			}
+		}
+	}
+
+	private Entity getClosestEnemy(boolean[][] mvmntMap,int npcx, int npcy) {
+		List<Entity> enemies = this.entities.stream()
+				.filter(e->e.getTeam()!=this.activeTeam)
+				.filter(e->isVisible(e))
+				.collect(Collectors.toList());
+		Entity closest = null;
+		int dist = 0;
+		for(Entity e: enemies) {
+			int temp = AStarPathfinder.getDist(mvmntMap, npcx, npcy, e.getX(), e.getY());
+			if(dist==0||temp<dist){
+				dist = temp;
+				closest = e;
+			};
+		}
+		return closest;
+	} 
+	private boolean isVisible(Entity e) {
+		return this.visionField[e.getX()][e.getY()];
+	}
+	private boolean[][] getMvmntMapFor(int team, int selfx,int selfy){
+		boolean[][] mvmntMap = new boolean[data.getTileData().length][data.getTileData()[0].length];
+		for(int x = 0; x < this.data.getTileData().length; x++) {
+			for(int y = 0; y < data.getTileData()[0].length; y++) {
+				MovementOption m = getMovementViabilityFor(x, y,team);
+				if(x==selfx && y==selfy) {
+					mvmntMap[x][y]=true;
+				}else if(m==MovementOption.VALID||m==MovementOption.ENEMY) {
+					mvmntMap[x][y]=true;
+				}else {
+					mvmntMap[x][y]=false;
+				}
+			}
+		}
+		return mvmntMap;
 	}
 	private int calcDistance(int cx, int cy, int x, int y) {
 		return Math.max((Math.abs(cx-x)),(Math.abs(cy-y)));

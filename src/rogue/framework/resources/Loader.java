@@ -21,6 +21,7 @@ public class Loader {
 		Resources.TEXTURES.add(Resources.TREE,new Sprite("res/textures/tree.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.TALLGRASS,new Sprite("res/textures/tallgrass.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.SMOKE_SCREEN,new Sprite("res/textures/smokescreen.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.WATER,new Sprite("res/textures/water.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		
 		Resources.CHARACTERS.add(Resources.KNIGHT,new Sprite("res/characters/knight.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.SKELETON,new Sprite("res/characters/skeleton.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
@@ -55,6 +56,8 @@ public class Loader {
 		Resources.CHARACTERS.add(Resources.VOLDEMORT,new Sprite("res/characters/voldemort.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.WHITESCYTHE,new Sprite("res/characters/whitescythe.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.LUKE_ASTRAL,new Sprite("res/characters/luke.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.ZOMBIE,new Sprite("res/npcs/zombie.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		
 		
 		Resources.PORTRAITSx64.add(Resources.DUMMY,new Sprite("res/skills/lockedskill.png",64,64).getPixels());
 		Resources.PORTRAITSx64.add(Resources.SKELETONMALE,new Sprite("res/portraits/skeletonPortraitMale.png",64,64).getPixels());

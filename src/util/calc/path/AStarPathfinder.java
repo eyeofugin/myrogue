@@ -68,6 +68,21 @@ public class AStarPathfinder {
         return firstStep;
         
     }
+    public static int getDist(boolean[][] matrix, int Ai, int Aj, int Bi, int Bj) {
+        cell = new AStarNode[matrix.length][matrix.length];
+        
+        //Method to generate Chebyshev path. Both Horizontal and Diagonal pathways are possible.
+        generateHValue(matrix, Ai, Aj, Bi, Bj, cell.length, 10, 10, true, 1);
+        int result = 0;
+        //Checks whether the end point has been reach (Stored in the pathList)
+        if (cell[Ai][Aj].hValue!=-1&&pathList.contains(cell[Bi][Bj])) {
+        	result =  pathList.size();
+        }
+        //Clears Both the pathList and the closedList
+        pathList.clear();
+        closedList.clear();
+        return result;
+    }
 
     /**
      * @param hValue         AStarNode type 2D Array (Matrix)

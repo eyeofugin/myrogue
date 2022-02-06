@@ -14,6 +14,7 @@ public class Resources {
 	public static final int TREE = 5;
 	public static final int TALLGRASS = 6;
 	public static final int SMOKE_SCREEN = 7;
+	public static final int WATER = 8;
 	public static final ArrayList<int[]> TEXTURES = new ArrayList<>();
 	
 	public static final int KNIGHT = 0;
@@ -49,6 +50,7 @@ public class Resources {
 	public static final int VOLDEMORT = 30;
 	public static final int WHITESCYTHE = 31;
 	public static final int LUKE_ASTRAL = 32;
+	public static final int ZOMBIE = 33;
 	
 	public static final ArrayList<int[]> CHARACTERS = new ArrayList<>();
 	

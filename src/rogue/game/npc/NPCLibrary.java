@@ -23,6 +23,16 @@ public class NPCLibrary extends CharacterLibrary{
 				multipliers(1.0, 0.2, 0.0, 0.2, 1.6, 1.0, 0.0, 1.2, 1.2,1.0),
 				proficiencies(55, 95, 10, 0, 15)
 				));
+		npcs.put(Resources.ZOMBIE, new NPC(
+				Resources.ZOMBIE,"Zombie",Resources.SKELETONMALE,0,
+				10,0,0,0,0,1,1,
+				getSkills(SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE),
+				DamageType.DARK,
+				Proficiency.STRENGTH,
+				resistance(70, 60, 75, 40, 20, 70, 70, 70, 70),
+				multipliers(1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0,1.0),
+				proficiencies(30, 0, 0, 0, 0)
+				));
 	}
 	
 	public static NPC getNpc(int id) {

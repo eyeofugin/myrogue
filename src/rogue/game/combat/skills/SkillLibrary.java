@@ -378,7 +378,12 @@ public class SkillLibrary {
 		skills.put(EMPTY_REVOLVER,null);
 		skills.put(ENERGY_BIND,null);
 		skills.put(ENHANCEMENT_RUNE,null);
-		skills.put(EQUIPMENT_UPGRADE,null);
+		skills.put(EQUIPMENT_UPGRADE,Skill.getEnhancementSkill(EQUIPMENT_UPGRADE,
+				"Equipment Upgrade","",
+				TargetType.SINGLE_TARGET,
+				new Effect[] {new Effect(EffectType.STAT_CHANGE,2,0,null,new StatChange(null, 0.0, Proficiency.STRENGTH, 20))}, null,
+				1, 0,
+				30, 0, 1));
 		skills.put(EVASIVE,null);
 		skills.put(EVERYTHING_BURNS,null);
 		skills.put(FELL_IN_THE_POT,null);
@@ -435,11 +440,22 @@ public class SkillLibrary {
 		skills.put(TOSSIN,null);
 		skills.put(TRACKING,null);
 		skills.put(TRUE_VISION,null);
-		skills.put(VOODOO_SHIT,null);
+		skills.put(VOODOO_SHIT, Skill.getEnhancementSkill(VOODOO_SHIT,
+				"Voodoo Shit",
+				"",
+				TargetType.ALL_ENEMY,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,10,StatusInfliction.BLEEDING,null)}, null,
+				0, 0,
+				40, 0, 3));
 		skills.put(WEAPON_SWING,null);
 		skills.put(WIND_WALL,null);
 		skills.put(WOOD_WALK,null);
-		skills.put(ZOMBIE_MINIONS,null);
+		skills.put(ZOMBIE_MINIONS,Skill.getSummonSkill(ZOMBIE_MINIONS,
+				"Zombie Infestation",
+				"",
+				3, 1,
+				30, 0, 4,
+				Resources.ZOMBIE));
 		
 	}
 	public static Skill getSkill(int id) {

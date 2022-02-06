@@ -7,5 +7,6 @@ public enum MovementOption {
 	OBSTACLE,
 	PLAYER,
 	SELF,
+	WATER,
 	VALID
 }

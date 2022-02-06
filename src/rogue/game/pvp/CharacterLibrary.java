@@ -52,6 +52,47 @@ public class CharacterLibrary {
 				resistance(90, 75, 40, 55, 40, 90, 20, 60, 95),
 				multipliers(1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0,1.0),
 				proficiencies(55, 95, 10, 0, 15)));
+		characters.put(Resources.BALROG,null);
+		characters.put(Resources.BATMAN,null);
+		characters.put(Resources.BAUMBART,null);
+		characters.put(Resources.CHINA,null);
+		characters.put(Resources.DOBBY,null);
+		characters.put(Resources.DUMBLEDORE,null);
+		characters.put(Resources.GIMLI,null);
+		characters.put(Resources.GRAESSLICH,null);
+		characters.put(Resources.HAGRID,null);
+		characters.put(Resources.HELLBOY,null);
+		characters.put(Resources.LEGOLAS,null);
+		characters.put(Resources.MOODY,null);
+		characters.put(Resources.OBELIX,null);
+		characters.put(Resources.PROFESSOR,null);
+		characters.put(Resources.R2D2,new PlayableCharacter(
+				Resources.R2D2,"R2D2",Resources.P_BOBA,0,
+				20,5,60,10,4,2,1,
+				getSkills(SkillLibrary.SCAN,SkillLibrary.ALL_TERRAIN,SkillLibrary.EQUIPMENT_UPGRADE,SkillLibrary.SMOKE_SCREEN,SkillLibrary.NONE,SkillLibrary.NONE),
+				DamageType.SHOCK,
+				Proficiency.INTELLIGENCE,
+				resistance(20,30,20,20,30,15,20,5,35),
+				multipliers(1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.1,1.0,1.0),
+				proficiencies(10,0,35,0,5)));
+		characters.put(Resources.RADAGAST,null);
+		characters.put(Resources.SAMWISE,null);
+		characters.put(Resources.SERPINE,null);
+		characters.put(Resources.SKULDUGGERY,null);
+		characters.put(Resources.SOLOMON,null);
+		characters.put(Resources.TALZIN,new PlayableCharacter(
+				Resources.TALZIN,"Mother Talzin",Resources.P_LUKE,0,
+				20,5,60,10,4,2,1,
+				getSkills(SkillLibrary.ALLY_HEAL,SkillLibrary.ALLY_SHIELD,SkillLibrary.ZOMBIE_MINIONS,SkillLibrary.VOODOO_SHIT,SkillLibrary.NONE,SkillLibrary.NONE),
+				DamageType.SHOCK,
+				Proficiency.INTELLIGENCE,
+				resistance(20,30,20,20,30,15,20,5,35),
+				multipliers(1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.1,1.0,1.0),
+				proficiencies(10,0,35,0,5)));
+		characters.put(Resources.UMBRIDGE,null);
+		characters.put(Resources.V,null);
+		characters.put(Resources.VOLDEMORT,null);
+		characters.put(Resources.WHITESCYTHE,null);
 	}
 	public static PlayableCharacter get(int id) {
 		return characters.get(id);

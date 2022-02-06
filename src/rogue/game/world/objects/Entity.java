@@ -504,6 +504,14 @@ public class Entity extends SecondLayerObject{
 		}
 		return false;
 	}
+	public boolean isAllTerrain() {
+		for(Skill s : this.skills) {
+			if(s.getId()==SkillLibrary.ALL_TERRAIN){
+				return true;
+			}
+		}
+		return false;
+	}
 	public Effect getRelocation() {
 		for(Effect e: this.currentEffects) {
 			if(e.getType().equals(EffectType.OBJECT_PUSH) || e.getType().equals(EffectType.OBJECT_PULL)) {
