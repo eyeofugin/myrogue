@@ -541,16 +541,17 @@ public class Arena {
 				if(highlights[x][y]!=null &&
 						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
 								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
-					
-					NPC npc = NPCLibrary.getNpc(s.getSummonedId());
-					npc.setX(x);npc.setY(y);
-					this.entities.add(npc);
-					Event event = new Event();
-					event.setObject(npc);
-					event.setEventId(Connector.INFO_OBJECT);
-					event.setX(x);
-					event.setY(y);
-					this.connector.addContext(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, event);
+					if(getMovementViabilityFor(x, y, this.activeTeam).equals(MovementOption.VALID)) {
+						NPC npc = NPCLibrary.getNpc(s.getSummonedId());
+						npc.setX(x);npc.setY(y);npc.setTeam(this.activeTeam);
+						this.entities.add(npc);
+						Event event = new Event();
+						event.setObject(npc);
+						event.setEventId(Connector.INFO_OBJECT);
+						event.setX(x);
+						event.setY(y);
+						this.connector.addContext(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, event);
+					}
 				}
 			}
 		}
@@ -848,11 +849,13 @@ public class Arena {
 				NPC npc = NPC.class.cast(e);
 				boolean[][] mvmntMap = getMvmntMapFor(e.getTeam(), e.getX(), e.getY());
 				Entity closestEnemy = getClosestEnemy(mvmntMap,npc.getX(),npc.getY());
-				if(proxCheck(npc.getX(), npc.getY(), closestEnemy.getX(), closestEnemy.getY())) {
-					CombatManager.normalMelee(npc, closestEnemy, this.log);
-				}else {
-					Point step = AStarPathfinder.calcPath(mvmntMap, npc.getX(), npc.getY(), closestEnemy.getX(), closestEnemy.getY());
-					moveObject(npc, step.x, step.y, false, false);
+				if(closestEnemy!=null) {
+					if(proxCheck(npc.getX(), npc.getY(), closestEnemy.getX(), closestEnemy.getY())) {
+						CombatManager.normalMelee(npc, closestEnemy, this.log);
+					}else {
+						Point step = AStarPathfinder.calcPath(mvmntMap, npc.getX(), npc.getY(), closestEnemy.getX(), closestEnemy.getY());
+						moveObject(npc, step.x, step.y, false, false);
+					}
 				}
 			}
 		}

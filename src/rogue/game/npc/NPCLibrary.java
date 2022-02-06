@@ -36,6 +36,27 @@ public class NPCLibrary extends CharacterLibrary{
 	}
 	
 	public static NPC getNpc(int id) {
-		return npcs.get(id);
+		NPC npc = new NPC();
+		npc.setId(npcs.get(id).getId());
+		npc.setName(npcs.get(id).getName());
+		npc.setPortraitId(npcs.get(id).getPortraitId());
+		npc.setTeam(npcs.get(id).getTeam());
+		npc.setMaxLife(npcs.get(id).getMaxLife());
+		npc.setCurrentLife(npcs.get(id).getMaxLife());
+		npc.setLifeRegain(npcs.get(id).getLifeRegain());
+		npc.setMaxMana(npcs.get(id).getMaxMana());
+		npc.setCurrentMana(npcs.get(id).getMaxMana());
+		npc.setManaRegain(npcs.get(id).getManaRegain());
+		npc.setMaxActions(npcs.get(id).getMaxActions());
+		npc.setMaxMovement(npcs.get(id).getMaxMovement());
+		npc.setRange(npcs.get(id).getRange());
+		npc.setSkills(npcs.get(id).getSkills());
+		npc.setStdDamageType(npcs.get(id).getStdDamageType());
+		npc.setStdDamageProf(npcs.get(id).getStdDamageProf());
+		npc.setResistances(npcs.get(id).getResistances());
+		npc.setMultipliers(npcs.get(id).getMultipliers());
+		npc.setProficiencies(npcs.get(id).getProficiencies());
+		
+		return npc;
 	}
 }

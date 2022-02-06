@@ -559,6 +559,46 @@ public class Entity extends SecondLayerObject{
 		this.multipliers = multipliers;
 	}
 
+	public int getLifeRegain() {
+		return lifeRegain;
+	}
+
+	public void setLifeRegain(int lifeRegain) {
+		this.lifeRegain = lifeRegain;
+	}
+
+	public int getManaRegain() {
+		return manaRegain;
+	}
+
+	public void setManaRegain(int manaRegain) {
+		this.manaRegain = manaRegain;
+	}
+
+	public int getRange() {
+		return range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+	public DamageType getStdDamageType() {
+		return stdDamageType;
+	}
+
+	public void setStdDamageType(DamageType stdDamageType) {
+		this.stdDamageType = stdDamageType;
+	}
+
+	public Proficiency getStdDamageProf() {
+		return stdDamageProf;
+	}
+
+	public void setStdDamageProf(Proficiency stdDamageProf) {
+		this.stdDamageProf = stdDamageProf;
+	}
+
 	@Override
 	public String toString() {
 		return "Entity [name="+this.getName()+", skills=" + Arrays.toString(skills) + ", equipments=" + equipments
