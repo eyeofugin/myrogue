@@ -145,7 +145,7 @@ public class SkillLibrary {
 						WEAPON_THROW,
 						"Weapon Throw",
 						"User hurls his weapon.",
-						TargetType.LINE_PIERCING,
+						TargetType.LINE,
 						DamageType.SLASHING,
 						new Effect[] {},
 						new Multiplier[] {
@@ -458,6 +458,25 @@ public class SkillLibrary {
 		
 	}
 	public static Skill getSkill(int id) {
-		return skills.get(id);
+		Skill copy = new Skill();
+		copy.setAccuracy(skills.get(id).getAccuracy());
+		copy.setActionCost(skills.get(id).getActionCost());
+		copy.setBlocked(skills.get(id).isBlocked());
+		copy.setDamageType(skills.get(id).getDamageType());
+		copy.setDescription(skills.get(id).getDescription());
+		copy.setDistance(skills.get(id).getDistance());
+		copy.setEffects(skills.get(id).getEffects());
+		copy.setEvent(skills.get(id).getEvent());
+		copy.setId(skills.get(id).getId());
+		copy.setLifeCost(skills.get(id).getLifeCost());
+		copy.setManaCost(skills.get(id).getManaCost());
+		copy.setMultipliers(skills.get(id).getMultipliers());
+		copy.setName(skills.get(id).getName());
+		copy.setPower(skills.get(id).getPower());
+		copy.setRadius(skills.get(id).getRadius());
+		copy.setSummonedId(skills.get(id).getSummonedId());
+		copy.setTarget(skills.get(id).getTarget());
+		copy.setType(skills.get(id).getType());
+		return copy;
 	}
 }

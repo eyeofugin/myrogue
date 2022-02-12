@@ -121,6 +121,9 @@ public class Entity extends SecondLayerObject{
 			if(effect.getType().equals(EffectType.STAT_CHANGE) && effect.getTurns()==0) {
 				endStatChange(effect);
 			}
+			if(effect.getType().equals(EffectType.TRANSFORMATION) && effect.getTurns()==0) {
+				endTransformation(effect);
+			}
 		}
 		this.currentEffects.removeIf(e->e.getTurns()==0);
 	}
@@ -163,6 +166,12 @@ public class Entity extends SecondLayerObject{
 			changeProf(sc.getProf(), sc.getAmnt());
 		}
 	}
+	public void applyTransformation(Effect e) {
+		this.setAppearance(e.getTransformId());
+	}
+	public void endTransformation(Effect e) {
+		this.setAppearance(null);
+	}
 	public void addEffect(Effect e) {
 		Effect copy = new Effect();
 		copy.setIntensity(e.getIntensity());
@@ -170,11 +179,15 @@ public class Entity extends SecondLayerObject{
 		copy.setStatus(e.getStatus());
 		copy.setTurns(e.getTurns());
 		copy.setType(e.getType());
+		copy.setTransformId(e.getTransformId());
 		this.currentEffects.add(copy);
 		if(copy.getType().equals(EffectType.STAT_CHANGE)) {
 			applyStatChange(copy);
 		}if(copy.getStatus()!=null && copy.getStatus().equals(StatusInfliction.CLEAR)) {
 			removeStatusEffects();
+		}
+		if(copy.getType().equals(EffectType.TRANSFORMATION)) {
+			applyTransformation(copy);
 		}
 	}
 	private void removeStatusEffects() {

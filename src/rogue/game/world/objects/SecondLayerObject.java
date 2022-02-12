@@ -11,7 +11,9 @@ public abstract class SecondLayerObject extends Tile{
 	private int portraitId = 0;
 	private int x = -1;
 	private int y = -1;
+	private Integer appearance = null;
 	
+
 	public SecondLayerObject() {
 		super();
 	}
@@ -59,5 +61,13 @@ public abstract class SecondLayerObject extends Tile{
 
 	public void setTeam(int team) {
 		this.team = team;
+	}
+
+	public Integer getAppearance() {
+		return appearance;
+	}
+
+	public void setAppearance(Integer appearance) {
+		this.appearance = appearance;
 	}
 }
