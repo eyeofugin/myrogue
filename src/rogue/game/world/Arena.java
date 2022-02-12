@@ -28,6 +28,7 @@ import rogue.game.world.objects.NPC;
 import rogue.game.world.objects.ObjectLibrary;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
+import rogue.game.world.objects.SubEnhancement;
 import rogue.game.world.objects.Tile;
 import rogue.graphics.BaseActionContainer;
 import rogue.graphics.EntityInformationContainer;
@@ -49,7 +50,7 @@ public class Arena {
 	protected int yOffset = 0;
 	private int width=0,height=0;
 	
-	private List<Entity> entities = new ArrayList<Entity>();;
+	private List<Entity> entities = new ArrayList<Entity>();
 	private Highlight[][] highlights;
 	private SecondLayerObject[][] objects;
 	private boolean[][] visionField;
@@ -70,11 +71,12 @@ public class Arena {
 	//---------------------------c'tors------------------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	public Arena(RoomData data, Connector connector) {
-		this.data = data; 
+		this.data = data;
 		this.connector = connector;
 		this.width=data.getTileData().length;
 		this.height=data.getTileData()[0].length;
 		this.objects = new SecondLayerObject[this.width][this.height];
+		addBaseEnhancements(data);
 		this.visionField = new boolean[this.width][this.height];
 		largeCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.PLAYER_CONFIG, Resources.textEditorConfig, connector);
 		smallCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
@@ -127,6 +129,15 @@ public class Arena {
 		this.activeSmall=new Entity();
 		refreshVision();
 	}
+	private void addBaseEnhancements(RoomData data) {
+		for(int x = 0; x < this.objects.length; x++) {
+			for(int y =0; y < this.objects[0].length; y++) {
+				if(data.getEnhancements()[y][x]!=null) {
+					this.objects[x][y]=data.getEnhancements()[y][x];
+				}
+			}
+		}
+	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------update------------------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
@@ -171,6 +182,7 @@ public class Arena {
 		logs = this.log.getPixels();
 		compartments.add(logs);
 		
+		
 		return compartments;
 	}
 	private int[] renderRoom(int[]p) {
@@ -181,17 +193,25 @@ public class Arena {
 				int xInTile = x%Property.TILE_SIZE;
 				int yInTile = y%Property.TILE_SIZE;
 				Tile t = data.getTileData()[tileY+yOffset][tileX+xOffset];
+				
+				int[] graphics = Resources.TEXTURES.get(getBaseTextureOf(t.getId()));
 				if(this.visionField[tileX+xOffset][tileY+yOffset]) {
-					p[x + y*Property.ROOM_SIZE] = Resources.TEXTURES.get(t.getId())[xInTile+yInTile*Property.TILE_SIZE];
+					p[x + y*Property.ROOM_SIZE] = graphics[xInTile+yInTile*Property.TILE_SIZE];
 				}else {
-					Color color = new Color(Resources.TEXTURES.get(t.getId())[xInTile+yInTile*Property.TILE_SIZE]);
-					Color darker = darken(color,0.1);
+					Color color = new Color(graphics[xInTile+yInTile*Property.TILE_SIZE]);
+					Color darker = darken(color,0.2);
 					p[x + y*Property.ROOM_SIZE] = darker.getRGB();
 				}
 				
 			}
 		}
 		return p;
+	}
+	private int getBaseTextureOf(int id) {
+		if(id==Resources.TREE || id==Resources.TALLGRASS) {
+			return Resources.MEADOW;
+		}
+		return id;
 	}
     private Color darken(final Color color, final double percentage) {
         if (percentage < 0.01 || percentage > 1.00) {
@@ -234,13 +254,22 @@ public class Arena {
 				if(Enhancement.class.isInstance(this.objects[x][y])
 						&& x>=xOffset && y>=yOffset && x<16+xOffset && y<16+yOffset) {
 					Enhancement enh = Enhancement.class.cast(this.objects[x][y]);
-					for(int ty = 0; ty < Property.TILE_SIZE; ty++) {
-						for(int tx = 0; tx < Property.TILE_SIZE; tx++) {
-							int relX = ((enh.getX()+(-1)*xOffset)*Property.TILE_SIZE)+tx;
-							int relY = ((enh.getY()+(-1)*yOffset)*Property.TILE_SIZE)+ty;
-							int color = Resources.TEXTURES.get(enh.getId())[tx+ty*Property.TILE_SIZE];
-							if(color!=-12450784 && color!=-3947581) {
-								p[relX+relY*Property.ROOM_SIZE] = color;	
+					if(enh.getSubs().isEmpty()) {
+						continue;
+					}
+					for(SubEnhancement sub : enh.getSubs()) {
+						for(int ty = 0; ty < Property.TILE_SIZE; ty++) {
+							for(int tx = 0; tx < Property.TILE_SIZE; tx++) {
+								int relX = ((enh.getX()+(-1)*xOffset)*Property.TILE_SIZE)+tx;
+								int relY = ((enh.getY()+(-1)*yOffset)*Property.TILE_SIZE)+ty;
+								Color color = new Color(Resources.TEXTURES.get(sub.getId())[tx+ty*Property.TILE_SIZE]);
+
+								if(color.getRGB()!=-12450784 && color.getRGB()!=-3947581) {
+									if(!this.visionField[x][y]) {
+										color=darken(color,0.2);
+									}
+									p[relX+relY*Property.ROOM_SIZE] = color.getRGB();	
+								}
 							}
 						}
 					}
@@ -276,16 +305,18 @@ public class Arena {
 	//---------------------------vision------------------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	private void refreshVision() {
+		paintO(this.objects);
 		this.visionField = new boolean[this.width][this.height];
 		for(Entity e : this.entities) {
 			if(e.getTeam()==this.activeTeam) {
 				getVision(e.getX(),e.getY(),e.getVisionDistance());
 			}
 		}
-		//print();
+		print();
 	}
 	private void getVision(int x, int y, int vis) {
 		int[][] visionValues = getVisionValues();
+		paint(visionValues);
 		this.visionField[x][y]= true;
 		for(int i = x-vis; i <= x+vis; i++) {
 			for(int j = y-vis; j <= y+vis; j++) {
@@ -337,6 +368,7 @@ public class Arena {
 		for(int x = 0; x < visionValues.length; x++) {
 			for(int y = 0; y < visionValues[0].length; y++) {
 				Tile t = data.getTileData()[y][x];
+				
 				if(t.getId()==Resources.TREE || t.getId()==Resources.TALLGRASS) {
 					visionValues[x][y] = 1;
 				}
@@ -437,7 +469,7 @@ public class Arena {
 		this.activeLarge.setY(y);
 		
 		int dist = calcDistance(currentX, currentY, x, y);
-		if(!isTp)
+		if(!isTp && !isFreeMovement(this.activeLarge))
 			this.activeLarge.useMovement(dist);
 		removeMovements();
 		highLightActive();
@@ -452,6 +484,7 @@ public class Arena {
 			.forEach(e -> {
 				this.connector.removeContextOf(e.getName());
 				operatedList.add(e);
+				this.log.formulateDeath(e.getName());
 				});
 		this.entities.removeAll(operatedList);
 	}
@@ -563,12 +596,15 @@ public class Arena {
 				if(highlights[x][y]!=null &&
 						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
 								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
-					Enhancement enh = new Enhancement();
-					enh.setSolid(ObjectLibrary.getEnhancement(s.getSummonedId()).isSolid());
-					enh.setVisible(ObjectLibrary.getEnhancement(s.getSummonedId()).isVisible());
-					enh.setId(ObjectLibrary.getEnhancement(s.getSummonedId()).getId());
-					enh.setX(x);enh.setY(y);
-					this.objects[x][y] = enh;
+					if(Enhancement.class.isInstance(this.objects[x][y]) &&
+							!Enhancement.class.cast(this.objects[x][y]).hasTop()) {
+						Enhancement.class.cast(this.objects[x][y]).addSub(ObjectLibrary.getEnhancement(s.getSummonedId()));
+					}else if(this.objects[x][y]==null) {
+						Enhancement enh = new Enhancement();
+						enh.setX(x);enh.setY(y);
+						enh.addSub(ObjectLibrary.getEnhancement(s.getSummonedId()));
+						this.objects[x][y] = enh;
+					}
 				}
 			}
 		}
@@ -585,7 +621,7 @@ public class Arena {
 		int currentY = this.activeLarge.getY();
 		
 		int skillRange = s.getDistance();
-		if(s.getTarget().equals(TargetType.SURROUNDING)||s.getTarget().equals(TargetType.SELF)) {
+		if(s.getTarget().equals(TargetType.SURROUNDING)||s.getTarget().equals(TargetType.SELF)||s.getTarget().equals(TargetType.ALL_ENEMY)) {
 			onTargetChosen(s,currentX,currentY);
 			return;
 		}
@@ -622,6 +658,9 @@ public class Arena {
 		case LINE:
 			markSkillLine(new Point(this.activeLarge.getX(),this.activeLarge.getY()),new Point(targetX,targetY));
 			break;
+		case LINE_PIERCING:
+			markSkillLinePiercing(new Point(this.activeLarge.getX(),this.activeLarge.getY()),new Point(targetX,targetY));
+			break;
 		case SURROUNDING:
 			markSkillSurrounding(s.getRadius(),s.getDistance());
 			break;
@@ -630,6 +669,9 @@ public class Arena {
 			break;
 		case SELF:
 			highlightTile(this.activeLarge.getX(),this.activeLarge.getY(),Highlight.SKLL_GREEN);
+			break;
+		case ALL_ENEMY:
+			markEnemies();
 			break;
 		case NONE:
 			break;
@@ -647,6 +689,13 @@ public class Arena {
 		this.buttonPanel.addEvent(BaseActionContainer.CONFIRM, e, Resources.CONFIRM_ACTION);
 		this.buttonPanel.addEvent(BaseActionContainer.CANCEL, e2, Resources.CANCEL_ACTION);
 	}
+	private void markEnemies() {
+		for(Entity e : this.entities) {
+			if(e.getTeam()!=this.activeTeam && isVisible(e)) {
+				highlightTile(e.getX(), e.getY(), Highlight.SKLL_GREEN);	
+			}
+		}
+	}
 	private void markSingleSkillSpot(int radius, int targetx, int targety) {
 		System.out.println(targetx + " " + targety);
 		for(int x = targetx-radius;x<=targetx+radius;x++) {
@@ -660,20 +709,14 @@ public class Arena {
 	}
 	private void markSkillLine(Point a, Point b) {
 		a = getNextPointTowards(a, b);
-//		int dx = a.x - b.x;
-//		int dy = a.y - b.y;
-//		int xs = dx>0? -1:1;
-//		int ys = dy>0? -1:1;
-//		double m = dx==0?0:(double)dy/dx;
-//		
-//		if(dx==0||m<=-2||m>=2) {
-//			a.y+=ys;
-//		}else if(m>=-0.5&&m<=0.5) {
-//			a.x+=xs;
-//		}else {
-//			a.x+=xs;
-//			a.y+=ys;
-//		}
+		highlightTile(a.x, a.y, Highlight.SKLL_GREEN);
+		
+		if(!a.equals(b) || getEntityAt(a.x, a.y)==null) {
+			markSkillLine(a,b);
+		}
+	}
+	private void markSkillLinePiercing(Point a, Point b) {
+		a = getNextPointTowards(a, b);
 		
 		highlightTile(a.x, a.y, Highlight.SKLL_GREEN);
 		
@@ -816,6 +859,13 @@ public class Arena {
 		}
 		return MovementOption.VALID;
 	}
+	private boolean isFreeMovement(Entity c) {
+		Tile t = this.data.getTileData()[c.getY()][c.getX()];
+		if(t.getId()==(Resources.TALLGRASS) && c.isWoodWalk()) {
+			return true;
+		}
+		return false;
+	}
 	private void highlightTile(int x, int y,Highlight h) {
 		if(x<0||y<0) {
 			return;
@@ -839,7 +889,21 @@ public class Arena {
 		turnsForNPC();
 		for(Entity e: this.entities) {
 			if(e.getTeam()==this.activeTeam) {
-				e.endOfTurn();
+				e.endOfTurn(this.log);
+			}
+		}
+		removeTheDead();
+	}
+	private void endForEnhancements() {
+		for(int x = 0; x < this.objects.length; x++) {
+			for(int y =0; y < this.objects[0].length; y++) {
+				if(Enhancement.class.isInstance(this.objects[x][y])){
+					Enhancement e = Enhancement.class.cast(this.objects[x][y]);
+					for(SubEnhancement sub : e.getSubs()) {
+						sub.turn();
+					}
+					e.getSubs().removeIf(sub->sub.getDuration()==0);
+				}
 			}
 		}
 	}
@@ -906,6 +970,7 @@ public class Arena {
 	}
 	private void endTurn() {
 		endForTeam();
+		endForEnhancements();
 		removeMovements();
 		removeSelectPlayer();
 		this.activeLarge.refresh();
@@ -960,6 +1025,28 @@ public class Arena {
 			a.y+=ys;
 		}
 		return a;
+	}
+	private void paintO(SecondLayerObject[][] o) {
+		for(int y = 0; y < o[0].length; y++) {
+			for(int x= 0; x < o.length; x++) {
+				if(o[x][y]!=null) {
+					System.out.print("#");
+				}else {
+					System.out.print(" ");
+				}
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+	private void paint(int[][] p) {
+		for(int y = 0; y < p[0].length; y++) {
+			for(int x= 0; x < p.length; x++) {
+				System.out.print(p[x][y]+" ");
+			}
+			System.out.println();
+		}
+		System.out.println();System.out.println();
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------events------------------------------------------------------------------------------------------------------//

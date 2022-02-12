@@ -145,7 +145,7 @@ public class SkillLibrary {
 						WEAPON_THROW,
 						"Weapon Throw",
 						"User hurls his weapon.",
-						TargetType.LINE,
+						TargetType.LINE_PIERCING,
 						DamageType.SLASHING,
 						new Effect[] {},
 						new Multiplier[] {
@@ -264,8 +264,7 @@ public class SkillLibrary {
 				"Unstoppable",
 				"",
 				null,
-				new Effect[] {new Effect(EffectType.PROTECTION_FROM,-1,0,StatusInfliction.STUNNED,null),
-						new Effect(EffectType.PROTECTION_FROM,-1,0,StatusInfliction.PARALYSED,null)},
+				null,
 				null,0,0,
 				0,0,0));
 		skills.put(CONDEMN, Skill.getEnhancementSkill(CONDEMN,
@@ -290,7 +289,7 @@ public class SkillLibrary {
 		skills.put(FLAMETHROWER,Skill.getDamageSkill(FLAMETHROWER,
 				"Flamethrower",
 				"",
-				TargetType.LINE,
+				TargetType.LINE_PIERCING,
 				DamageType.BURNING,
 				new Effect[] {new Effect(EffectType.STATUS_INFLICTION, 2, 5, StatusInfliction.BURNING, null),
 								new Effect(EffectType.TERRAIN_ENHANCEMENT,2, 0, StatusInfliction.BURNING,null)},

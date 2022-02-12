@@ -25,6 +25,8 @@ public class Skill {
 	private List<Effect> effects;
 	private List<Multiplier> multipliers;
 	
+	private boolean blocked;
+	
 	private int manaCost;
 	private int lifeCost;
 	private int actionCost;
@@ -167,7 +169,6 @@ public class Skill {
 		}
 		return new Skill(id,name,description,SkillType.MOVEMENT,TargetType.SINGLE_FREE,null,0,distance,eList,mList,manaCost,lifeCost,actionCost,100,0,0);
 	}
-
 	public static enum SkillType{
 		DAMAGE,
 		ENHANCEMENT,
@@ -203,6 +204,7 @@ public class Skill {
 		SINGLE_TARGET,
 		SINGLE_FREE,
 		LINE,
+		LINE_PIERCING,
 		SURROUNDING,
 		SELF,
 		ALL_ENEMY,
@@ -221,6 +223,9 @@ public class Skill {
 			this.intensity=intensity;
 			this.status=status;
 			this.statChange=change;
+		}
+		public Effect() {
+			// TODO Auto-generated constructor stub
 		}
 		public void turn() {
 			this.turns--;
@@ -344,8 +349,6 @@ public class Skill {
 			this.percentage = percentage;
 		}
 	}
-	
-	
 	public int getSkillDamage(PlayableCharacter p) {
 		int dmg = 0;
 		int multiplierBonus = getMultiBonus(p);
@@ -381,6 +384,14 @@ public class Skill {
 	}
 	public Event getEvent() {
 		return this.event;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 
 	public String getName() {
