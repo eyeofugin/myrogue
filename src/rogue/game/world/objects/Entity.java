@@ -113,30 +113,34 @@ public class Entity extends SecondLayerObject{
 					SkillLibrary.getSkill(SkillLibrary.NONE)});
 		}
 	}
-	public void endOfTurn() {
+	public void endOfTurn(BattleLog log) {
 		for(Effect effect : this.currentEffects) {
 			effect.turn();
 			if(effect.getType().equals(EffectType.STATUS_INFLICTION)) 
-				tickStatus(effect);
+				tickStatus(effect,log);
 			if(effect.getType().equals(EffectType.STAT_CHANGE) && effect.getTurns()==0) {
 				endStatChange(effect);
 			}
 		}
 		this.currentEffects.removeIf(e->e.getTurns()==0);
 	}
-	public void tickStatus(Effect e) {
+	public void tickStatus(Effect e,BattleLog log) {
 		switch(e.getStatus()) {
 		case BLEEDING:
 			this.damage(e.getIntensity());
+			log.formulateEffect(this.getName(), e.getIntensity());
 			break;
 		case BURNING:
 			this.damage(e.getIntensity());
+			log.formulateEffect(this.getName(), e.getIntensity());
 			break;
 		case FROZEN:
 			this.damage(e.getIntensity());
+			log.formulateEffect(this.getName(), e.getIntensity());
 			break;
 		case BLESSED:
 			this.heal(e.getIntensity());
+			log.formulateHeal(this.getName(), e.getIntensity());
 			break;
 		default: break;
 		}
@@ -160,10 +164,16 @@ public class Entity extends SecondLayerObject{
 		}
 	}
 	public void addEffect(Effect e) {
-		this.currentEffects.add(e);
-		if(e.getType().equals(EffectType.STAT_CHANGE)) {
-			applyStatChange(e);
-		}if(e.getStatus()!=null && e.getStatus().equals(StatusInfliction.CLEAR)) {
+		Effect copy = new Effect();
+		copy.setIntensity(e.getIntensity());
+		copy.setStatChange(e.getStatChange());
+		copy.setStatus(e.getStatus());
+		copy.setTurns(e.getTurns());
+		copy.setType(e.getType());
+		this.currentEffects.add(copy);
+		if(copy.getType().equals(EffectType.STAT_CHANGE)) {
+			applyStatChange(copy);
+		}if(copy.getStatus()!=null && copy.getStatus().equals(StatusInfliction.CLEAR)) {
 			removeStatusEffects();
 		}
 	}
@@ -483,6 +493,14 @@ public class Entity extends SecondLayerObject{
 	public boolean isUnstoppable() {
 		for(Skill s : this.skills) {
 			if(s.getId()==SkillLibrary.UNSTOPPABLE){
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean isWoodWalk() {
+		for(Skill s : this.skills) {
+			if(s.getId()==SkillLibrary.WOOD_WALK){
 				return true;
 			}
 		}

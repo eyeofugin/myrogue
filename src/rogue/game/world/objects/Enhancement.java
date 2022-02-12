@@ -1,45 +1,39 @@
 package rogue.game.world.objects;
 
-import rogue.framework.eventhandling.Connector;
+import java.util.ArrayList;
+import java.util.List;
+
+import rogue.game.world.objects.SubEnhancement.Level;
 
 public class Enhancement extends SecondLayerObject {
 	
-	private boolean solid;
-	private boolean visible;
-	private int duration;
+	private List<SubEnhancement> subenhancements = new ArrayList<>();
+	
 	public Enhancement() {
 		
 	};
 
-	public Enhancement(int id, int x, int y, int portrait, String name, boolean solid, boolean visible,int duration) {
-		super(id,x,y,portrait,name,0,null);
-		this.solid=solid;
-		this.visible=visible;
-		this.duration=duration;
+	public Enhancement(int id, int x, int y) {
+		super(id,x,y,0,"",0,null);
 	}
-
-	public boolean isSolid() {
-		return solid;
+	public List<SubEnhancement> getSubs(){
+		return this.subenhancements;
 	}
-
-	public void setSolid(boolean solid) {
-		this.solid = solid;
+	public void addSub(SubEnhancement sub) {
+		this.subenhancements.add(sub);
 	}
-
 	public boolean isVisible() {
-		return visible;
+		for(SubEnhancement sub : this.subenhancements) {
+			if(sub.isVisible())
+				return true;
+		}
+		return false;
 	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
+	public boolean hasTop() {
+		for(SubEnhancement sub : this.subenhancements) {
+			if(sub.getLevel().equals(Level.TOP))
+				return true;
+		}
+		return false;
 	}
-
-	public int getDuration() {
-		return duration;
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-	
 }

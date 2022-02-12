@@ -96,8 +96,8 @@ public class EntityInformationContainer extends InformationContainer{
 			new EntityInformationContainerConfig("MAIN_CANVAS",420, 600, 1500, 0, new CharacterTab[] {
 					CharacterTab.STATS,
 					CharacterTab.SKILLS,
-					CharacterTab.ITEMS,
-					CharacterTab.GEAR
+//					CharacterTab.ITEMS,
+//					CharacterTab.GEAR
 			});
 	public static final EntityInformationContainerConfig ENTITY_CONFIG = 
 			new EntityInformationContainerConfig("SMALL_CANVAS",420, 480, 1500, 600, new CharacterTab[] {
