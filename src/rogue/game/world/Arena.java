@@ -51,6 +51,7 @@ public class Arena {
 	private int width=0,height=0;
 	
 	private List<Entity> entities = new ArrayList<Entity>();
+	private List<Entity> theDead = new ArrayList<Entity>();
 	private Highlight[][] highlights;
 	private SecondLayerObject[][] objects;
 	private boolean[][] visionField;

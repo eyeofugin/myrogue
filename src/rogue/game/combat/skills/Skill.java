@@ -289,6 +289,7 @@ public class Skill {
 			PROTECTION_FROM,
 			TELEPORT,
 			TRANSFORMATION,
+			BLOCK_ABILITY,
 			NONE
 		}
 		public static enum StatusInfliction{

@@ -24,6 +24,8 @@ public class Entity extends SecondLayerObject{
 	private CharacterTab activeTab = CharacterTab.STATS;
 	
 	protected int level = 0;
+	protected int deathTimer = 5;
+	protected int deathTimerCurrent = 5;
 //Stats
 	private int maxLife;
 	private int currentLife;
@@ -124,6 +126,9 @@ public class Entity extends SecondLayerObject{
 			if(effect.getType().equals(EffectType.TRANSFORMATION) && effect.getTurns()==0) {
 				endTransformation(effect);
 			}
+			if(effect.getType().equals(EffectType.BLOCK_ABILITY) && effect.getTurns()==0) {
+				endBlock(effect);
+			}
 		}
 		this.currentEffects.removeIf(e->e.getTurns()==0);
 	}
@@ -147,6 +152,9 @@ public class Entity extends SecondLayerObject{
 			break;
 		default: break;
 		}
+	}
+	public void endBlock(Effect e) {
+		this.skills[e.getIntensity()].setBlocked(false);
 	}
 	public void endStatChange(Effect e) {
 		StatChange sc = e.getStatChange();
@@ -172,6 +180,9 @@ public class Entity extends SecondLayerObject{
 	public void endTransformation(Effect e) {
 		this.setAppearance(null);
 	}
+	public void applyBlock(Effect e) {
+		this.skills[e.getIntensity()].setBlocked(true);
+	}
 	public void addEffect(Effect e) {
 		Effect copy = new Effect();
 		copy.setIntensity(e.getIntensity());
@@ -188,6 +199,9 @@ public class Entity extends SecondLayerObject{
 		}
 		if(copy.getType().equals(EffectType.TRANSFORMATION)) {
 			applyTransformation(copy);
+		}
+		if(copy.getType().equals(EffectType.BLOCK_ABILITY)) {
+			applyBlock(copy);
 		}
 	}
 	private void removeStatusEffects() {

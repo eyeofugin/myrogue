@@ -116,6 +116,7 @@ public class SkillLibrary {
 	public static int WIND_WALL = 104;
 	public static int WOOD_WALK = 105;
 	public static int ZOMBIE_MINIONS = 106;
+	public static int HEART_SHOT = 107;
 
 	public static Map<Integer,Skill> skills = new HashMap<>();
 	
@@ -346,10 +347,17 @@ public class SkillLibrary {
 				null,
 				2, 0,
 				30, 0, 2));
-		skills.put(ARAGOG, null);
+		skills.put(ARAGOG, Skill.getSummonSkill(ARAGOG, "Aragog", "", 1, 0, 20, 0, 2, Resources.ARAGOG));
 		skills.put(AREAFIRE, null);
-		skills.put(ARROW_BARRAGE, null);
-		skills.put(ARROW_SHOTS,null);
+		skills.put(ARROW_BARRAGE, Skill.getDamageSkill(ARROW_BARRAGE, "Arrow Barrage", "", 
+				TargetType.SINGLE_TARGET, DamageType.PIERCING, 
+				null, null, 
+				20, 100, 4, 1, 40, 0, 3));
+		skills.put(ARROW_SHOTS,Skill.getDamageSkill(ARROW_SHOTS,
+				"Arrow Shots","", 
+				TargetType.LINE,DamageType.PIERCING, 
+				null, new Multiplier[] {new Multiplier(Proficiency.PRECISION,0.2)},
+				20, 90, 3, 0, 30, 0, 2));
 		skills.put(AVADA_KEDAVRA,null);
 		skills.put(BATARANG,null);
 		skills.put(BEHEAD,null);
@@ -443,19 +451,27 @@ public class SkillLibrary {
 				"Voodoo Shit",
 				"",
 				TargetType.ALL_ENEMY,
-				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,10,StatusInfliction.BLEEDING,null)}, null,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,10,StatusInfliction.CURSED,null)}, null,
 				0, 0,
 				40, 0, 3));
 		skills.put(WEAPON_SWING,null);
 		skills.put(WIND_WALL,null);
-		skills.put(WOOD_WALK,null);
+		skills.put(WOOD_WALK,Skill.getPassive(WOOD_WALK, "Wood walk",
+				"",
+				null,
+				null,
+				null,0,0,
+				0,0,0));
 		skills.put(ZOMBIE_MINIONS,Skill.getSummonSkill(ZOMBIE_MINIONS,
 				"Zombie Infestation",
 				"",
 				3, 1,
 				30, 0, 4,
 				Resources.ZOMBIE));
-		
+		skills.put(HEART_SHOT,Skill.getDamageSkill(HEART_SHOT, "Heart Shot", "",
+				TargetType.SINGLE_TARGET, DamageType.PIERCING, 
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,1,StatusInfliction.PARALYSED,null)}, null, 
+				20, 75, 5, 0, 20, 0, 1));
 	}
 	public static Skill getSkill(int id) {
 		Skill copy = new Skill();

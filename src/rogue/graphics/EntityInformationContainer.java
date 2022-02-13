@@ -10,6 +10,7 @@ import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.skills.Skill;
+import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.Skill.Effect;
 import rogue.game.combat.skills.Skill.Effect.EffectType;
@@ -102,7 +103,7 @@ public class EntityInformationContainer extends InformationContainer{
 	public static final EntityInformationContainerConfig ENTITY_CONFIG = 
 			new EntityInformationContainerConfig("SMALL_CANVAS",420, 480, 1500, 600, new CharacterTab[] {
 					CharacterTab.STATS,
-					CharacterTab.SKILLS,
+//					CharacterTab.SKILLS,
 			});
 	
 	private String prefix;
@@ -304,8 +305,13 @@ public class EntityInformationContainer extends InformationContainer{
 			int[] skillIds = new int[characterSkills.length];
 			Event[] skillEvents = new Event[characterSkills.length];
 			for(int i = 0; i < characterSkills.length; i++) {
-				skillIds[i] = characterSkills[i].getId();
-				skillEvents[i] = characterSkills[i].getEvent();
+				if(characterSkills[i].isBlocked()) {
+					skillIds[i]=SkillLibrary.NONE;
+					skillEvents[i]=new Event();
+				}else {
+					skillIds[i] = characterSkills[i].getId();
+					skillEvents[i] = characterSkills[i].getEvent();
+				}
 			}
 			IconRow characterSkillIconRow = new IconRow(skillEvents, skillIds, C_SKILLS_WIDTH, C_SKILLS_HEIGHT);
 			int iconRowIndex=0;

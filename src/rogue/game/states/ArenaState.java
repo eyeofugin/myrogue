@@ -144,7 +144,7 @@ public class ArenaState extends State{
 		List<PlayableCharacter> chars1 = new ArrayList<PlayableCharacter>();
 		PlayableCharacter sion = CharacterLibrary.get(Resources.DARTH_SION);
 		sion.setTeam(Property.TEAM_1);
-		PlayableCharacter boba = CharacterLibrary.get(Resources.BOBA);
+		PlayableCharacter boba = CharacterLibrary.get(Resources.TALZIN);
 		boba.setTeam(Property.TEAM_1);
 		chars1.add(sion);
 		chars1.add(boba);

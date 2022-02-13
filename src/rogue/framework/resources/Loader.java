@@ -57,6 +57,7 @@ public class Loader {
 		Resources.CHARACTERS.add(Resources.WHITESCYTHE,new Sprite("res/characters/whitescythe.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.LUKE_ASTRAL,new Sprite("res/characters/luke.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.ZOMBIE,new Sprite("res/npcs/zombie.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.ARAGOG,new Sprite("res/npcs/aragog.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		
 		
 		Resources.PORTRAITSx64.add(Resources.DUMMY,new Sprite("res/skills/lockedskill.png",64,64).getPixels());
@@ -174,6 +175,6 @@ public class Loader {
 		Resources.PORTRAITSx32.add(SkillLibrary.WIND_WALL,new Sprite("res/skills/windwall.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.WOOD_WALK,new Sprite("res/skills/woodwalk.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.ZOMBIE_MINIONS,new Sprite("res/skills/zombieminions.png",32,32).getPixels());	
-		
+		Resources.PORTRAITSx32.add(SkillLibrary.HEART_SHOT,new Sprite("res/skills/heartshot.png",32,32).getPixels());
 	}
 }
