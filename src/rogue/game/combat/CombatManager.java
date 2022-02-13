@@ -126,7 +126,8 @@ public class CombatManager {
 				if(s.getEffects()!=null) {
 					for(Effect e : s.getEffects()) {
 						if(e.getType().equals(EffectType.STATUS_INFLICTION)||
-								e.getType().equals(EffectType.STAT_CHANGE))
+								e.getType().equals(EffectType.STAT_CHANGE) || 
+								e.getType().equals(EffectType.TRANSFORMATION))
 							target.addEffect(e);
 					}
 				}

@@ -238,7 +238,8 @@ public class Arena {
 					for(int x = 0; x < Property.TILE_SIZE; x++) {
 						int relX = ((e.getX()+(-1)*xOffset)*Property.TILE_SIZE)+x;
 						int relY = ((e.getY()+(-1)*yOffset)*Property.TILE_SIZE)+y;
-						int color = Resources.CHARACTERS.get(e.getId())[x+y*Property.TILE_SIZE];
+						int id = e.getAppearance()!=null?e.getAppearance():e.getId();
+						int color = Resources.CHARACTERS.get(id)[x+y*Property.TILE_SIZE];
 						if(color!=-12450784 && color!=-3947581) {
 							p[relX+relY*Property.ROOM_SIZE] = color;	
 						}
@@ -711,7 +712,10 @@ public class Arena {
 		a = getNextPointTowards(a, b);
 		highlightTile(a.x, a.y, Highlight.SKLL_GREEN);
 		
-		if(!a.equals(b) || getEntityAt(a.x, a.y)==null) {
+		if(getEntityAt(a.x, a.y)!=null) {
+			return;
+		}
+		if(!a.equals(b)) {
 			markSkillLine(a,b);
 		}
 	}
@@ -721,7 +725,7 @@ public class Arena {
 		highlightTile(a.x, a.y, Highlight.SKLL_GREEN);
 		
 		if(!a.equals(b)) {
-			markSkillLine(a,b);
+			markSkillLinePiercing(a,b);
 		}
 	}
 	private void markSkillSurrounding(int radius,int distance) {

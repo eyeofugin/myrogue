@@ -70,6 +70,10 @@ public class Skill {
 		e.setSkill(id);
 		this.event=e;
 	}
+	public Skill() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public static Skill getDamageSkill(int id, String name, String description, TargetType target,
 			DamageType damageType, Effect[] effects, Multiplier[] multipliers,
 			int power,int accuracy,int distance,int radius,int manaCost,int lifeCost,int actionCost) {
@@ -216,6 +220,7 @@ public class Skill {
 		private int intensity; //for status inflictions
 		private StatusInfliction status;
 		private StatChange statChange;//for stat changes
+		private int transformId;
 		
 		public Effect(EffectType type, int turns, int intensity, StatusInfliction status, StatChange change) {
 			this.type=type;
@@ -223,6 +228,14 @@ public class Skill {
 			this.intensity=intensity;
 			this.status=status;
 			this.statChange=change;
+		}
+		public Effect(EffectType type, int turns, int intensity, StatusInfliction status, StatChange change,int transformId) {
+			this.type=type;
+			this.turns=turns;
+			this.intensity=intensity;
+			this.status=status;
+			this.statChange=change;
+			this.transformId=transformId;
 		}
 		public Effect() {
 			// TODO Auto-generated constructor stub
@@ -258,6 +271,12 @@ public class Skill {
 		public StatChange getStatChange() {
 			return statChange;
 		}
+		public int getTransformId() {
+			return transformId;
+		}
+		public void setTransformId(int transformId) {
+			this.transformId = transformId;
+		}
 		public void setStatChange(StatChange statChange) {
 			this.statChange = statChange;
 		}
@@ -269,6 +288,7 @@ public class Skill {
 			OBJECT_PULL,
 			PROTECTION_FROM,
 			TELEPORT,
+			TRANSFORMATION,
 			NONE
 		}
 		public static enum StatusInfliction{
@@ -452,6 +472,74 @@ public class Skill {
 
 	public int getSummonedId() {
 		return summonedId;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
+	public void setType(SkillType type) {
+		this.type = type;
+	}
+
+	public void setTarget(TargetType target) {
+		this.target = target;
+	}
+
+	public void setDamageType(DamageType damageType) {
+		this.damageType = damageType;
+	}
+
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
+
+	public void setEffects(List<Effect> effects) {
+		this.effects = effects;
+	}
+
+	public void setMultipliers(List<Multiplier> multipliers) {
+		this.multipliers = multipliers;
+	}
+
+	public void setManaCost(int manaCost) {
+		this.manaCost = manaCost;
+	}
+
+	public void setLifeCost(int lifeCost) {
+		this.lifeCost = lifeCost;
+	}
+
+	public void setActionCost(int actionCost) {
+		this.actionCost = actionCost;
+	}
+
+	public void setAccuracy(int accuracy) {
+		this.accuracy = accuracy;
+	}
+
+	public void setPower(int power) {
+		this.power = power;
+	}
+
+	public void setSummonedId(int summonedId) {
+		this.summonedId = summonedId;
 	}
 
 }
