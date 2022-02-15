@@ -117,6 +117,7 @@ public class SkillLibrary {
 	public static int WOOD_WALK = 105;
 	public static int ZOMBIE_MINIONS = 106;
 	public static int HEART_SHOT = 107;
+	public static int STURDY = 108;
 
 	public static Map<Integer,Skill> skills = new HashMap<>();
 	
@@ -371,7 +372,12 @@ public class SkillLibrary {
 				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,2,1,StatusInfliction.PARALYSED,null)}, null,
 				20, 60, 5, 0, 10, 0, 1));
 		skills.put(BONDING,null);
-		skills.put(CAMOUFLAGE,null);
+		skills.put(CAMOUFLAGE,Skill.getPassive(CAMOUFLAGE, "Camouflage",
+				"",
+				null,
+				null,
+				null,0,0,
+				0,0,0));
 		skills.put(CEREBRO,null);
 		skills.put(COUNT_KILLS,null);
 		skills.put(CLAW_TO_LIFE,null);
@@ -417,7 +423,8 @@ public class SkillLibrary {
 		skills.put(OCCULT_KNOWLEDGE,null);
 		skills.put(PETRIFY,null);
 		skills.put(PHOENIX_TELEPORTATION,null);
-		skills.put(PLANT,null);
+		skills.put(PLANT,Skill.getSummonObjSkill(PLANT, "Plant Tree", "", 
+				1, 0, 20, 5, 1, Resources.TREE));
 		skills.put(RABBIT_SLED,null);
 		skills.put(ROCK_THROW,null);
 		skills.put(ROPES,null);
@@ -438,11 +445,14 @@ public class SkillLibrary {
 				20, 0, 1,
 				Resources.SMOKE_SCREEN));
 		skills.put(STUPOR,null);
-		skills.put(TALL_GRASS,null);
+		skills.put(TALL_GRASS,Skill.getSummonObjSkill(TALL_GRASS, "TALL_GRASS", "", 
+				2, 1, 20, 5, 1, Resources.TALLGRASS));
 		skills.put(TARNING,null);
 		skills.put(TAUNT,null);
 		skills.put(TELEPORT,null);
-		skills.put(TEND_THE_GARDEN,null);
+		skills.put(TEND_THE_GARDEN,Skill.getHealSkill(TEND_THE_GARDEN,"Tend the garden", "", 
+				TargetType.SELF, null, null, 
+				20, 100, 0, 0, 20, 0, 2));
 		skills.put(THROW_GRANADE,null);
 		skills.put(TOSSIN,null);
 		skills.put(TRACKING,null);
@@ -454,7 +464,12 @@ public class SkillLibrary {
 				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,10,StatusInfliction.CURSED,null)}, null,
 				0, 0,
 				40, 0, 3));
-		skills.put(WEAPON_SWING,null);
+		skills.put(WEAPON_SWING,Skill.getDamageSkill(WEAPON_SWING, "Weapon Swing", "",
+				TargetType.SURROUNDING, DamageType.SLASHING,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,5,StatusInfliction.BLEEDING,null)}, 
+				new Multiplier[] {
+						new Multiplier(Proficiency.STRENGTH,0.1)},
+				30, 90, 1, 0, 30, 0, 3));
 		skills.put(WIND_WALL,null);
 		skills.put(WOOD_WALK,Skill.getPassive(WOOD_WALK, "Wood walk",
 				"",
@@ -472,6 +487,51 @@ public class SkillLibrary {
 				TargetType.SINGLE_TARGET, DamageType.PIERCING, 
 				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,1,StatusInfliction.PARALYSED,null)}, null, 
 				20, 75, 5, 0, 20, 0, 1));
+		skills.put(STURDY, Skill.getEnhancementSkill(
+				STURDY,
+				"Sturdy",
+				"",
+				TargetType.SELF,
+				new Effect[] {
+						new Effect(EffectType.STATUS_INFLICTION,
+								3,
+								0,
+								StatusInfliction.INDESCTRUCTIBLE,
+								null),
+						new Effect(EffectType.STAT_CHANGE,
+								3,
+								0,
+								null,
+								new StatChange(
+										DamageType.BLUDGEONING,
+										0.2,
+										null,
+										0)
+								),
+						new Effect(EffectType.STAT_CHANGE,
+								3,
+								0,
+								null,
+								new StatChange(
+										DamageType.SLASHING,
+										0.2,
+										null,
+										0)
+								),
+						new Effect(EffectType.STAT_CHANGE,
+								3,
+								0,
+								null,
+								new StatChange(
+										DamageType.PIERCING,
+										0.2,
+										null,
+										0)
+								)
+				},
+				null,
+				0,0,
+				60,0,3));
 	}
 	public static Skill getSkill(int id) {
 		Skill copy = new Skill();

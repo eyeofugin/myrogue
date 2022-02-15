@@ -176,5 +176,6 @@ public class Loader {
 		Resources.PORTRAITSx32.add(SkillLibrary.WOOD_WALK,new Sprite("res/skills/woodwalk.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.ZOMBIE_MINIONS,new Sprite("res/skills/zombieminions.png",32,32).getPixels());	
 		Resources.PORTRAITSx32.add(SkillLibrary.HEART_SHOT,new Sprite("res/skills/heartshot.png",32,32).getPixels());
+		Resources.PORTRAITSx32.add(SkillLibrary.STURDY,new Sprite("res/skills/sturdy.png",32,32).getPixels());
 	}
 }

@@ -10,7 +10,6 @@ import rogue.framework.resources.Resources;
 import rogue.framework.states.State;
 import rogue.game.world.World;
 import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.Entity.CharacterTemplate;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import rogue.graphics.InformationContainer;

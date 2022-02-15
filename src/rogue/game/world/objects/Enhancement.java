@@ -24,7 +24,7 @@ public class Enhancement extends SecondLayerObject {
 	}
 	public boolean isVisible() {
 		for(SubEnhancement sub : this.subenhancements) {
-			if(sub.isVisible())
+			if(sub.isBlockVisibility())
 				return true;
 		}
 		return false;

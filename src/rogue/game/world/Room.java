@@ -16,7 +16,6 @@ import rogue.game.pvp.Team;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.BattleLog;
 import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.Entity.EntityType;
 import rogue.game.world.objects.NPC;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.game.world.objects.SecondLayerObject;
@@ -115,20 +114,20 @@ public class Room {
 		}
 	}
 	public void openViewForTeamNr(int nr) {
-		for(Entity e : this.entities) {
-			if(e.getTeam()==nr && e.getEntityType()==EntityType.PLAYABLE) {
-				setSelectPlayerEvent(e, e.getX(), e.getY());
-				this.activeCharacter=PlayableCharacter.class.cast(e);
-			}
-			if(e.getTeam()!=nr && e.getEntityType()==EntityType.PLAYABLE) {
-				Event event = new Event();
-				event.setObject(e);
-				event.setEventId(this.connector.INFO_OBJECT);
-				event.setX(e.getX());
-				event.setY(e.getY());
-				this.connector.addContext(getRelationalX(e.getX()), getRelationalY(e.getY()), Property.TILE_SIZE, Property.TILE_SIZE, event);	
-			}
-		}
+//		for(Entity e : this.entities) {
+//			if(e.getTeam()==nr && e.getEntityType()==EntityType.PLAYABLE) {
+//				setSelectPlayerEvent(e, e.getX(), e.getY());
+//				this.activeCharacter=PlayableCharacter.class.cast(e);
+//			}
+//			if(e.getTeam()!=nr && e.getEntityType()==EntityType.PLAYABLE) {
+//				Event event = new Event();
+//				event.setObject(e);
+//				event.setEventId(this.connector.INFO_OBJECT);
+//				event.setX(e.getX());
+//				event.setY(e.getY());
+//				this.connector.addContext(getRelationalX(e.getX()), getRelationalY(e.getY()), Property.TILE_SIZE, Property.TILE_SIZE, event);	
+//			}
+//		}
 	}
 	protected void initEnemies() {
 //		NPC enemy = new NPC(4,5,Resources.SKELETON,"skeleton",Resources.SKELETONMALE,Property.TEAM_2,MovementOption.ENEMY,this.connector);

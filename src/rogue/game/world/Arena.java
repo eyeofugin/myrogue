@@ -209,15 +209,12 @@ public class Arena {
 		return p;
 	}
 	private int getBaseTextureOf(int id) {
-		if(id==Resources.TREE || id==Resources.TALLGRASS) {
-			return Resources.MEADOW;
-		}
+		if(id==Resources.TREE || id==Resources.TALLGRASS) {return Resources.MEADOW;}
 		return id;
 	}
     private Color darken(final Color color, final double percentage) {
-        if (percentage < 0.01 || percentage > 1.00) {
-            throw new IllegalArgumentException("Percentage must be between [0.01 - 1.00]");
-        }
+        if (percentage < 0.01 || percentage > 1.00) { throw new IllegalArgumentException("Percentage must be between [0.01 - 1.00]"); }
+        
         int r = color.getRed();
         int g = color.getGreen();
         int b = color.getBlue();
@@ -260,6 +257,11 @@ public class Arena {
 						continue;
 					}
 					for(SubEnhancement sub : enh.getSubs()) {
+						if(!sub.isShowTeam())
+							continue;
+						if(!sub.isShowEnemy()&&sub.getTeam()!=this.activeTeam){
+							continue;
+						}
 						for(int ty = 0; ty < Property.TILE_SIZE; ty++) {
 							for(int tx = 0; tx < Property.TILE_SIZE; tx++) {
 								int relX = ((enh.getX()+(-1)*xOffset)*Property.TILE_SIZE)+tx;
@@ -604,6 +606,7 @@ public class Arena {
 					}else if(this.objects[x][y]==null) {
 						Enhancement enh = new Enhancement();
 						enh.setX(x);enh.setY(y);
+						
 						enh.addSub(ObjectLibrary.getEnhancement(s.getSummonedId()));
 						this.objects[x][y] = enh;
 					}

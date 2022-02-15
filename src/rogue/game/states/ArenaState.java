@@ -13,7 +13,6 @@ import rogue.game.Init;
 import rogue.game.pvp.CharacterLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.Arena;
-import rogue.game.world.objects.Entity.CharacterTemplate;
 import rogue.game.world.objects.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import rogue.graphics.InformationContainer;
@@ -144,7 +143,7 @@ public class ArenaState extends State{
 		List<PlayableCharacter> chars1 = new ArrayList<PlayableCharacter>();
 		PlayableCharacter sion = CharacterLibrary.get(Resources.DARTH_SION);
 		sion.setTeam(Property.TEAM_1);
-		PlayableCharacter boba = CharacterLibrary.get(Resources.TALZIN);
+		PlayableCharacter boba = CharacterLibrary.get(Resources.BOBA);
 		boba.setTeam(Property.TEAM_1);
 		chars1.add(sion);
 		chars1.add(boba);
@@ -155,7 +154,7 @@ public class ArenaState extends State{
 		List<PlayableCharacter> chars2 = new ArrayList<PlayableCharacter>();
 		PlayableCharacter vader = CharacterLibrary.get(Resources.DARTH_VADER);
 		vader.setTeam(Property.TEAM_2);
-		PlayableCharacter luke = CharacterLibrary.get(Resources.R2D2);
+		PlayableCharacter luke = CharacterLibrary.get(Resources.LUKE);
 		luke.setTeam(Property.TEAM_2);
 		chars2.add(vader);
 		chars2.add(luke);

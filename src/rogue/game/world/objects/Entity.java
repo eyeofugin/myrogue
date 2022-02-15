@@ -57,19 +57,6 @@ public class Entity extends SecondLayerObject{
 	
 	public Entity(int x, int y, int id, Connector connector, String name, int portraitId, MovementOption movement) {
 	}
-	
-	public Entity(int x, int y, int id, Connector connector, String name,CharacterTemplate t, int team, int portraitId, MovementOption movement) {
-		super(id,x,y,portraitId,name,team,connector);
-		loadSkills(t);
-		this.currentLife = 10;
-		this.maxLife = 10;
-		this.currentMana = 5;
-		this.maxMana = 5;
-		this.maxActions=1;
-		this.currentActions=1;
-		this.maxMovement=3;
-		this.currentMovement=3;
-	}
 	public Entity(int id, int portraitId, String name, MovementOption movement, int team, Connector connector,
 			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
 			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
@@ -94,27 +81,6 @@ public class Entity extends SecondLayerObject{
 		
 	}
 	
-	private void loadSkills(CharacterTemplate t) {
-		if(t.equals(CharacterTemplate.NONE)) {
-			this.setSkills(new Skill[] {
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE)});
-		}else if(t.equals(CharacterTemplate.KNIGHT)) {
-			this.setSkills(new Skill[] {
-					SkillLibrary.getSkill(SkillLibrary.HATEFUL_SWING),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE),
-					SkillLibrary.getSkill(SkillLibrary.NONE)});
-		}
-	}
 	public void endOfTurn(BattleLog log) {
 		for(Effect effect : this.currentEffects) {
 			effect.turn();
@@ -132,7 +98,7 @@ public class Entity extends SecondLayerObject{
 		}
 		this.currentEffects.removeIf(e->e.getTurns()==0);
 	}
-	public void tickStatus(Effect e,BattleLog log) {
+	private void tickStatus(Effect e,BattleLog log) {
 		switch(e.getStatus()) {
 		case BLEEDING:
 			this.damage(e.getIntensity());
@@ -153,10 +119,10 @@ public class Entity extends SecondLayerObject{
 		default: break;
 		}
 	}
-	public void endBlock(Effect e) {
+	private void endBlock(Effect e) {
 		this.skills[e.getIntensity()].setBlocked(false);
 	}
-	public void endStatChange(Effect e) {
+	private void endStatChange(Effect e) {
 		StatChange sc = e.getStatChange();
 		if(sc.getStat()!=null) {
 			revertChangeResist(sc.getStat(), sc.getMultiplier());
@@ -207,19 +173,11 @@ public class Entity extends SecondLayerObject{
 	private void removeStatusEffects() {
 		this.currentEffects.removeIf(e->e.getType().equals(EffectType.STATUS_INFLICTION));
 	}
-	public static enum CharacterTemplate{
-		KNIGHT,
-		NONE,
-	}
 	public static enum CharacterTab{
 		STATS,
 		SKILLS,
 		ITEMS,
 		GEAR,
-	}
-	public static enum EntityType{
-		PLAYABLE,
-		NPC,
 	}
 	public static enum Proficiency{
 		PRECISION("Precision"),
@@ -234,9 +192,6 @@ public class Entity extends SecondLayerObject{
 		public String value() {
 			return this.value;
 		}
-	}
-	public EntityType getEntityType() {
-		return null;
 	}
 	public void refresh() {
 		this.currentActions=this.maxActions-actionInfliction();
@@ -305,161 +260,6 @@ public class Entity extends SecondLayerObject{
 	}
 
 	
-//Getters and Setters
-	
-	public int getMaxLife() {
-		return maxLife;
-	}
-
-	public int getMaxMana() {
-		return maxMana;
-	}
-
-	public void setMaxMana(int maxMana) {
-		this.maxMana = maxMana;
-	}
-
-	public int getCurrentMana() {
-		return currentMana;
-	}
-
-	public void setCurrentMana(int currentMana) {
-		this.currentMana = currentMana;
-	}
-
-	public int getCurrentActions() {
-		return currentActions;
-	}
-
-	public void setCurrentActions(int currentActions) {
-		this.currentActions = currentActions;
-	}
-
-	public int getMaxActions() {
-		return maxActions;
-	}
-
-	public void setMaxActions(int maxActions) {
-		this.maxActions = maxActions;
-	}
-
-	public int getCurrentMovement() {
-		return currentMovement;
-	}
-
-	public void setCurrentMovement(int currentMovement) {
-		this.currentMovement = currentMovement;
-	}
-
-	public int getMaxMovement() {
-		return maxMovement;
-	}
-
-	public void setMaxMovement(int maxMovement) {
-		this.maxMovement = maxMovement;
-	}
-	public void setMaxLife(int maxLife) {
-		this.maxLife = maxLife;
-	}
-	public int getCurrentLife() {
-		return currentLife;
-	}
-	public void setCurrentLife(int currentLife) {
-		this.currentLife = currentLife;
-	}
-	public CharacterTab getActiveTab() {
-		return activeTab;
-	}
-	public void setActiveTab(CharacterTab activeTab) {
-		this.activeTab = activeTab;
-	}
-	public List<Equipment> getEquipments(){
-		return this.equipments;
-	}
-	public void setEquipments(List<Equipment> equipments) {
-		this.equipments = equipments;
-	}
-	public Skill[] getSkills() {
-		return skills;
-	}
-	public void setSkills(Skill[]skills) {
-		this.skills = skills;
-	}
-	public int getLevel() {
-		return level;
-	}
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public List<Effect> getCurrentEffects() {
-		return currentEffects;
-	}
-
-	public int getVisionDistance() {
-		return visionDistance;
-	}
-
-	public void setVisionDistance(int visionDistance) {
-		this.visionDistance = visionDistance;
-	}
-
-	public void setCurrentEffects(List<Effect> currentEffects) {
-		this.currentEffects = currentEffects;
-	}
-
-	public String getLevelString() {
-		return "level "+ level;
-	}
-	public double getCurrentResourcePercentage(String resource) {
-		switch(resource) {
-		case "life":
-			return (double)this.currentLife / this.maxLife; 
-		case "mana":
-			return (double)this.currentMana / this.maxMana;
-		case "movement":
-			return (double)this.currentMovement / this.maxMovement ;
-		case "action":
-			return (double)this.currentActions / this.maxActions;
-		default: 
-			return 0.0;
-		}
-	}
-	public String getCurrentResourceString(String resource) {
-		
-		switch(resource) {
-		case "life":
-			return calcCurrentResourceString(this.currentLife>0?this.currentLife:0, this.maxLife, this.lifeRegain);
-		case "mana":
-			return calcCurrentResourceString(this.currentMana>0?this.currentMana:0, this.maxMana, this.manaRegain);
-		case "movement":
-			return "m " + calcCurrentResourceStringShort(this.currentMovement,this.maxMovement);
-		case "action":
-			return "a " + calcCurrentResourceStringShort(this.currentActions,this.maxActions);
-		default:
-			return " ";
-		}
-	}
-	private String calcCurrentResourceString(int current, int max, int regain) {
-		String temp = calcCurrentResourceStringShort(current, max);
-		temp+="("+regain+")";
-		return temp;
-	}
-	private String calcCurrentResourceStringShort(int current, int max) {
-		int lDiff = Integer.toString(max).length()-Integer.toString(current).length();
-
-		int addToCurrentL = lDiff;
-		String currentStringL = "";
-		String maxStringL = "";
-		
-		for(int i = 1; i <= addToCurrentL; i++) {
-			currentStringL+=" ";
-		}
-		currentStringL+=current;
-		maxStringL+=max;
-		
-		return currentStringL + "/" + maxStringL;
-	}
 	public int getProficiency(Proficiency prof) {
 		int p = this.proficiencies.get(prof);
 		p+=getEquipmentProficiency(prof);
@@ -513,9 +313,7 @@ public class Entity extends SecondLayerObject{
 		if(this.currentLife>this.maxLife)
 			this.currentLife=this.maxLife;
 	}
-	public DamageType getBasicDamageType() {
-		return this.stdDamageType;
-	}
+
 	
 	public boolean isUnstoppable() {
 		for(Skill s : this.skills) {
@@ -570,25 +368,58 @@ public class Entity extends SecondLayerObject{
 										e.getType().equals(EffectType.OBJECT_PUSH));
 	}
 	
-
-	public Map<Proficiency, Integer> getProficiencies() {
-		return proficiencies;
+	//render
+	public String getLevelString() {
+		return "level "+ level;
 	}
-
-	public void setProficiencies(Map<Proficiency, Integer> proficiencies) {
-		this.proficiencies = proficiencies;
+	public double getCurrentResourcePercentage(String resource) {
+		switch(resource) {
+		case "life":
+			return (double)this.currentLife / this.maxLife; 
+		case "mana":
+			return (double)this.currentMana / this.maxMana;
+		case "movement":
+			return (double)this.currentMovement / this.maxMovement ;
+		case "action":
+			return (double)this.currentActions / this.maxActions;
+		default: 
+			return 0.0;
+		}
 	}
-
-	public Map<DamageType, Integer> getResistances() {
-		return resistances;
+	public String getCurrentResourceString(String resource) {
+		
+		switch(resource) {
+		case "life":
+			return calcCurrentResourceString(this.currentLife>0?this.currentLife:0, this.maxLife, this.lifeRegain);
+		case "mana":
+			return calcCurrentResourceString(this.currentMana>0?this.currentMana:0, this.maxMana, this.manaRegain);
+		case "movement":
+			return "m " + calcCurrentResourceStringShort(this.currentMovement,this.maxMovement);
+		case "action":
+			return "a " + calcCurrentResourceStringShort(this.currentActions,this.maxActions);
+		default:
+			return " ";
+		}
 	}
-
-	public void setResistances(Map<DamageType, Integer> resistances) {
-		this.resistances = resistances;
+	private String calcCurrentResourceString(int current, int max, int regain) {
+		String temp = calcCurrentResourceStringShort(current, max);
+		temp+="("+regain+")";
+		return temp;
 	}
+	private String calcCurrentResourceStringShort(int current, int max) {
+		int lDiff = Integer.toString(max).length()-Integer.toString(current).length();
 
-	public Map<DamageType, Double> getMultipliers() {
-		return multipliers;
+		int addToCurrentL = lDiff;
+		String currentStringL = "";
+		String maxStringL = "";
+		
+		for(int i = 1; i <= addToCurrentL; i++) {
+			currentStringL+=" ";
+		}
+		currentStringL+=current;
+		maxStringL+=max;
+		
+		return currentStringL + "/" + maxStringL;
 	}
 	public Map<DamageType,Double> getMultipliersForTable(){
 		Map<DamageType,Double> copy = new HashMap<>();
@@ -600,58 +431,186 @@ public class Entity extends SecondLayerObject{
 		return copy;
 	}
 
-	public void setMultipliers(Map<DamageType, Double> multipliers) {
-		this.multipliers = multipliers;
-	}
+	
+	//Getters and Setters
+		
+		public int getMaxLife() {
+			return maxLife;
+		}
 
-	public int getLifeRegain() {
-		return lifeRegain;
-	}
+		public int getMaxMana() {
+			return maxMana;
+		}
 
-	public void setLifeRegain(int lifeRegain) {
-		this.lifeRegain = lifeRegain;
-	}
+		public void setMaxMana(int maxMana) {
+			this.maxMana = maxMana;
+		}
 
-	public int getManaRegain() {
-		return manaRegain;
-	}
+		public int getCurrentMana() {
+			return currentMana;
+		}
 
-	public void setManaRegain(int manaRegain) {
-		this.manaRegain = manaRegain;
-	}
+		public void setCurrentMana(int currentMana) {
+			this.currentMana = currentMana;
+		}
 
-	public int getRange() {
-		return range;
-	}
+		public int getCurrentActions() {
+			return currentActions;
+		}
 
-	public void setRange(int range) {
-		this.range = range;
-	}
+		public void setCurrentActions(int currentActions) {
+			this.currentActions = currentActions;
+		}
 
-	public DamageType getStdDamageType() {
-		return stdDamageType;
-	}
+		public int getMaxActions() {
+			return maxActions;
+		}
 
-	public void setStdDamageType(DamageType stdDamageType) {
-		this.stdDamageType = stdDamageType;
-	}
+		public void setMaxActions(int maxActions) {
+			this.maxActions = maxActions;
+		}
 
-	public Proficiency getStdDamageProf() {
-		return stdDamageProf;
-	}
+		public int getCurrentMovement() {
+			return currentMovement;
+		}
 
-	public void setStdDamageProf(Proficiency stdDamageProf) {
-		this.stdDamageProf = stdDamageProf;
-	}
+		public void setCurrentMovement(int currentMovement) {
+			this.currentMovement = currentMovement;
+		}
 
-	@Override
-	public String toString() {
-		return "Entity [name="+this.getName()+", skills=" + Arrays.toString(skills) + ", equipments=" + equipments
-				+ ", activeTab=" + activeTab + ", level=" + level + ", maxLife=" + maxLife + ", currentLife="
-				+ currentLife + ", maxMana=" + maxMana + ", currentMana=" + currentMana + ", currentActions=" + currentActions
-				+ ", maxActions=" + maxActions + ", currentMovement=" + currentMovement + ", maxMovement=" + maxMovement
-				+ "]";
-	}
+		public int getMaxMovement() {
+			return maxMovement;
+		}
+
+		public void setMaxMovement(int maxMovement) {
+			this.maxMovement = maxMovement;
+		}
+		public void setMaxLife(int maxLife) {
+			this.maxLife = maxLife;
+		}
+		public int getCurrentLife() {
+			return currentLife;
+		}
+		public void setCurrentLife(int currentLife) {
+			this.currentLife = currentLife;
+		}
+		public CharacterTab getActiveTab() {
+			return activeTab;
+		}
+		public void setActiveTab(CharacterTab activeTab) {
+			this.activeTab = activeTab;
+		}
+		public List<Equipment> getEquipments(){
+			return this.equipments;
+		}
+		public void setEquipments(List<Equipment> equipments) {
+			this.equipments = equipments;
+		}
+		public Skill[] getSkills() {
+			return skills;
+		}
+		public void setSkills(Skill[]skills) {
+			this.skills = skills;
+		}
+		public int getLevel() {
+			return level;
+		}
+		public void setLevel(int level) {
+			this.level = level;
+		}
+
+		public List<Effect> getCurrentEffects() {
+			return currentEffects;
+		}
+
+		public int getVisionDistance() {
+			return visionDistance;
+		}
+
+		public void setVisionDistance(int visionDistance) {
+			this.visionDistance = visionDistance;
+		}
+
+		public void setCurrentEffects(List<Effect> currentEffects) {
+			this.currentEffects = currentEffects;
+		}
+		public DamageType getBasicDamageType() {
+			return this.stdDamageType;
+		}
+		public Map<Proficiency, Integer> getProficiencies() {
+			return proficiencies;
+		}
+
+		public void setProficiencies(Map<Proficiency, Integer> proficiencies) {
+			this.proficiencies = proficiencies;
+		}
+
+		public Map<DamageType, Integer> getResistances() {
+			return resistances;
+		}
+
+		public void setResistances(Map<DamageType, Integer> resistances) {
+			this.resistances = resistances;
+		}
+
+		public Map<DamageType, Double> getMultipliers() {
+			return multipliers;
+		}
+		public void setMultipliers(Map<DamageType, Double> multipliers) {
+			this.multipliers = multipliers;
+		}
+
+		public int getLifeRegain() {
+			return lifeRegain;
+		}
+
+		public void setLifeRegain(int lifeRegain) {
+			this.lifeRegain = lifeRegain;
+		}
+
+		public int getManaRegain() {
+			return manaRegain;
+		}
+
+		public void setManaRegain(int manaRegain) {
+			this.manaRegain = manaRegain;
+		}
+
+		public int getRange() {
+			return range;
+		}
+
+		public void setRange(int range) {
+			this.range = range;
+		}
+
+		public DamageType getStdDamageType() {
+			return stdDamageType;
+		}
+
+		public void setStdDamageType(DamageType stdDamageType) {
+			this.stdDamageType = stdDamageType;
+		}
+
+		public Proficiency getStdDamageProf() {
+			return stdDamageProf;
+		}
+
+		public void setStdDamageProf(Proficiency stdDamageProf) {
+			this.stdDamageProf = stdDamageProf;
+		}
+
+		@Override
+		public String toString() {
+			return "Entity [name="+this.getName()+", skills=" + Arrays.toString(skills) + ", equipments=" + equipments
+					+ ", activeTab=" + activeTab + ", level=" + level + ", maxLife=" + maxLife + ", currentLife="
+					+ currentLife + ", maxMana=" + maxMana + ", currentMana=" + currentMana + ", currentActions=" + currentActions
+					+ ", maxActions=" + maxActions + ", currentMovement=" + currentMovement + ", maxMovement=" + maxMovement
+					+ "]";
+		}
+
+
+
 	
 	
 }
