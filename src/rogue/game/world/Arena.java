@@ -763,11 +763,11 @@ public class Arena {
 				summon(s);
 			}
 			if(s.getType().equals(SkillType.VISION)) {
-				vision(s);
+				vision(s); 
 			}
 			manageRelocations();
 		}
-		addSprites(e.getSkill());
+//		addSprites(e.getSkill());
 		removeMovements();
 		removeTheDead();
 		this.buttonPanel.removeEvent(BaseActionContainer.CONFIRM);

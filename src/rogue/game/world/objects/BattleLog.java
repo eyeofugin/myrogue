@@ -58,7 +58,7 @@ public class BattleLog extends InformationContainer{
 		addRow(target + " was dealt " + damage + " damage.");
 	}
 	public void formulateHeal(String target, int damage) {
-		addRow(target + " healed " + damage + " damage.");
+		addRow(target + " healed weuifohbesifvbseifaeiufhoeiwfheiuaohfoieuhfoiuewahfuoieanifdewahfugesbauoifgeauofbewuoifaaewuofhew8uhfoiuewahfaueiohfioueahfiesapohfuioawehfaeiophfuieagfuoasphödfeoqhferuwiprfhweqruöofhu" + damage + " damage.");
 	}
 	public void formulateMiss() {
 		addRow("Missed.");

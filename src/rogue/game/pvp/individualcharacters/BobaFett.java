@@ -11,7 +11,7 @@ public class BobaFett extends PlayableCharacter{
 		super(
 				Resources.BOBA,"Boba Fett",Resources.P_BOBA,0,
 				50,5,40,5,4,3,3,
-				getSkills(SkillLibrary.FLAMETHROWER,SkillLibrary.BACTA_PAD,SkillLibrary.JETPACK_BOOST,SkillLibrary.ROCKET,SkillLibrary.NONE,SkillLibrary.NONE),
+				getSkills(SkillLibrary.FLAMETHROWER,SkillLibrary.JETPACK_BOOST,SkillLibrary.ROCKET,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.BURNING,
 				Proficiency.PRECISION,
 				resistance(90, 75, 40, 55, 40, 90, 20, 60, 95),

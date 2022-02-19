@@ -184,6 +184,7 @@ public class Skill {
 		SUMMON
 	}
 	public static enum DamageType{
+		
 		PIERCING("Piercing"),
 		SLASHING("Slashing"),
 		BLUDGEONING("Bludgeoning"),
@@ -191,7 +192,7 @@ public class Skill {
 		FREEZING("Freezing"),
 		DARK("Dark"),
 		LIGHT("Light"),
-		PSYCHIC("Psychic"),
+		MAGICAL("Magical"),
 		SHOCK("Shock"),
 		ALL("All"),
 		HEAL("Heal"),

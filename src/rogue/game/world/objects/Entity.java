@@ -61,7 +61,7 @@ public class Entity extends SecondLayerObject{
 			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
 			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
 		super(id,0,0,portraitId,name,team,connector);
-		this.currentLife = maxLife-10;
+		this.currentLife = maxLife;
 		this.maxLife = maxLife;
 		this.lifeRegain=lifeRegain;
 		this.currentMana = maxMana;

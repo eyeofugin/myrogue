@@ -143,10 +143,13 @@ public class ArenaState extends State{
 		List<PlayableCharacter> chars1 = new ArrayList<PlayableCharacter>();
 		PlayableCharacter sion = CharacterLibrary.get(Resources.DARTH_SION);
 		sion.setTeam(Property.TEAM_1);
+		PlayableCharacter ta = CharacterLibrary.get(Resources.TALZIN);
+		ta.setTeam(Property.TEAM_1);
 		PlayableCharacter boba = CharacterLibrary.get(Resources.BOBA);
 		boba.setTeam(Property.TEAM_1);
 		chars1.add(sion);
 		chars1.add(boba);
+		chars1.add(ta);
 		t1.setCharacters(chars1);
 		
 		Team t2 = new Team();
@@ -156,8 +159,11 @@ public class ArenaState extends State{
 		vader.setTeam(Property.TEAM_2);
 		PlayableCharacter luke = CharacterLibrary.get(Resources.LUKE);
 		luke.setTeam(Property.TEAM_2);
+		PlayableCharacter r2 = CharacterLibrary.get(Resources.R2D2);
+		r2.setTeam(Property.TEAM_2);
 		chars2.add(vader);
 		chars2.add(luke);
+		chars2.add(r2);
 		t2.setCharacters(chars2);
 		
 		this.teams.add(t1);

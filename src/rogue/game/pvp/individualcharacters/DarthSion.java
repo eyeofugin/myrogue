@@ -11,7 +11,7 @@ public class DarthSion extends PlayableCharacter{
 		super(
 				Resources.DARTH_SION,"Darth Sion",Resources.P_D_SION,0,
 				140,20,50,5,3,2,1,
-				getSkills(SkillLibrary.HATEFUL_SWING,SkillLibrary.CONDEMN,SkillLibrary.UNSTOPPABLE,SkillLibrary.LAST_RESERVE,SkillLibrary.NONE,SkillLibrary.NONE),
+				getSkills(SkillLibrary.HATEFUL_SWING,SkillLibrary.CONDEMN,SkillLibrary.UNSTOPPABLE,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.SLASHING,
 				Proficiency.STRENGTH,
 				resistance(70, 80, 90, 50, 40, 65, 35, 85, 90),

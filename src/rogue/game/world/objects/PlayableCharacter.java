@@ -43,7 +43,7 @@ public class PlayableCharacter extends Entity{
 		resistances.put(DamageType.FREEZING, freeze);
 		resistances.put(DamageType.LIGHT, light);
 		resistances.put(DamageType.PIERCING, pierce);
-		resistances.put(DamageType.PSYCHIC, psych);
+		resistances.put(DamageType.MAGICAL, psych);
 		resistances.put(DamageType.SHOCK, shock);
 		resistances.put(DamageType.SLASHING, slash);
 		return resistances;
@@ -56,7 +56,7 @@ public class PlayableCharacter extends Entity{
 		mult.put(DamageType.FREEZING, freeze);
 		mult.put(DamageType.LIGHT, light);
 		mult.put(DamageType.PIERCING, pierce);
-		mult.put(DamageType.PSYCHIC, psych);
+		mult.put(DamageType.MAGICAL, psych);
 		mult.put(DamageType.SHOCK, shock);
 		mult.put(DamageType.SLASHING, slash);
 		mult.put(DamageType.HEAL,heal);

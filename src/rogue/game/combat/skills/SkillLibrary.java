@@ -118,6 +118,10 @@ public class SkillLibrary {
 	public static int ZOMBIE_MINIONS = 106;
 	public static int HEART_SHOT = 107;
 	public static int STURDY = 108;
+	public static int FIEND_FYRE = 109;
+	public static int MURDER_FEST = 110;
+	public static int PSYSHOCK = 111;
+	public static int STUN = 112;
 
 	public static Map<Integer,Skill> skills = new HashMap<>();
 	
