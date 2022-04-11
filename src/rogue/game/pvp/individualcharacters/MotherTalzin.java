@@ -10,7 +10,7 @@ public class MotherTalzin extends PlayableCharacter{
 	public MotherTalzin() {
 		super(
 				Resources.TALZIN,"Mother Talzin",Resources.P_LUKE,0,
-				20,5,60,10,4,10,1,
+				20,5,400,10,4,10,1,
 				getSkills(SkillLibrary.ALLY_HEAL,SkillLibrary.ZOMBIE_MINIONS,SkillLibrary.VOODOO_SHIT,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.SHOCK,
 				Proficiency.INTELLIGENCE,

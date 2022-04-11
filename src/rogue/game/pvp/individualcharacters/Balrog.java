@@ -9,7 +9,9 @@ public class Balrog extends PlayableCharacter{
 
 	public Balrog() {
 		super(Resources.BALROG,"Balrog",Resources.P_LUKE,0,
-				20,5,60,10,4,2,1,
+				200,15,//life / regain
+				60,10,//mana / regain
+				4,2,1,//actions / movement / range
 				getSkills(SkillLibrary.FLAME_WHIP,SkillLibrary.FIRE_ARMOR,SkillLibrary.SMOKE_SCREEN,SkillLibrary.AREAFIRE,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.BURNING,
 				Proficiency.STRENGTH,

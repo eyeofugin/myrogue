@@ -3,12 +3,24 @@ package rogue.game.pvp;
 import java.util.HashMap;
 
 import rogue.framework.resources.Resources;
+import rogue.game.pvp.individualcharacters.Balrog;
+import rogue.game.pvp.individualcharacters.Baumbart;
 import rogue.game.pvp.individualcharacters.BobaFett;
 import rogue.game.pvp.individualcharacters.DarthSion;
 import rogue.game.pvp.individualcharacters.DarthVader;
+import rogue.game.pvp.individualcharacters.Dobby;
+import rogue.game.pvp.individualcharacters.DoloresUmbridge;
+import rogue.game.pvp.individualcharacters.Dumbledore;
+import rogue.game.pvp.individualcharacters.Gimli;
+import rogue.game.pvp.individualcharacters.Hagrid;
+import rogue.game.pvp.individualcharacters.Legolas;
 import rogue.game.pvp.individualcharacters.LukeSkywalker;
+import rogue.game.pvp.individualcharacters.Moody;
 import rogue.game.pvp.individualcharacters.MotherTalzin;
 import rogue.game.pvp.individualcharacters.R2D2;
+import rogue.game.pvp.individualcharacters.Radagast;
+import rogue.game.pvp.individualcharacters.Sam;
+import rogue.game.pvp.individualcharacters.Voldemort;
 import rogue.game.world.objects.PlayableCharacter;
 
 public class CharacterLibrary {
@@ -24,6 +36,20 @@ public class CharacterLibrary {
 		characters.put(Resources.BOBA, new BobaFett());
 		characters.put(Resources.TALZIN, new MotherTalzin());
 		characters.put(Resources.R2D2, new R2D2());
+		characters.put(Resources.GIMLI, new Gimli());
+		characters.put(Resources.RADAGAST, new Radagast());
+		characters.put(Resources.SAMWISE, new Sam());
+		characters.put(Resources.LEGOLAS, new Legolas());
+		characters.put(Resources.BAUMBART, new Baumbart());
+		characters.put(Resources.BALROG, new Balrog());
+		characters.put(Resources.DOBBY, new Dobby());
+		characters.put(Resources.UMBRIDGE, new DoloresUmbridge());
+		characters.put(Resources.MOODY, new Moody());
+		characters.put(Resources.HAGRID, new Hagrid());
+		characters.put(Resources.DUMBLEDORE, new Dumbledore());
+		characters.put(Resources.VOLDEMORT, new Voldemort());
+		
+		
 //		characters.put(Resources.DARTH_VADER,new PlayableCharacter(
 //				Resources.DARTH_VADER,"Darth Vader",Resources.P_VADER,0,
 //				100,5,50,10,3,3,1,

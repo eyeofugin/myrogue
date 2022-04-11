@@ -43,8 +43,8 @@ public class Arena {
 	private Connector connector;
 	private Point[][] teamPlacements=new Point[][] {
 		null,
-		new Point[] {new Point(10,2),new Point(11,2),new Point(9,2)}, 
-		new Point[] {new Point(10,13),new Point(11,13),new Point(9,13)}
+		new Point[] {new Point(10,2),new Point(11,2),new Point(9,2),new Point(8,2),new Point(7,2),new Point(12,2)}, 
+		new Point[] {new Point(10,13),new Point(11,13),new Point(9,13),new Point(8,13),new Point(7,13),new Point(12,13)}
 	};
 	protected int xOffset = 0;
 	protected int yOffset = 0;
@@ -632,7 +632,7 @@ public class Arena {
 		}
 		for(int x = currentX-skillRange; x <= currentX+skillRange; x++) {
 			for(int y = currentY-skillRange; y <= currentY+skillRange;y++) {
-				if(x>0 && y>0) {
+				if(x>0 && y>0 && x<16 && y<16) {
 					if(s.getTarget().equals(TargetType.SINGLE_FREE) && 
 							!getMovementViabilityFor(x, y, this.activeTeam).equals(MovementOption.VALID)) {
 						continue;

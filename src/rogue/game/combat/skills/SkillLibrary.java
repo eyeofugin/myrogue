@@ -353,10 +353,19 @@ public class SkillLibrary {
 				2, 0,
 				30, 0, 2));
 		skills.put(ARAGOG, Skill.getSummonSkill(ARAGOG, "Aragog", "", 1, 0, 20, 0, 2, Resources.ARAGOG));
-		skills.put(AREAFIRE, null);
+		skills.put(AREAFIRE, Skill.getDamageSkill(AREAFIRE, "Area Fire", "", 
+				TargetType.SINGLE_TARGET, DamageType.BURNING, 
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,1,10,StatusInfliction.BURNING,null)}, 
+				new Multiplier[] {
+						new Multiplier(Proficiency.STRENGTH,0.3)
+				}, 
+				30, 100, 4, 1, 40, 0, 3));
 		skills.put(ARROW_BARRAGE, Skill.getDamageSkill(ARROW_BARRAGE, "Arrow Barrage", "", 
 				TargetType.SINGLE_TARGET, DamageType.PIERCING, 
-				null, null, 
+				null,
+				new Multiplier[] {
+						new Multiplier(Proficiency.PRECISION,0.3)
+				},
 				20, 100, 4, 1, 40, 0, 3));
 		skills.put(ARROW_SHOTS,Skill.getDamageSkill(ARROW_SHOTS,
 				"Arrow Shots","", 
@@ -373,7 +382,10 @@ public class SkillLibrary {
 				"",
 				TargetType.LINE,
 				DamageType.BLUDGEONING,
-				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,2,1,StatusInfliction.PARALYSED,null)}, null,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,2,1,StatusInfliction.PARALYSED,null)},
+				new Multiplier[] {
+						new Multiplier(Proficiency.INTELLIGENCE,0.3)
+				},
 				20, 60, 5, 0, 10, 0, 1));
 		skills.put(BONDING,null);
 		skills.put(CAMOUFLAGE,Skill.getPassive(CAMOUFLAGE, "Camouflage",
@@ -385,12 +397,17 @@ public class SkillLibrary {
 		skills.put(CEREBRO,null);
 		skills.put(COUNT_KILLS,null);
 		skills.put(CLAW_TO_LIFE,null);
-		skills.put(CROW_SCOUT,null);
+		skills.put(CROW_SCOUT,Skill.getVisionSkill(CROW_SCOUT, "Crow Scout", "", 6, 2, 60, 0, 2));
 		skills.put(CRUCIO,null);
 		skills.put(DAGGER_THROW,null);
 		skills.put(DEMONIC_FORM,null);
 		skills.put(DISARM,null);
-		skills.put(DISGUISE,null);
+		skills.put(DISGUISE,Skill.getEnhancementSkill(DISGUISE,
+				"Disguise","",
+				TargetType.SELF,
+				new Effect[] {new Effect(EffectType.TRANSFORMATION,2,0,null,null,-1)}, null,
+				1, 0,
+				30, 0, 1));
 		skills.put(EDUCATIONAL_DECREE_NO_4,null);
 		skills.put(EMPTY_REVOLVER,null);
 		skills.put(ENERGY_BIND,null);
@@ -405,33 +422,65 @@ public class SkillLibrary {
 		skills.put(EVERYTHING_BURNS,null);
 		skills.put(FELL_IN_THE_POT,null);
 		skills.put(FERRETFORMATION,null);
-		skills.put(FIRE_ARMOR,null);
+		skills.put(FIRE_ARMOR,Skill.getPassive(FIRE_ARMOR, "Fire Armor", "",
+				null, null, null, 0, 0, 0, 0, 0));
 		skills.put(FIREBALL,null);
-		skills.put(FIRE_RING,null);
-		skills.put(FLAME_WHIP,null);
-		skills.put(FLUFFY,null);
+		skills.put(FIRE_RING,Skill.getDamageSkill(FIRE_RING, "Fire Ring", "",
+				TargetType.SURROUNDING, DamageType.BURNING,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,5,StatusInfliction.BURNING,null)}, 
+				new Multiplier[] {
+						new Multiplier(Proficiency.INTELLIGENCE,0.1)},
+				35, 90, 1, 0, 30, 0, 3));
+		skills.put(FLAME_WHIP,Skill.getDamageSkill(FLAME_WHIP, "Flame Whip", "", 
+				TargetType.LINE_PIERCING, DamageType.BURNING, 
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,1,0,StatusInfliction.STUNNED,null)},
+				new Multiplier[] {
+						new Multiplier(Proficiency.STRENGTH,0.5)
+				},
+				15, 75, 4, 0, 40, 0, 3));
+		skills.put(FLUFFY,Skill.getSummonSkill(FLUFFY, "Fluffy", "", 1, 0, 20, 0, 2, Resources.FLUFFY));
 		skills.put(GIANT_HAWK,null);
 		skills.put(GRAPPLING_HOOK,null);
 		skills.put(GRAWP,null);
 		skills.put(GUARD_AREA,null);
 		skills.put(HIPPOGRYFF,null);
 		skills.put(HOLLOW_MAN,null);
-		skills.put(HORCRUX,null);
+		skills.put(HORCRUX,Skill.getSummonObjSkill(HORCRUX, "Horcrux", "", 
+				1, 0, 20, 5, 1, Resources.HORCRUX));
 		skills.put(ILLUSION,null);
 		skills.put(IMPERIO,null);
-		skills.put(I_SHALL_NOT_TELL_LIES,null);
+		skills.put(I_SHALL_NOT_TELL_LIES,Skill.getEnhancementSkill(I_SHALL_NOT_TELL_LIES,"I shall not tell lies","",
+				TargetType.ALL_ENEMY,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,2,15,StatusInfliction.BLEEDING,null)}, null,
+				0, 0,
+				40, 0, 3));
 		skills.put(LIGHTNING_STRIKE,null);
 		skills.put(LORD_VILLE,null);
 		skills.put(FIST_BARRAGE,null);
 		skills.put(NORMAL_FORM,null);
 		skills.put(OCCULT_KNOWLEDGE,null);
 		skills.put(PETRIFY,null);
-		skills.put(PHOENIX_TELEPORTATION,null);
+		skills.put(PHOENIX_TELEPORTATION,Skill.getDamageSkill(PHOENIX_TELEPORTATION,"Phoenix Teleportation","",
+				TargetType.SINGLE_FREE,DamageType.BURNING,
+				new Effect[] {
+					new Effect(EffectType.TELEPORT,0,0,null,null),
+					new Effect(EffectType.STATUS_INFLICTION,1,5,StatusInfliction.BURNING,null)
+				},
+				new Multiplier[] {
+					new Multiplier(Proficiency.INTELLIGENCE,0.2)
+				},
+				30,100,
+				3,1,
+				100,0,3));
 		skills.put(PLANT,Skill.getSummonObjSkill(PLANT, "Plant Tree", "", 
 				1, 0, 20, 5, 1, Resources.TREE));
 		skills.put(RABBIT_SLED,null);
 		skills.put(ROCK_THROW,null);
-		skills.put(ROPES,null);
+		skills.put(ROPES,Skill.getEnhancementSkill(ROPES,"Ropes","",
+				TargetType.LINE,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,0,StatusInfliction.ROOTED,null)}, null,
+				0, 0,
+				40, 0, 2));
 		skills.put(RUNE_TRAP,null);
 		skills.put(SCAN,Skill.getVisionSkill(SCAN, "Scan", "", 6, 2, 60, 0, 2));
 		skills.put(SEND_IDEFIX,null);
@@ -448,19 +497,37 @@ public class SkillLibrary {
 				3, 1,
 				20, 0, 1,
 				Resources.SMOKE_SCREEN));
-		skills.put(STUPOR,null);
+		skills.put(STUPOR,Skill.getDamageSkill(STUPOR, "Stupor", "",
+				TargetType.LINE, DamageType.MAGICAL,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,1,0,StatusInfliction.STUNNED,null)}, 
+				new Multiplier[] {
+						new Multiplier(Proficiency.INTELLIGENCE,0.1)
+				},
+				30, 90, 1, 0, 30, 0, 3));
 		skills.put(TALL_GRASS,Skill.getSummonObjSkill(TALL_GRASS, "TALL_GRASS", "", 
 				2, 1, 20, 5, 1, Resources.TALLGRASS));
-		skills.put(TARNING,null);
+		skills.put(TARNING,Skill.getPassive(TARNING, "Tarning", "",
+				null, null, null, 0, 0, 0, 0, 0));
 		skills.put(TAUNT,null);
-		skills.put(TELEPORT,null);
+		skills.put(TELEPORT, Skill.getEnhancementSkill(TELEPORT, 
+				"Teleport", 
+				"", 
+				TargetType.SINGLE_FREE, 
+				new Effect[] {new Effect(EffectType.TELEPORT,0,0,null,null)}, null,
+				4, 0, 
+				30, 0, 2));
 		skills.put(TEND_THE_GARDEN,Skill.getHealSkill(TEND_THE_GARDEN,"Tend the garden", "", 
 				TargetType.SELF, null, null, 
 				20, 100, 0, 0, 20, 0, 2));
 		skills.put(THROW_GRANADE,null);
 		skills.put(TOSSIN,null);
 		skills.put(TRACKING,null);
-		skills.put(TRUE_VISION,null);
+		skills.put(TRUE_VISION,Skill.getPassive(TRUE_VISION, "True Vision",
+				"",
+				null,
+				null,
+				null,0,0,
+				0,0,0));
 		skills.put(VOODOO_SHIT, Skill.getEnhancementSkill(VOODOO_SHIT,
 				"Voodoo Shit",
 				"",
@@ -489,7 +556,10 @@ public class SkillLibrary {
 				Resources.ZOMBIE));
 		skills.put(HEART_SHOT,Skill.getDamageSkill(HEART_SHOT, "Heart Shot", "",
 				TargetType.SINGLE_TARGET, DamageType.PIERCING, 
-				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,1,StatusInfliction.PARALYSED,null)}, null, 
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,1,StatusInfliction.PARALYSED,null)},
+				new Multiplier[] {
+						new Multiplier(Proficiency.PRECISION,0.8)
+				},
 				20, 75, 5, 0, 20, 0, 1));
 		skills.put(STURDY, Skill.getEnhancementSkill(
 				STURDY,
@@ -536,6 +606,36 @@ public class SkillLibrary {
 				null,
 				0,0,
 				60,0,3));
+		skills.put(FIEND_FYRE,Skill.getDamageSkill(FIEND_FYRE,"Fiend Fyre","",
+				TargetType.SINGLE_TARGET,
+				DamageType.DARK,
+				new Effect[] {
+						new Effect(
+								EffectType.STATUS_INFLICTION,
+								2,
+								10,
+								StatusInfliction.BURNING,
+								null),
+						new Effect(
+								EffectType.STATUS_INFLICTION,
+								2,
+								5,
+								StatusInfliction.CURSED,
+								null)
+				},
+				new Multiplier[] {
+						new Multiplier(Proficiency.FAITH,0.8)
+				},
+				55,80,
+				1,0,
+				30,0,1));
+		skills.put(MURDER_FEST,Skill.getDamageSkill(MURDER_FEST, "Murder Fest", "",
+				TargetType.SURROUNDING, DamageType.MAGICAL,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,5,StatusInfliction.CURSED,null),
+						new Effect(EffectType.OBJECT_PUSH,0,1,null,null)}, 
+				new Multiplier[] {
+						new Multiplier(Proficiency.INTELLIGENCE,0.1)},
+				35, 90, 1, 0, 30, 0, 3));
 	}
 	public static Skill getSkill(int id) {
 		Skill copy = new Skill();

@@ -14,6 +14,7 @@ public class ObjectLibrary {
 		obj.put(Resources.TALLGRASS,new SubEnhancement(Resources.TALLGRASS,Level.TOP,false,true,-1,true,true));
 		obj.put(Resources.TREE,new SubEnhancement(Resources.TREE,Level.TOP,true,true,-1,true,true));
 		obj.put(Resources.SMOKE_SCREEN,new SubEnhancement(Resources.SMOKE_SCREEN,Level.SUB,false,true,3,true,true));
+		obj.put(Resources.HORCRUX,new SubEnhancement(Resources.HORCRUX,Level.SUB,false,false,-1,true,true));
 	}
 	
 	public static SubEnhancement getEnhancement(int id) {
