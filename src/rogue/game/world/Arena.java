@@ -22,14 +22,12 @@ import rogue.game.npc.NPCLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.BattleLog;
-import rogue.game.world.objects.Enhancement;
-import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.NPC;
 import rogue.game.world.objects.ObjectLibrary;
-import rogue.game.world.objects.PlayableCharacter;
-import rogue.game.world.objects.SecondLayerObject;
-import rogue.game.world.objects.SubEnhancement;
-import rogue.game.world.objects.Tile;
+import rogue.game.world.objects.entities.Entity;
+import rogue.game.world.objects.entities.NPC;
+import rogue.game.world.objects.entities.PlayableCharacter;
+import rogue.game.world.objects.tiles.Enhancement;
+import rogue.game.world.objects.tiles.Tile;
 import rogue.graphics.BaseActionContainer;
 import rogue.graphics.EntityInformationContainer;
 import util.Highlight;
@@ -50,10 +48,13 @@ public class Arena {
 	protected int yOffset = 0;
 	private int width=0,height=0;
 	
+	//new and improved
+	private Tile[][] tiles;
+	private Entity[][] enties;
+	
 	private List<Entity> entities = new ArrayList<Entity>();
 	private List<Entity> theDead = new ArrayList<Entity>();
 	private Highlight[][] highlights;
-	private SecondLayerObject[][] objects;
 	private boolean[][] visionField;
 	private int[][] sprites;
 
@@ -76,8 +77,6 @@ public class Arena {
 		this.connector = connector;
 		this.width=data.getTileData().length;
 		this.height=data.getTileData()[0].length;
-		this.objects = new SecondLayerObject[this.width][this.height];
-		addBaseEnhancements(data);
 		this.visionField = new boolean[this.width][this.height];
 		largeCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.PLAYER_CONFIG, Resources.textEditorConfig, connector);
 		smallCanvas = new EntityInformationContainer(new Entity(), EntityInformationContainer.ENTITY_CONFIG, Resources.textEditorConfig, connector);
@@ -85,6 +84,7 @@ public class Arena {
 		this.buttonPanel = new BaseActionContainer(connector);
 		this.sprites = new int[data.getTileData().length][data.getTileData()[0].length];
 		this.log = new BattleLog(Resources.textEditorConfig,this.connector);
+		this.tiles =data.getTileData();
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------------//
@@ -119,7 +119,7 @@ public class Arena {
 			}
 			if(e.getTeam()!=nr && PlayableCharacter.class.isInstance(e)) {
 				Event event = new Event();
-				event.setObject(e);
+				event.setEntity(e);
 				event.setEventId(Connector.INFO_OBJECT);
 				event.setX(e.getX());
 				event.setY(e.getY());
@@ -129,15 +129,6 @@ public class Arena {
 		highLightActive();
 		this.activeSmall=new Entity();
 		refreshVision();
-	}
-	private void addBaseEnhancements(RoomData data) {
-		for(int x = 0; x < this.objects.length; x++) {
-			for(int y =0; y < this.objects[0].length; y++) {
-				if(data.getEnhancements()[y][x]!=null) {
-					this.objects[x][y]=data.getEnhancements()[y][x];
-				}
-			}
-		}
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------update------------------------------------------------------------------------------------------------------//
@@ -248,32 +239,28 @@ public class Arena {
 		return p;
 	}
 	private int[] renderEnhancements(int[] p) {
-		for(int x = 0; x < this.objects.length; x++) {
-			for(int y =0; y < this.objects[0].length; y++) {
-				if(Enhancement.class.isInstance(this.objects[x][y])
-						&& x>=xOffset && y>=yOffset && x<16+xOffset && y<16+yOffset) {
-					Enhancement enh = Enhancement.class.cast(this.objects[x][y]);
-					if(enh.getSubs().isEmpty()) {
+		for(int x = 0; x < this.tiles.length; x++) {
+			for(int y =0; y < this.tiles[0].length; y++) {
+		
+				Tile t = this.tiles[x][y];
+				for(Enhancement e : t.getEnhancements()) {
+					if(!e.isVisTeam()) {
 						continue;
 					}
-					for(SubEnhancement sub : enh.getSubs()) {
-						if(!sub.isShowTeam())
-							continue;
-						if(!sub.isShowEnemy()&&sub.getTeam()!=this.activeTeam){
-							continue;
-						}
-						for(int ty = 0; ty < Property.TILE_SIZE; ty++) {
-							for(int tx = 0; tx < Property.TILE_SIZE; tx++) {
-								int relX = ((enh.getX()+(-1)*xOffset)*Property.TILE_SIZE)+tx;
-								int relY = ((enh.getY()+(-1)*yOffset)*Property.TILE_SIZE)+ty;
-								Color color = new Color(Resources.TEXTURES.get(sub.getId())[tx+ty*Property.TILE_SIZE]);
+					if(!e.isVisEnemy()&&e.getTeam()!=this.activeTeam) {
+						continue;
+					}
+					for(int ty = 0; ty < Property.TILE_SIZE; ty++) {
+						for(int tx = 0; tx < Property.TILE_SIZE; tx++) {
+							int relX = (x*Property.TILE_SIZE)+tx;
+							int relY = (y*Property.TILE_SIZE)+ty;
+							Color color = new Color(Resources.TEXTURES.get(e.getId())[tx+ty*Property.TILE_SIZE]);
 
-								if(color.getRGB()!=-12450784 && color.getRGB()!=-3947581) {
-									if(!this.visionField[x][y]) {
-										color=darken(color,0.2);
-									}
-									p[relX+relY*Property.ROOM_SIZE] = color.getRGB();	
+							if(color.getRGB()!=-12450784 && color.getRGB()!=-3947581) {
+								if(!this.visionField[x][y]) {
+									color=darken(color,0.2);
 								}
+								p[relX+relY*Property.ROOM_SIZE] = color.getRGB();	
 							}
 						}
 					}
@@ -287,7 +274,7 @@ public class Arena {
 			for(int y =0; y < highlights[0].length; y++) {
 				if(highlights[x][y]!=null
 						&& x>=xOffset && y>=yOffset && x<16+xOffset && y<16+yOffset) {
-					highlights[x][y].printHighlight(p, x, y, xOffset, yOffset);
+					highlights[x][y].printHighlight(p, x, y);
 				}
 			}
 		}
@@ -309,7 +296,6 @@ public class Arena {
 	//---------------------------vision------------------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	private void refreshVision() {
-		paintO(this.objects);
 		this.visionField = new boolean[this.width][this.height];
 		for(Entity e : this.entities) {
 			if(e.getTeam()==this.activeTeam) {
@@ -371,13 +357,8 @@ public class Arena {
 		int[][] visionValues = new int[this.width][this.height];
 		for(int x = 0; x < visionValues.length; x++) {
 			for(int y = 0; y < visionValues[0].length; y++) {
-				Tile t = data.getTileData()[y][x];
-				
-				if(t.getId()==Resources.TREE || t.getId()==Resources.TALLGRASS) {
+				if(data.getTileData()[y][x].isVisBlock()) {
 					visionValues[x][y] = 1;
-				}
-				if(Enhancement.class.isInstance(this.objects[x][y])) {
-					visionValues[x][y] = Enhancement.class.cast(this.objects[x][y]).isVisible()?1:0;
 				}
 			}
 		}
@@ -418,7 +399,7 @@ public class Arena {
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------object-handling---------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//
-	private void moveObject(SecondLayerObject o, int x, int y,boolean manual, boolean tp) {
+	private void moveObject(Entity o, int x, int y,boolean manual, boolean tp) {
 		int currentX = o.getX();
 		int currentY = o.getY();
 		o.setX(x);
@@ -431,8 +412,6 @@ public class Arena {
 				e.setY(y);
 			}
 		}
-		objects[currentX][currentY] = null;
-		objects[x][y] = o;
 		if(manual) {
 			Entity e = Entity.class.cast(o);
 			if(!tp)
@@ -530,7 +509,7 @@ public class Arena {
 						Event e = new Event();
 						e.setX(x);
 						e.setY(y);
-						e.setObject(getEntityAt(x, y)!=null?getEntityAt(x,y):this.objects[x][y]);
+						e.setEntity(getEntityAt(x,y));
 						e.setEventId(Connector.ATTACK);
 						this.connector.addEvent(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, e);					
 					}
@@ -540,7 +519,7 @@ public class Arena {
 	}
 	private void basicAttack(Event e) {
 		if(this.activeLarge.useAction(1)) {
-			CombatManager.normalMelee(this.activeLarge,e.getObject(),this.log);
+			CombatManager.normalMelee(this.activeLarge,e.getEntity(),this.log);
 			if(activeSmall!=null) 
 				this.smallCanvas.checkUdate(activeSmall);
 			if(activeLarge!=null)
@@ -583,7 +562,7 @@ public class Arena {
 						npc.setX(x);npc.setY(y);npc.setTeam(this.activeTeam);
 						this.entities.add(npc);
 						Event event = new Event();
-						event.setObject(npc);
+						event.setEntity(npc);
 						event.setEventId(Connector.INFO_OBJECT);
 						event.setX(x);
 						event.setY(y);
@@ -600,16 +579,8 @@ public class Arena {
 				if(highlights[x][y]!=null &&
 						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
 								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
-					if(Enhancement.class.isInstance(this.objects[x][y]) &&
-							!Enhancement.class.cast(this.objects[x][y]).hasTop()) {
-						Enhancement.class.cast(this.objects[x][y]).addSub(ObjectLibrary.getEnhancement(s.getSummonedId()));
-					}else if(this.objects[x][y]==null) {
-						Enhancement enh = new Enhancement();
-						enh.setX(x);enh.setY(y);
-						
-						enh.addSub(ObjectLibrary.getEnhancement(s.getSummonedId()));
-						this.objects[x][y] = enh;
-					}
+					Enhancement enh = ObjectLibrary.getEnhancement(s.getSummonedId());
+					this.tiles[x][y].addEnhancement(enh);
 				}
 			}
 		}
@@ -787,17 +758,14 @@ public class Arena {
 			}
 		}
 	}
-	private List<SecondLayerObject> getAffectedTargets(Skill s) {
+	private List<Entity> getAffectedTargets(Skill s) {
 		if(s.getTarget().equals(TargetType.ALL_ENEMY)) {
 			return this.entities.stream().filter(e->e.getTeam()!=this.activeTeam).collect(Collectors.toList());
 		}
-		List<SecondLayerObject> obj=new ArrayList<>();
+		List<Entity> obj=new ArrayList<>();
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y = 0; y < highlights[0].length; y++) {
 				if(highlights[x][y]!=null && (highlights[x][y].equals(Highlight.SKLL_GREEN)||highlights[x][y].equals(Highlight.SKILL_SELECT))) {
-					if(this.objects[x][y]!=null) {
-						obj.add(this.objects[x][y]);
-					}
 					if(getEntityAt(x, y)!=null) {
 						obj.add(getEntityAt(x, y));
 					}
@@ -845,7 +813,7 @@ public class Arena {
 		return null;
 	}
 	private MovementOption getMovementViabilityFor(int x, int y, int teamNr) {
-		if(data.getTileData()[y][x].getId()==Resources.WALL||data.getTileData()[y][x].getId()==Resources.TREE) {
+		if(data.getTileData()[y][x].isObstacle()) {
 			return MovementOption.OBSTACLE;
 		}
 		if(data.getTileData()[y][x].getId()==Resources.WATER) {
@@ -902,19 +870,7 @@ public class Arena {
 		}
 		removeTheDead();
 	}
-	private void endForEnhancements() {
-		for(int x = 0; x < this.objects.length; x++) {
-			for(int y =0; y < this.objects[0].length; y++) {
-				if(Enhancement.class.isInstance(this.objects[x][y])){
-					Enhancement e = Enhancement.class.cast(this.objects[x][y]);
-					for(SubEnhancement sub : e.getSubs()) {
-						sub.turn();
-					}
-					e.getSubs().removeIf(sub->sub.getDuration()==0);
-				}
-			}
-		}
-	}
+
 	private void turnsForNPC() {
 		for(Entity e: this.entities) {
 			if(NPC.class.isInstance(e)&&e.getTeam()==this.activeTeam) {
@@ -978,7 +934,7 @@ public class Arena {
 	}
 	private void endTurn() {
 		endForTeam();
-		endForEnhancements();
+		//endForEnhancements();
 		removeMovements();
 		removeSelectPlayer();
 		this.activeLarge.refresh();
@@ -1034,19 +990,7 @@ public class Arena {
 		}
 		return a;
 	}
-	private void paintO(SecondLayerObject[][] o) {
-		for(int y = 0; y < o[0].length; y++) {
-			for(int x= 0; x < o.length; x++) {
-				if(o[x][y]!=null) {
-					System.out.print("#");
-				}else {
-					System.out.print(" ");
-				}
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
+
 	private void paint(int[][] p) {
 		for(int y = 0; y < p[0].length; y++) {
 			for(int x= 0; x < p.length; x++) {
@@ -1097,7 +1041,7 @@ public class Arena {
 		}else if(e.getEventId().equals(		Connector.ATTACK)) {
 			basicAttack(e);
 		}else if(e.getEventId().equals(		Connector.INFO_OBJECT)) {
-			onSelectSmallEntity(Entity.class.cast(e.getObject()));
+			onSelectSmallEntity(Entity.class.cast(e.getEntity()));
 		}else if(e.getEventId().contains(	Connector.TAB_CHANGE)) {
 			onTabChange(e);
 		}else if(e.getEventId().equals(		Connector.SKILL_CHOSEN)) {

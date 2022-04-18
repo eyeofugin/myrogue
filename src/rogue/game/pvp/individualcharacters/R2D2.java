@@ -3,7 +3,7 @@ package rogue.game.pvp.individualcharacters;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.SkillLibrary;
-import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.entities.PlayableCharacter;
 
 public class R2D2 extends PlayableCharacter{
 	public R2D2() {
@@ -13,8 +13,8 @@ public class R2D2 extends PlayableCharacter{
 				getSkills(SkillLibrary.SCAN,SkillLibrary.SMOKE_SCREEN,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE),
 				DamageType.SHOCK,
 				Proficiency.INTELLIGENCE,
-				resistance(20,30,20,20,30,15,20,5,35),
-				multipliers(1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.1,1.0,1.0),
+				resistance(20,20,30,15,20,5,35),
+				multipliers(1.0,1.0,1.0,1.0,1.0,1.1,1.0,1.0),
 				proficiencies(10,0,35,0,5));
 	}
 }

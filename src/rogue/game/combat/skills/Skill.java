@@ -6,8 +6,8 @@ import java.util.List;
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.game.combat.skills.Skill.Effect.EffectType;
-import rogue.game.world.objects.Entity.Proficiency;
-import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.entities.Entity.Proficiency;
+import rogue.game.world.objects.entities.PlayableCharacter;
 
 public class Skill {
 	
@@ -185,9 +185,7 @@ public class Skill {
 	}
 	public static enum DamageType{
 		
-		PIERCING("Piercing"),
-		SLASHING("Slashing"),
-		BLUDGEONING("Bludgeoning"),
+		NORMAL("Normal"),
 		BURNING("Burning"),
 		FREEZING("Freezing"),
 		DARK("Dark"),

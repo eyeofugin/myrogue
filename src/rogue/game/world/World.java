@@ -4,7 +4,7 @@ import java.util.List;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.game.Init;
-import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.entities.PlayableCharacter;
 
 public class World {
 

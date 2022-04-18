@@ -10,13 +10,12 @@ import rogue.game.combat.skills.Skill;
 import rogue.game.combat.skills.Skill.Effect;
 import rogue.game.combat.skills.Skill.Effect.EffectType;
 import rogue.game.world.objects.BattleLog;
-import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.Entity.Proficiency;
-import rogue.game.world.objects.PlayableCharacter;
-import rogue.game.world.objects.SecondLayerObject;
+import rogue.game.world.objects.entities.Entity;
+import rogue.game.world.objects.entities.Entity.Proficiency;
+import rogue.game.world.objects.entities.PlayableCharacter;
 
 public class CombatManager {
-	static public boolean executeSkill(PlayableCharacter p, List<SecondLayerObject> os, Skill s, BattleLog log) {
+	static public boolean executeSkill(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
 		if(p.getCurrentActions()<s.getActionCost())
 			return false;
 		if(!p.useAction(s.getActionCost())) {
@@ -49,7 +48,7 @@ public class CombatManager {
 		return false;
 
 	}
-	static public boolean executeDamage(PlayableCharacter p, List<SecondLayerObject> os, Skill s, BattleLog log) {
+	static public boolean executeDamage(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
 		log.formulateUse(s.getName(), p.getName());
 		if(miss(s)) {
 			log.formulateMiss();
@@ -58,81 +57,75 @@ public class CombatManager {
 		int rawDamage = s.getSkillDamage(p);
 		int lethality = p.getProficiency(Proficiency.LETHALITY);
 		
-		for(SecondLayerObject o: os) {
-			if(Entity.class.isInstance(o)) {
-				Entity defender = Entity.class.cast(o);
-				if(defender.isIndestructible()) {
-					log.formulateIndesctructible(defender.getName());
-					continue;
-				}
-				int defense = defender.getResistance(s.getDamageType());
-				int damage = (int)(rdmize(rawDamage) * ((100+lethality)  /  (100+(double)rdmize(defense))));
-				defender.damage(damage);
-				log.formulateEffect(o.getName(),damage);
-				if(defender.getCurrentLife()<1) {
-					log.formulateDeath(o.getName());
-				}
-				
-				if(s.getEffects()!=null) {
-					for(Effect e : s.getEffects()) {
-						if(e.getType().equals(EffectType.STATUS_INFLICTION)||
-								e.getType().equals(EffectType.STAT_CHANGE)||
-								e.getType().equals(EffectType.OBJECT_PUSH)||
-								e.getType().equals(EffectType.OBJECT_PULL))
-							defender.addEffect(e);
-					}
+		for(Entity o: os) {
+			Entity defender = Entity.class.cast(o);
+			if(defender.isIndestructible()) {
+				log.formulateIndesctructible(defender.getName());
+				continue;
+			}
+			int defense = defender.getResistance(s.getDamageType());
+			int damage = (int)(rdmize(rawDamage) * ((100+lethality)  /  (100+(double)rdmize(defense))));
+			defender.damage(damage);
+			log.formulateEffect(o.getName(),damage);
+			if(defender.getCurrentLife()<1) {
+				log.formulateDeath(o.getName());
+			}
+			
+			if(s.getEffects()!=null) {
+				for(Effect e : s.getEffects()) {
+					if(e.getType().equals(EffectType.STATUS_INFLICTION)||
+							e.getType().equals(EffectType.STAT_CHANGE)||
+							e.getType().equals(EffectType.OBJECT_PUSH)||
+							e.getType().equals(EffectType.OBJECT_PULL))
+						defender.addEffect(e);
 				}
 			}
+			
 		}
 		return true;
 	}
-	static public boolean executeHeal(PlayableCharacter p, List<SecondLayerObject> os, Skill s, BattleLog log) {
+	static public boolean executeHeal(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
 		log.formulateUse(s.getName(), p.getName());
 		if(miss(s)) {
 			log.formulateMiss();
 			return false;
 		}
 		int heal = s.getSkillDamage(p);
-		for(SecondLayerObject o: os) {
-			if(Entity.class.isInstance(o)) {
-				Entity target = Entity.class.cast(o);
-				if(target.isCursed()) {
-					log.formulate(target.getName(),"cursed");
-					continue;
-				}
-				target.heal(heal);
-				log.formulateHeal(o.getName(),heal);
-				if(s.getEffects()!=null) {
-					for(Effect e : s.getEffects()) {
-						if(e.getType().equals(EffectType.STATUS_INFLICTION)||
-								e.getType().equals(EffectType.STAT_CHANGE))
-							target.addEffect(e);
-					}
+		for(Entity o: os) {
+			Entity target = Entity.class.cast(o);
+			if(target.isCursed()) {
+				log.formulate(target.getName(),"cursed");
+				continue;
+			}
+			target.heal(heal);
+			log.formulateHeal(o.getName(),heal);
+			if(s.getEffects()!=null) {
+				for(Effect e : s.getEffects()) {
+					if(e.getType().equals(EffectType.STATUS_INFLICTION)||
+							e.getType().equals(EffectType.STAT_CHANGE))
+						target.addEffect(e);
 				}
 			}
 		}
 		return true;
 	}
-	static public boolean executeEnhancement(PlayableCharacter p, List<SecondLayerObject> os, Skill s, BattleLog log) {
+	static public boolean executeEnhancement(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
 		log.formulateUse(s.getName(), p.getName());
 		if(miss(s)) {
 			log.formulateMiss();
 			return false;
 		}
-		for(SecondLayerObject o: os) {
-			if(Entity.class.isInstance(o)) {
-				Entity target = Entity.class.cast(o);
-				
-				if(s.getEffects()!=null) {
-					for(Effect e : s.getEffects()) {
-						if(e.getType().equals(EffectType.STATUS_INFLICTION)||
-								e.getType().equals(EffectType.STAT_CHANGE) || 
-								e.getType().equals(EffectType.TRANSFORMATION )||
-								e.getType().equals(EffectType.BLOCK_ABILITY))
-							target.addEffect(e);
-					}
+		for(Entity o: os) {
+			Entity target = Entity.class.cast(o);
+			
+			if(s.getEffects()!=null) {
+				for(Effect e : s.getEffects()) {
+					if(e.getType().equals(EffectType.STATUS_INFLICTION)||
+							e.getType().equals(EffectType.STAT_CHANGE) || 
+							e.getType().equals(EffectType.TRANSFORMATION )||
+							e.getType().equals(EffectType.BLOCK_ABILITY))
+						target.addEffect(e);
 				}
-				
 			}
 		}
 		return true;
@@ -149,12 +142,12 @@ public class CombatManager {
 		
 		return true;
 	}
-	static public boolean executePassive(PlayableCharacter p, List<SecondLayerObject> os, Skill s, BattleLog log) {
+	static public boolean executePassive(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
 		
 		return true;
 	}
 
-	static public void normalMelee(SecondLayerObject p, SecondLayerObject o, BattleLog log) {
+	static public void normalMelee(Entity p, Entity o, BattleLog log) {
 		
 		log.formulateUse("Basic attack", p.getName());
 		

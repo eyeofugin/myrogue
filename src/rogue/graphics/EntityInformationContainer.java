@@ -4,22 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.skills.Skill;
-import rogue.game.combat.skills.SkillLibrary;
-import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.Skill.Effect;
 import rogue.game.combat.skills.Skill.Effect.EffectType;
 import rogue.game.combat.skills.Skill.Effect.StatChange;
-import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.Entity.CharacterTab;
-import rogue.game.world.objects.Entity.Proficiency;
+import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.world.objects.Equipment;
-import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.entities.Entity;
+import rogue.game.world.objects.entities.Entity.CharacterTab;
+import rogue.game.world.objects.entities.PlayableCharacter;
 import util.IconRow;
 import util.MyColor;
 import util.StndColumn;
@@ -203,7 +200,7 @@ public class EntityInformationContainer extends InformationContainer{
 			Event click = new Event();
 			click.setEventId(this.prefix+this.connector.TAB_CHANGE);
 			click.setTab(this.tabs[i]);
-			click.setObject(this.copy);
+			click.setEntity(this.copy);
 			
 			this.connector.addEvent(startX+this.offsetLeft,TAB_Y_FROM+this.offsetTop,tabSize,TAB_HEIGHT,click);
 			

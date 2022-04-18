@@ -15,11 +15,11 @@ import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.BattleLog;
-import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.NPC;
-import rogue.game.world.objects.PlayableCharacter;
-import rogue.game.world.objects.SecondLayerObject;
 import rogue.game.world.objects.Tile;
+import rogue.game.world.objects.SecondLayerObject;
+import rogue.game.world.objects.entities.Entity;
+import rogue.game.world.objects.entities.NPC;
+import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.BaseActionContainer;
 import rogue.graphics.EntityInformationContainer;
 import util.Highlight;
@@ -82,8 +82,6 @@ public class Room {
 	
 	//init
 	public void initiallyPlacePlayer(PlayableCharacter player) {
-		player.setX(xPlayerStart);
-		player.setY(yPlayerStart);
 		entities.add(player);
 		objects[xPlayerStart][yPlayerStart] = player;
 		activeCharacter = player;
@@ -225,7 +223,7 @@ public class Room {
 				if(highlights[x][y]!=null
 						&& x>=xOffset && y>=yOffset) {
 					
-					highlights[x][y].printHighlight(p, x, y, xOffset, yOffset);
+					highlights[x][y].printHighlight(p, x, y);
 
 				}
 			}

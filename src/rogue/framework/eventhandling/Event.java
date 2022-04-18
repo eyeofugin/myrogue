@@ -1,16 +1,14 @@
 package rogue.framework.eventhandling;
 
-import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.Entity.CharacterTab;
-import rogue.game.world.objects.PlayableCharacter;
-import rogue.game.world.objects.SecondLayerObject;
+import rogue.game.world.objects.entities.Entity;
+import rogue.game.world.objects.entities.Entity.CharacterTab;
+import rogue.game.world.objects.entities.PlayableCharacter;
 
 public class Event {
 
 	private String eventId;
 	
 	private PlayableCharacter character;
-	private SecondLayerObject object;
 	private Entity entity;
 	private int skill;
 	private CharacterTab tab;
@@ -28,12 +26,6 @@ public class Event {
 	}
 	public void setCharacter(PlayableCharacter character) {
 		this.character = character;
-	}
-	public SecondLayerObject getObject() {
-		return object;
-	}
-	public void setObject(SecondLayerObject object) {
-		this.object = object;
 	}
 	public CharacterTab getTab() {
 		return tab;

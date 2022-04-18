@@ -13,10 +13,9 @@ import rogue.game.Init;
 import rogue.game.pvp.CharacterLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.Arena;
-import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import rogue.graphics.InformationContainer;
-import util.MovementOption;
 import util.MyColor;
 import util.TextAlignment;
 import util.TextEditor;
@@ -206,7 +205,7 @@ public class ArenaState extends State{
 	@Override
 	protected void mouseClicked(Event e) {
 		if(e.getEventId().equals("selectPlayerEvent")) {
-			activeCharacter = getCharacter(e.getObject().getName());
+			activeCharacter = getCharacter(e.getEntity().getName());
 		}
 		this.arena.mouseClicked(e);
 		if(e.getEventId().equals(this.connector.END_TURN)) {

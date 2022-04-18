@@ -9,14 +9,12 @@ import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.framework.states.State;
 import rogue.game.world.World;
-import rogue.game.world.objects.Entity;
-import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.entities.Entity;
+import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import rogue.graphics.InformationContainer;
-import util.MovementOption;
 import util.MyColor;
 import util.TextAlignment;
-import util.TextEditor;
 
 public class DungeonState extends State{
 

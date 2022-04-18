@@ -74,7 +74,7 @@ public class Connector {
 		for(int x = 0; x < context.length; x++) {
 			for(int y = 0; y < context[0].length; y++) {
 				if(this.context[x][y] != null &&
-						this.context[x][y].getObject().getName().equals(object)) {
+						this.context[x][y].getEntity().getName().equals(object)) {
 					this.context[x][y] = null;	
 				}
 			}
@@ -123,8 +123,8 @@ public class Connector {
 	public void clearMovement(String name) {
 		for(int i = mapXFrom; i <= mapXUntil; i++ ) {
 			for(int j = 0; j < y; j++) {
-				if(this.events[i][j] != null && this.events[i][j].getObject()!=null&&
-						this.events[i][j].getObject().getName().equals(name)) {
+				if(this.events[i][j] != null && this.events[i][j].getEntity()!=null&&
+						this.events[i][j].getEntity().getName().equals(name)) {
 					this.events[i][j] = null;	
 				}
 			}

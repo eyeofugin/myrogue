@@ -11,7 +11,7 @@ import rogue.game.combat.skills.Skill.Multiplier;
 import rogue.game.combat.skills.Skill.Effect.EffectType;
 import rogue.game.combat.skills.Skill.Effect.StatChange;
 import rogue.game.combat.skills.Skill.Effect.StatusInfliction;
-import rogue.game.world.objects.Entity.Proficiency;
+import rogue.game.world.objects.entities.Entity.Proficiency;
 import rogue.game.world.objects.ObjectLibrary;
 
 public class SkillLibrary {
@@ -132,7 +132,7 @@ public class SkillLibrary {
 						"Hateful Swing",
 						"User performs slashing attack fueled with rage.",
 						TargetType.SINGLE_TARGET,
-						DamageType.SLASHING,
+						DamageType.NORMAL,
 						new Effect[] {
 								new Effect(
 										EffectType.STATUS_INFLICTION,
@@ -152,7 +152,7 @@ public class SkillLibrary {
 						"Weapon Throw",
 						"User hurls his weapon.",
 						TargetType.LINE,
-						DamageType.SLASHING,
+						DamageType.NORMAL,
 						new Effect[] {},
 						new Multiplier[] {
 								new Multiplier(Proficiency.PRECISION,0.3)
@@ -218,7 +218,7 @@ public class SkillLibrary {
 						"Righteous Swing",
 						"",
 						TargetType.SINGLE_TARGET,
-						DamageType.SLASHING,
+						DamageType.NORMAL,
 						new Effect[] {
 								new Effect(EffectType.STATUS_INFLICTION,2,10,StatusInfliction.BURNING,null)
 						},
@@ -361,7 +361,7 @@ public class SkillLibrary {
 				}, 
 				30, 100, 4, 1, 40, 0, 3));
 		skills.put(ARROW_BARRAGE, Skill.getDamageSkill(ARROW_BARRAGE, "Arrow Barrage", "", 
-				TargetType.SINGLE_TARGET, DamageType.PIERCING, 
+				TargetType.SINGLE_TARGET, DamageType.NORMAL, 
 				null,
 				new Multiplier[] {
 						new Multiplier(Proficiency.PRECISION,0.3)
@@ -369,7 +369,7 @@ public class SkillLibrary {
 				20, 100, 4, 1, 40, 0, 3));
 		skills.put(ARROW_SHOTS,Skill.getDamageSkill(ARROW_SHOTS,
 				"Arrow Shots","", 
-				TargetType.LINE,DamageType.PIERCING, 
+				TargetType.LINE,DamageType.NORMAL, 
 				null, new Multiplier[] {new Multiplier(Proficiency.PRECISION,0.2)},
 				20, 90, 3, 0, 30, 0, 2));
 		skills.put(AVADA_KEDAVRA,null);
@@ -381,7 +381,7 @@ public class SkillLibrary {
 				"Bludger",
 				"",
 				TargetType.LINE,
-				DamageType.BLUDGEONING,
+				DamageType.NORMAL,
 				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,2,1,StatusInfliction.PARALYSED,null)},
 				new Multiplier[] {
 						new Multiplier(Proficiency.INTELLIGENCE,0.3)
@@ -503,7 +503,7 @@ public class SkillLibrary {
 				new Multiplier[] {
 						new Multiplier(Proficiency.INTELLIGENCE,0.1)
 				},
-				30, 90, 1, 0, 30, 0, 3));
+				30, 90, 3, 0, 30, 0, 3));
 		skills.put(TALL_GRASS,Skill.getSummonObjSkill(TALL_GRASS, "TALL_GRASS", "", 
 				2, 1, 20, 5, 1, Resources.TALLGRASS));
 		skills.put(TARNING,Skill.getPassive(TARNING, "Tarning", "",
@@ -536,7 +536,7 @@ public class SkillLibrary {
 				0, 0,
 				40, 0, 3));
 		skills.put(WEAPON_SWING,Skill.getDamageSkill(WEAPON_SWING, "Weapon Swing", "",
-				TargetType.SURROUNDING, DamageType.SLASHING,
+				TargetType.SURROUNDING, DamageType.NORMAL,
 				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,5,StatusInfliction.BLEEDING,null)}, 
 				new Multiplier[] {
 						new Multiplier(Proficiency.STRENGTH,0.1)},
@@ -555,7 +555,7 @@ public class SkillLibrary {
 				30, 0, 4,
 				Resources.ZOMBIE));
 		skills.put(HEART_SHOT,Skill.getDamageSkill(HEART_SHOT, "Heart Shot", "",
-				TargetType.SINGLE_TARGET, DamageType.PIERCING, 
+				TargetType.SINGLE_TARGET, DamageType.NORMAL, 
 				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,3,1,StatusInfliction.PARALYSED,null)},
 				new Multiplier[] {
 						new Multiplier(Proficiency.PRECISION,0.8)
@@ -577,7 +577,7 @@ public class SkillLibrary {
 								0,
 								null,
 								new StatChange(
-										DamageType.BLUDGEONING,
+										DamageType.NORMAL,
 										0.2,
 										null,
 										0)
@@ -587,7 +587,7 @@ public class SkillLibrary {
 								0,
 								null,
 								new StatChange(
-										DamageType.SLASHING,
+										DamageType.NORMAL,
 										0.2,
 										null,
 										0)
@@ -597,7 +597,7 @@ public class SkillLibrary {
 								0,
 								null,
 								new StatChange(
-										DamageType.PIERCING,
+										DamageType.NORMAL,
 										0.2,
 										null,
 										0)

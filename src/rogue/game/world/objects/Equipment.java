@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import rogue.game.combat.skills.Skill.DamageType;
-import rogue.game.world.objects.Entity.Proficiency;
+import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class Equipment {
 

@@ -4,30 +4,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 import rogue.framework.resources.Resources;
-import rogue.game.world.objects.SubEnhancement.Level;
+import rogue.game.world.objects.tiles.Enhancement;
+import rogue.game.world.objects.tiles.Enhancement.Level;
 
 public class ObjectLibrary {
 	
-	private static Map<Integer,SubEnhancement> obj = new HashMap<>();
+	private static Map<Integer,Enhancement> enh = new HashMap<>();
 	
 	public static void init() {
-		obj.put(Resources.TALLGRASS,new SubEnhancement(Resources.TALLGRASS,Level.TOP,false,true,-1,true,true));
-		obj.put(Resources.TREE,new SubEnhancement(Resources.TREE,Level.TOP,true,true,-1,true,true));
-		obj.put(Resources.SMOKE_SCREEN,new SubEnhancement(Resources.SMOKE_SCREEN,Level.SUB,false,true,3,true,true));
-		obj.put(Resources.HORCRUX,new SubEnhancement(Resources.HORCRUX,Level.SUB,false,false,-1,true,true));
+		enh.put(Resources.TALLGRASS,new Enhancement(Resources.TALLGRASS,Level.TOP,true,true,false,true,-1));
+		enh.put(Resources.TREE,new Enhancement(Resources.TREE,Level.TOP,true,true,true,true,-1));
+		enh.put(Resources.SMOKE_SCREEN,new Enhancement(Resources.SMOKE_SCREEN,Level.SUB,true,true,false,true,3));
+		enh.put(Resources.HORCRUX,new Enhancement(Resources.HORCRUX,Level.SUB,true,true,false,false,-1));
 	}
 	
-	public static SubEnhancement getEnhancement(int id) {
-		if( obj.get(id)==null) {
+	public static Enhancement getEnhancement(int id) {
+		if( enh.get(id)==null) {
 			return null;
 		}
-		SubEnhancement e = new SubEnhancement();
+		Enhancement e = new Enhancement();
 		e.setId(id);
-		e.setDuration(obj.get(id).getDuration());
-		e.setSolid(obj.get(id).isSolid());
-		e.setBlockVisibility(obj.get(id).isBlockVisibility());
-		e.setShowEnemy(obj.get(id).isShowEnemy());
-		e.setShowTeam(obj.get(id).isShowTeam());
+		e.setDuration(enh.get(id).getDuration());
+		e.setSolid(enh.get(id).isSolid());
+		e.setBlockVis(enh.get(id).isBlockVis());
+		e.setVisEnemy(enh.get(id).isVisEnemy());
+		e.setVisTeam(enh.get(id).isVisTeam());
 		return e;
 	}
 }

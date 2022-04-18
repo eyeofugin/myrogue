@@ -2,7 +2,7 @@ package rogue.graphics;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.resources.Resources;
-import rogue.game.world.objects.Entity;
+import rogue.game.world.objects.entities.Entity;
 import util.TextEditor.TextEditorConfig;
 
 public class NPEInformationContainer extends InformationContainer{

@@ -21,7 +21,7 @@ import rogue.game.pvp.individualcharacters.R2D2;
 import rogue.game.pvp.individualcharacters.Radagast;
 import rogue.game.pvp.individualcharacters.Sam;
 import rogue.game.pvp.individualcharacters.Voldemort;
-import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.entities.PlayableCharacter;
 
 public class CharacterLibrary {
 

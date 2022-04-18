@@ -3,8 +3,8 @@ package rogue.game.pvp;
 import java.util.ArrayList;
 import java.util.List;
 
-import rogue.game.world.objects.NPC;
-import rogue.game.world.objects.PlayableCharacter;
+import rogue.game.world.objects.entities.NPC;
+import rogue.game.world.objects.entities.PlayableCharacter;
 
 public class Team {
 	
