@@ -16,6 +16,7 @@ public class ObjectLibrary {
 		enh.put(Resources.TREE,new Enhancement(Resources.TREE,Level.TOP,true,true,true,true,-1));
 		enh.put(Resources.SMOKE_SCREEN,new Enhancement(Resources.SMOKE_SCREEN,Level.SUB,true,true,false,true,3));
 		enh.put(Resources.HORCRUX,new Enhancement(Resources.HORCRUX,Level.SUB,true,true,false,false,-1));
+		enh.put(Resources.WATER,new Enhancement(Resources.WATER,Level.TOP,true,true,true,false,-1));
 	}
 	
 	public static Enhancement getEnhancement(int id) {

@@ -1,6 +1,5 @@
 package rogue.framework;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -8,8 +7,6 @@ import java.awt.event.MouseListener;
 
 import rogue.framework.gui.WindowManager;
 import rogue.framework.states.StateManager;
-import rogue.game.states.DungeonState;
-import rogue.game.states.MainMenu;
 
 public class Engine {
 
@@ -22,7 +19,7 @@ public class Engine {
 	private static final int Y = 1080;
 	private static final int MAP_X_FROM = 420;
 	private static final int MAP_X_UNTIL = 1499;
-	public static int turn=0;
+	public static int turn=0; 
 	
 
 	public static void init() {	

@@ -29,7 +29,7 @@ public class Entity {
 	private int portraitId = 0;
 	private Integer appearance = null;
 	
-	private Skill[] skills;
+	private List<Skill> skills;
 	private List<Equipment> equipments = new ArrayList<>();
 	private CharacterTab activeTab = CharacterTab.STATS;
 	
@@ -71,7 +71,7 @@ public class Entity {
 	}
 	
 	public Entity(int id, int portraitId, String name, int team,
-			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,Skill[] skills,DamageType std,Proficiency stdP,
+			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,List<Skill> skills,DamageType std,Proficiency stdP,
 			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
 		this.id = id;
 		this.portraitId = portraitId;
@@ -117,15 +117,16 @@ public class Entity {
 		}
 	}
 	
-	protected static Skill[] getSkills(int s1, int s2, int s3, int s4, int s5, int s6) {
-		return new Skill[] {
-			SkillLibrary.getSkill(s1),
-			SkillLibrary.getSkill(s2),
-			SkillLibrary.getSkill(s3),
-			SkillLibrary.getSkill(s4),
-			SkillLibrary.getSkill(s5),
-			SkillLibrary.getSkill(s6)
-		};
+	protected static List<Skill> getSkills(int s1, int s2, int s3, int s4, int s5, int s6) {
+		List<Skill> skills = new ArrayList<>();
+		if(s1!=0) {skills.add(SkillLibrary.getSkill(s1));}
+		if(s2!=0) {skills.add(SkillLibrary.getSkill(s2));}
+		if(s3!=0) {skills.add(SkillLibrary.getSkill(s3));}
+		if(s4!=0) {skills.add(SkillLibrary.getSkill(s4));}
+		if(s5!=0) {skills.add(SkillLibrary.getSkill(s5));}
+		if(s6!=0) {skills.add(SkillLibrary.getSkill(s6));}
+		
+		return skills;
 	}
 	protected static Map<DamageType,Integer> resistance(int normal,int burn,int dark,int freeze,int light,int psych,int shock){
 		Map<DamageType,Integer> resistances = new HashMap<>();
@@ -198,7 +199,7 @@ public class Entity {
 		}
 	}
 	private void endBlock(Effect e) {
-		this.skills[e.getIntensity()].setBlocked(false);
+		//this.skills[e.getIntensity()].setBlocked(false);
 	}
 	private void endStatChange(Effect e) {
 		StatChange sc = e.getStatChange();
@@ -229,7 +230,7 @@ public class Entity {
 		this.setAppearance(null);
 	}
 	public void applyBlock(Effect e) {
-		this.skills[e.getIntensity()].setBlocked(true);
+		//this.skills[e.getIntensity()].setBlocked(true);
 	}
 	public void addEffect(Effect e) {
 		Effect copy = new Effect();
@@ -568,10 +569,10 @@ public class Entity {
 		public void setEquipments(List<Equipment> equipments) {
 			this.equipments = equipments;
 		}
-		public Skill[] getSkills() {
+		public List<Skill> getSkills() {
 			return skills;
 		}
-		public void setSkills(Skill[]skills) {
+		public void setSkills(List<Skill>skills) {
 			this.skills = skills;
 		}
 		public int getLevel() {
@@ -664,7 +665,7 @@ public class Entity {
 
 		@Override
 		public String toString() {
-			return "Entity [name="+this.name+", skills=" + Arrays.toString(skills) + ", equipments=" + equipments
+			return "Entity [name="+this.name + ", equipments=" + equipments
 					+ ", activeTab=" + activeTab + ", level=" + level + ", maxLife=" + maxLife + ", currentLife="
 					+ currentLife + ", maxMana=" + maxMana + ", currentMana=" + currentMana + ", currentActions=" + currentActions
 					+ ", maxActions=" + maxActions + ", currentMovement=" + currentMovement + ", maxMovement=" + maxMovement

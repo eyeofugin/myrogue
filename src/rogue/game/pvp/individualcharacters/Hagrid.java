@@ -11,7 +11,7 @@ public class Hagrid extends PlayableCharacter{
 	public Hagrid() {
 		super(Resources.HAGRID,"Hagrid",Resources.P_LUKE,0,
 				20,5,60,10,4,2,1,
-				getSkills(SkillLibrary.ARAGOG,SkillLibrary.FLUFFY,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE,SkillLibrary.NONE),
+				getSkills(SkillLibrary.ARAGOG,SkillLibrary.FLUFFY,0,0,0,0),
 				DamageType.NORMAL,
 				Proficiency.STRENGTH,
 				resistance(20,20,30,15,20,5,35),

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import rogue.framework.resources.Resources;
+import rogue.game.world.objects.ObjectLibrary;
 import rogue.game.world.objects.entities.Entity;
 
 public class Tile {
@@ -15,6 +17,12 @@ public class Tile {
 	
 	public Tile(int id) {
 		this.id=id;
+		if(id==Resources.TREE) {
+			enhancements.add(ObjectLibrary.getEnhancement(id));				
+		}
+		if(id==Resources.TALLGRASS ) {
+			enhancements.add(ObjectLibrary.getEnhancement(id));				
+		}
 	}
 	
 	public void turn() {

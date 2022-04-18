@@ -92,14 +92,14 @@ public class ArenaState extends State{
 				}
 			}
 			//getButtons(pixels);
-			int[] minimap = roomPixels.get(3);
-			int minimapIndex=0;
-			for(int i = Property.MINIMAP_Y_FROM; i < Property.MINIMAP_Y_UNTIL; i++) {
-				for(int j = Property.MINIMAP_X_FROM; j < Property.MINIMAP_X_UNTIL; j++) {
-					pixels[j+i*Property.END_OF_X] = minimap[minimapIndex];
-					minimapIndex++;
-				}
-			}
+//			int[] minimap = roomPixels.get(3);
+//			int minimapIndex=0;
+//			for(int i = Property.MINIMAP_Y_FROM; i < Property.MINIMAP_Y_UNTIL; i++) {
+//				for(int j = Property.MINIMAP_X_FROM; j < Property.MINIMAP_X_UNTIL; j++) {
+//					pixels[j+i*Property.END_OF_X] = minimap[minimapIndex];
+//					minimapIndex++;
+//				}
+//			}
 			
 			int[] log = roomPixels.get(5);
 			int logIndex=0;

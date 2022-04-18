@@ -89,6 +89,8 @@ public class EntityInformationContainer extends InformationContainer{
 	private static int C_SKILLS_ICONS_Y_UNTIL 		= C_SKILLS_ICONS_Y_FROM + C_SKILLS_HEIGHT-1;
 	private static int C_SKILLS_ICONS_X_FROM  		= 0;
 	private static int C_SKILLS_ICONS_X_UNTIL 		= C_SKILLS_ICONS_X_FROM+C_SKILLS_WIDTH-1;
+	private static int NEW_ICON_X_FROM 				= 15;
+	private static int NEW_DESCR_X_FROM 			= 55;
 	
 	public static final EntityInformationContainerConfig PLAYER_CONFIG = 
 			new EntityInformationContainerConfig("MAIN_CANVAS",420, 600, 1500, 0, new CharacterTab[] {
@@ -297,31 +299,42 @@ public class EntityInformationContainer extends InformationContainer{
 		return asArray;
 	}
 	private void printSkills() {
-		Skill[] characterSkills = this.copy.getSkills();
+		List<Skill> characterSkills = this.copy.getSkills();
 		if(characterSkills!=null) {
-			int[] skillIds = new int[characterSkills.length];
-			Event[] skillEvents = new Event[characterSkills.length];
-			for(int i = 0; i < characterSkills.length; i++) {
-				if(characterSkills[i].isBlocked()) {
-					skillIds[i]=SkillLibrary.NONE;
-					skillEvents[i]=new Event();
-				}else {
-					skillIds[i] = characterSkills[i].getId();
-					skillEvents[i] = characterSkills[i].getEvent();
-				}
+			int xf = NEW_ICON_X_FROM;
+			int xu = NEW_ICON_X_FROM+ICON_SIZE;
+			int yf = C_SKILLS_ICONS_Y_FROM;
+			int yu = C_SKILLS_ICONS_Y_UNTIL;
+			for(Skill s : characterSkills) {
+				fillWithGraphics(xf, xu-1, yf, yf+ICON_SIZE-1, Resources.PORTRAITSx32.get(s.getId()), true);
+				writeLine(s.getDescription(), NEW_DESCR_X_FROM, C_SKILLS_ICONS_X_UNTIL, yf, yf+ICON_SIZE-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+				this.connector.addEvent(xf+this.offsetLeft,+yf+this.offsetTop, ICON_SIZE, ICON_SIZE, s.getEvent());
+				yf+=C_SKILLS_HEIGHT;
 			}
-			IconRow characterSkillIconRow = new IconRow(skillEvents, skillIds, C_SKILLS_WIDTH, C_SKILLS_HEIGHT);
-			int iconRowIndex=0;
-			//print(characterSkillIconRow.getPixels(),C_SKILLS_WIDTH,C_SKILLS_HEIGHT);
-			for(int y = C_SKILLS_ICONS_Y_FROM; y <= C_SKILLS_ICONS_Y_UNTIL; y++) {
-				for(int x = C_SKILLS_ICONS_X_FROM; x <= C_SKILLS_ICONS_X_UNTIL; x++) {
-					pixels[x+y*this.width] = characterSkillIconRow.getPixels()[iconRowIndex];
-					iconRowIndex++;
-				}
-			}
-			for(Event e : characterSkillIconRow.getEvents()) {
-				this.connector.addEvent(C_SKILLS_ICONS_X_FROM+e.getX()+this.offsetLeft,C_SKILLS_ICONS_Y_FROM+e.getY()+this.offsetTop, ICON_SIZE, ICON_SIZE, e);
-			}
+//			int[] skillIds = new int[characterSkills.size()];
+//			Event[] skillEvents = new Event[characterSkills.size()];
+//			for(int i = 0; i < characterSkills.size(); i++) {
+//				if(characterSkills[i].isBlocked()) {
+//					skillIds[i]=SkillLibrary.NONE;
+//					skillEvents[i]=new Event();
+//				}else {
+//					skillIds[i] = characterSkills[i].getId();
+//					skillEvents[i] = characterSkills[i].getEvent();
+//				}
+//			}
+//			
+//			IconRow characterSkillIconRow = new IconRow(skillEvents, skillIds, C_SKILLS_WIDTH, C_SKILLS_HEIGHT);
+//			int iconRowIndex=0;
+//			//print(characterSkillIconRow.getPixels(),C_SKILLS_WIDTH,C_SKILLS_HEIGHT);
+//			for(int y = C_SKILLS_ICONS_Y_FROM; y <= C_SKILLS_ICONS_Y_UNTIL; y++) {
+//				for(int x = C_SKILLS_ICONS_X_FROM; x <= C_SKILLS_ICONS_X_UNTIL; x++) {
+//					pixels[x+y*this.width] = characterSkillIconRow.getPixels()[iconRowIndex];
+//					iconRowIndex++;
+//				}
+//			}
+//			for(Event e : characterSkillIconRow.getEvents()) {
+//				this.connector.addEvent(C_SKILLS_ICONS_X_FROM+e.getX()+this.offsetLeft,C_SKILLS_ICONS_Y_FROM+e.getY()+this.offsetTop, ICON_SIZE, ICON_SIZE, e);
+//			}
 		}
 	}
 	

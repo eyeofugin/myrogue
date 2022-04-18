@@ -9,7 +9,6 @@ import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Property;
 import rogue.game.states.ArenaState;
-import rogue.game.states.DungeonState;
 
 
 public class StateManager {
@@ -23,10 +22,6 @@ public class StateManager {
 	public StateManager(int x, int y, int mapXFrom, int mapXUntil) {
 		states = new Stack<State>();
 		connector = new Connector(x,y,mapXFrom,mapXUntil);
-	}
-	public void stackDungeonState() {
-		DungeonState state = new DungeonState(this.connector);
-		states.add(state);
 	}
 	public void stackArenaState() {
 		ArenaState state = new ArenaState(this.connector);

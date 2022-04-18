@@ -187,6 +187,7 @@ public class Arena {
 				Tile t = data.getTileData()[tileY+yOffset][tileX+xOffset];
 				
 				int[] graphics = Resources.TEXTURES.get(getBaseTextureOf(t.getId()));
+				
 				if(this.visionField[tileX+xOffset][tileY+yOffset]) {
 					p[x + y*Property.ROOM_SIZE] = graphics[xInTile+yInTile*Property.TILE_SIZE];
 				}else {
@@ -239,10 +240,10 @@ public class Arena {
 		return p;
 	}
 	private int[] renderEnhancements(int[] p) {
-		for(int x = 0; x < this.tiles.length; x++) {
+		for(int x = 0; x < this.tiles.length;x++) {
 			for(int y =0; y < this.tiles[0].length; y++) {
 		
-				Tile t = this.tiles[x][y];
+				Tile t = this.tiles[y][x];
 				for(Enhancement e : t.getEnhancements()) {
 					if(!e.isVisTeam()) {
 						continue;
@@ -580,7 +581,7 @@ public class Arena {
 						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
 								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
 					Enhancement enh = ObjectLibrary.getEnhancement(s.getSummonedId());
-					this.tiles[x][y].addEnhancement(enh);
+					this.tiles[y][x].addEnhancement(enh);
 				}
 			}
 		}

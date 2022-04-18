@@ -1,15 +1,13 @@
 package rogue.game.npc;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import rogue.framework.resources.Resources;
-import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.Skill;
 import rogue.game.combat.skills.SkillLibrary;
+import rogue.game.npc.individualnpcs.Aragog;
 import rogue.game.npc.individualnpcs.Zombie;
 import rogue.game.pvp.CharacterLibrary;
-import rogue.game.world.objects.entities.Entity.Proficiency;
 import rogue.game.world.objects.entities.NPC;
 
 public class NPCLibrary extends CharacterLibrary{
@@ -26,6 +24,7 @@ public class NPCLibrary extends CharacterLibrary{
 //				multipliers(1.0, 0.2, 0.0, 0.2, 1.6, 1.0, 0.0, 1.2, 1.2,1.0),
 //				proficiencies(55, 95, 10, 0, 15)
 //				));
+		npcs.put(Resources.ARAGOG,new Aragog());
 		npcs.put(Resources.ZOMBIE, new Zombie());
 //		npcs.put(Resources.ARAGOG, new NPC(
 //				Resources.ARAGOG,"Aragog",Resources.SKELETONMALE,0,

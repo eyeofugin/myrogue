@@ -3,6 +3,7 @@ package rogue;
 import rogue.framework.Engine;
 import rogue.framework.resources.Loader;
 
+//V 1_0
 public class Main {
 	
 	public static void main(String[] args) {
