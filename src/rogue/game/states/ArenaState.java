@@ -13,6 +13,7 @@ import rogue.game.Init;
 import rogue.game.pvp.CharacterLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.Arena;
+import rogue.game.world.Draft;
 import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import rogue.graphics.InformationContainer;
@@ -23,11 +24,13 @@ import util.TextEditor;
 public class ArenaState extends State{
 
 	private Arena arena;
+	private Draft draft;
 	private List<Team> teams = new ArrayList<Team>();
 	private int activePointer;
 	private int maxPointer;
 	private PlayableCharacter activeCharacter;
 	private boolean inChangeTeam=false;
+	private boolean inDraft = true;
 	private EntityInformationContainer activeCharacterCanvas;
 	
 	public ArenaState(Connector connector) {
@@ -38,6 +41,7 @@ public class ArenaState extends State{
 		this.arena = new Arena(Init.ROOMS[1],this.connector);
 		this.arena.initTeams(teams);
 		this.arena.openViewForTeamNr(1);
+		this.draft=new Draft();
 		this.activePointer=1;
 		this.maxPointer=teams.size();
 	}
@@ -55,6 +59,18 @@ public class ArenaState extends State{
 		
 		if(inChangeTeam) {
 			getChangeConfirm(pixels);
+		}else if(inDraft){
+			List<int[]>  draftPixels = this.draft.render();
+			
+			int[] options = draftPixels.get(0);
+			
+			int indexOptions = 0;
+			for(int i = Property.START_OF_ROOM_Y; i < Property.END_OF_ROOM_Y; i++) {
+				for(int j = Property.START_OF_ROOM_X; j < Property.END_OF_ROOM_X; j++) {
+					pixels[j+i*Property.END_OF_X] = options[indexOptions];
+					indexOptions++;
+				}
+			}
 		}else {
 			
 			List<int[]> roomPixels = this.arena.render();
@@ -92,6 +108,15 @@ public class ArenaState extends State{
 				}
 			}
 			//getButtons(pixels);
+			int[] card = roomPixels.get(3);
+			
+			int index = 0;
+			for(int y = 600; y < 1000; y++) {
+				for(int x = 30; x < 330; x++) {
+					pixels[x+y*Property.END_OF_X] = card[index];
+					index++;
+				}
+			}
 //			int[] minimap = roomPixels.get(3);
 //			int minimapIndex=0;
 //			for(int i = Property.MINIMAP_Y_FROM; i < Property.MINIMAP_Y_UNTIL; i++) {

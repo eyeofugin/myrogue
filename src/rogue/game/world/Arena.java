@@ -20,6 +20,7 @@ import rogue.game.combat.skills.Skill.TargetType;
 import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.npc.NPCLibrary;
 import rogue.game.pvp.Team;
+import rogue.game.pvp.individualcharacters.Gimli;
 import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.BattleLog;
 import rogue.game.world.objects.ObjectLibrary;
@@ -30,6 +31,7 @@ import rogue.game.world.objects.tiles.Enhancement;
 import rogue.game.world.objects.tiles.Tile;
 import rogue.graphics.BaseActionContainer;
 import rogue.graphics.EntityInformationContainer;
+import util.CharacterCard;
 import util.Highlight;
 import util.MovementOption;
 import util.MyColor;
@@ -164,7 +166,8 @@ public class Arena {
 		
 		int[] minimap = new int[Property.MINIMAP_HEIGHT*Property.MINIMAP_WIDTH];
 		minimap = getMinimap(minimap);
-		compartments.add(minimap);
+		//compartments.add(minimap);
+		compartments.add(getCard());
 		
 		int[] buttons = new int[Property.BUTTON_PANEL_WIDTH*Property.BUTTON_PANEL_HEIGHT];
 		buttons = buttonPanel.getPixels();
@@ -292,6 +295,11 @@ public class Arena {
 			}
 		}
 		return map;
+	}
+	protected int[] getCard() {
+		CharacterCard cc = new CharacterCard(new Gimli());
+		cc.finish();
+		return cc.getPixels();
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------vision------------------------------------------------------------------------------------------------------//

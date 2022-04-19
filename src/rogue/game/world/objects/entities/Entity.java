@@ -435,6 +435,9 @@ public class Entity {
 	public String getLevelString() {
 		return "level "+ level;
 	}
+	public String getTierString() {
+		return "tier " + this.skills.size();
+	}
 	public double getCurrentResourcePercentage(String resource) {
 		switch(resource) {
 		case "life":
