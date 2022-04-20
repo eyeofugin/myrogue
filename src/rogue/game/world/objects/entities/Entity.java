@@ -1,65 +1,66 @@
 package rogue.game.world.objects.entities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.game.combat.skills.Skill;
-import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.Skill.Effect;
 import rogue.game.combat.skills.Skill.Effect.EffectType;
 import rogue.game.combat.skills.Skill.Effect.StatChange;
 import rogue.game.combat.skills.Skill.Effect.StatusInfliction;
+import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.world.objects.BattleLog;
 import rogue.game.world.objects.Equipment;
-import util.MovementOption;
+import util.DraftColor;
 
 public class Entity {
 	
-	private int id;
+	protected int id;
 	private int x,y;
-	private String name = "dummy";
+	protected String name = "dummy";
 	private int team;
-	private int portraitId = 0;
+	protected int portraitId = 0;
 	private Integer appearance = null;
 	
-	private List<Skill> skills;
-	private List<Equipment> equipments = new ArrayList<>();
-	private CharacterTab activeTab = CharacterTab.STATS;
+	protected List<Skill> skills;
+	protected List<Equipment> equipments = new ArrayList<>();
+	protected CharacterTab activeTab = CharacterTab.STATS;
 	
+	//draft
+	protected List<DraftColor> colors = new ArrayList<>();
 	protected int level = 0;
 	protected int deathTimer = 5;
 	protected int deathTimerCurrent = 5;
 //Stats
-	private int maxLife;
-	private int currentLife;
-	private int lifeRegain;
-	private int maxMana;
-	private int currentMana;
-	private int manaRegain;
-	private int range;
-	private int visionDistance = 5;
-	private DamageType stdDamageType;
-	private Proficiency stdDamageProf;
+	protected int maxLife;
+	protected int currentLife;
+	protected int lifeRegain;
+	protected int maxMana;
+	protected int currentMana;
+	protected int manaRegain;
+	protected int range;
+	protected int visionDistance = 5;
+	protected DamageType stdDamageType;
+	protected Proficiency stdDamageProf;
 	
-	private List<Effect> currentEffects = new ArrayList<>();
-	private Map<Proficiency,Integer> proficiencies = new HashMap<>();
-	private Map<DamageType,Integer> resistances = new HashMap<>();
-	private Map<DamageType,Double> multipliers = new HashMap<>();
+	protected List<Effect> currentEffects = new ArrayList<>();
+	protected Map<Proficiency,Integer> proficiencies = new HashMap<>();
+	protected Map<DamageType,Integer> resistances = new HashMap<>();
+	protected Map<DamageType,Double> multipliers = new HashMap<>();
 
 	
 	//Playing
 	private int currentActions;
-	private int maxActions;
+	protected int maxActions;
 	
 	private int currentMovement;
-	private int maxMovement;
+	protected int maxMovement;
 	
 	public Entity() {
 		
@@ -717,6 +718,12 @@ public class Entity {
 		}
 		public void setY(int y) {
 			this.y = y;
+		}
+		public List<DraftColor> getColors() {
+			return colors;
+		}
+		public void setColors(List<DraftColor> colors) {
+			this.colors = colors;
 		}
 
 

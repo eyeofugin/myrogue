@@ -224,7 +224,9 @@ public class ArenaState extends State{
 	private void confirmEnd() {
 		this.inChangeTeam=false;
 		int teamNr = getNextTeamNr();
-		this.arena.openViewForTeamNr(teamNr);
+		this.inDraft = true;
+		this.draft.buildDraftFor(teamNr, this.teams);
+//		this.arena.openViewForTeamNr(teamNr);
 	}
 
 	@Override

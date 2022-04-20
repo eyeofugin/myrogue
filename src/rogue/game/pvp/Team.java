@@ -13,6 +13,7 @@ public class Team {
 	private int teamNr;
 	
 	private List<PlayableCharacter> characters = new ArrayList<PlayableCharacter>();
+	private List<PlayableCharacter> bench =  new ArrayList<PlayableCharacter>();
 	private List<NPC> mobs = new ArrayList<NPC>();
 
 	public boolean isTurn() {
@@ -45,6 +46,14 @@ public class Team {
 
 	public void setTeamNr(int teamNr) {
 		this.teamNr = teamNr;
+	}
+
+	public List<PlayableCharacter> getBench() {
+		return bench;
+	}
+
+	public void setBench(List<PlayableCharacter> bench) {
+		this.bench = bench;
 	}
 	
 }

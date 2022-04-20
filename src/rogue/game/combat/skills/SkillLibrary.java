@@ -373,7 +373,16 @@ public class SkillLibrary {
 				null, new Multiplier[] {new Multiplier(Proficiency.PRECISION,0.2)},
 				20, 90, 3, 0, 30, 0, 2));
 		skills.put(AVADA_KEDAVRA,null);
-		skills.put(BATARANG,null);
+		skills.put(BATARANG,Skill.getDamageSkill(BLUDGER,
+				"Batarang",
+				"Throws a Batarang.",
+				TargetType.LINE_PIERCING,
+				DamageType.NORMAL,
+				new Effect[] {new Effect(EffectType.STATUS_INFLICTION,2,10,StatusInfliction.BLEEDING,null)},
+				new Multiplier[] {
+						new Multiplier(Proficiency.LETHALITY,0.3)
+				},
+				20, 60, 5, 0, 10, 0, 1));
 		skills.put(BEHEAD,null);
 		skills.put(BE_TOSSED,null);
 		skills.put(BLIND,null);
