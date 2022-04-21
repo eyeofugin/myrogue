@@ -13,6 +13,7 @@ public class Batman extends PlayableCharacter{
 	public Batman(){
 		super();
 		this.id=			Resources.BATMAN;
+		this.tier=			3;
 		this.name=			"Batman";
 		this.portraitId=	Resources.P_LUKE;
 		this.maxLife=		200;

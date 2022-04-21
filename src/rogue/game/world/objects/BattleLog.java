@@ -153,10 +153,10 @@ public class BattleLog extends InformationContainer{
 		Event down = new Event();
 		down.setEventId(this.connector.LOG_DOWN);
 		
-		fillWithGraphics(Property.LOG_BUTTON_X_FROM, Property.LOG_BUTTON_X_UNTIL-1, Property.LOG_BUTTON_UP_Y_FROM, Property.LOG_BUTTON_UP_Y_UNTIL-1, Resources.PORTRAITSx32.get(Resources.UP), true);
+		fillWithGraphics(Property.LOG_BUTTON_X_FROM, Property.LOG_BUTTON_X_UNTIL-1, Property.LOG_BUTTON_UP_Y_FROM, Property.LOG_BUTTON_UP_Y_UNTIL-1, Resources.ICONSx32.get(Resources.UP), true);
 		this.connector.addEvent(Property.LOG_X_FROM+Property.LOG_BUTTON_X_FROM, Property.LOG_Y_FROM+Property.LOG_BUTTON_UP_Y_FROM, Property.LOG_BUTTON_WIDTH, Property.LOG_BUTTON_HEIGHT, up);
 		
-		fillWithGraphics(Property.LOG_BUTTON_X_FROM, Property.LOG_BUTTON_X_UNTIL-1, Property.LOG_BUTTON_DOWN_Y_FROM, Property.LOG_BUTTON_DOWN_Y_UNTIL-1, Resources.PORTRAITSx32.get(Resources.DOWN), true);
+		fillWithGraphics(Property.LOG_BUTTON_X_FROM, Property.LOG_BUTTON_X_UNTIL-1, Property.LOG_BUTTON_DOWN_Y_FROM, Property.LOG_BUTTON_DOWN_Y_UNTIL-1, Resources.ICONSx32.get(Resources.DOWN), true);
 		this.connector.addEvent(Property.LOG_X_FROM+Property.LOG_BUTTON_X_FROM,Property.LOG_Y_FROM+Property.LOG_BUTTON_DOWN_Y_FROM, Property.LOG_BUTTON_WIDTH, Property.LOG_BUTTON_HEIGHT, down);
 	}
 	public void mouseClicked(Event e) {

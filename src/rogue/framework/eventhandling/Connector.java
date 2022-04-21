@@ -3,6 +3,7 @@ package rogue.framework.eventhandling;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import rogue.framework.resources.Property;
 
@@ -22,7 +23,11 @@ public class Connector {
 	public static final String CANCEL_SKILL = "CAS";
 	public static final String LOG_UP = "LUP";
 	public static final String LOG_DOWN = "LDO";
-
+	public static final String CHOOSE_CARD ="CCA";
+	public static final String MOVE_TEAM_MEMBER = "MTM";
+	public static final String DELETE_CHARACTER_SLIDE = "DCS";
+	public static final String REQUEST_CONFIRMATION="CON";
+	
 	private int mapXFrom,mapXUntil;
 	
 	private Event[][] events;
@@ -52,6 +57,10 @@ public class Connector {
 		}
 		eventsList.add(e);
 	}
+	public void addSingleEvent(int x, int y, Event e) {
+		events[x][y] = e;
+		addSingleEventToList(e);
+	}
 	public void removeEvent(String s) {
 		for(int x = 0; x < this.events.length; x++) {
 			for(int y = 0; y < this.events[0].length; y++) {
@@ -60,6 +69,13 @@ public class Connector {
 					this.events[x][y] =null;
 					return;
 				}
+			}
+		}
+	}
+	public void wipe(int xfrom, int yfrom, int width, int height) {
+		for(int i = yfrom; i < yfrom+height; i++) {
+			for(int j = xfrom; j< xfrom+width;j++) {
+				this.events[j][i]=null;
 			}
 		}
 	}
@@ -130,7 +146,12 @@ public class Connector {
 			}
 		}
 	}
-	
+	private void addSingleEventToList(Event e) {
+		if(eventsList.stream().map(i->i.getEventId()).collect(Collectors.toList()).contains(e.getEventId())) {
+			return;
+		}
+		eventsList.add(e);
+	}
 	//getters Setters
 
 	public Event[][] getEvents() {

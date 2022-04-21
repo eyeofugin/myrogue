@@ -1,5 +1,7 @@
 package rogue.graphics;
 
+import java.awt.Point;
+
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.resources.Property;
 import util.MyColor;
@@ -70,6 +72,7 @@ public class InformationContainer {
 	
 	protected String name;
 	protected int height,width;
+	protected int xanchor,yanchor;
 	
 	protected TextEditor editor;
 	
@@ -149,7 +152,7 @@ public class InformationContainer {
 			pixels[i+height*this.width] = -1;
 		}
 	}
-	protected void fillWithGraphics(int xfrom, int xuntil, int yfrom, int yuntil, int[] graphics, boolean bordered) {
+	protected void fillWithGraphics(int xfrom, int xuntil, int yfrom, int yuntil, int[] graphics, boolean bordered, MyColor backgroundColor) {
 		
 		if(bordered) {
 			for (int i = xfrom - 1; i < xuntil + 2; i++) {
@@ -168,10 +171,15 @@ public class InformationContainer {
 			
 				if(graphics[index]!=-12450784) {
 					pixels[j + i * this.width] = graphics[index];
+				}else {
+					pixels[j + i * this.width] = backgroundColor.VALUE;
 				}
 				index++;
 			}
 		}
+	}
+	protected void fillWithGraphics(int xfrom, int xuntil, int yfrom, int yuntil, int[] graphics, boolean bordered) {
+		fillWithGraphics(xfrom,xuntil,yfrom,yuntil,graphics,bordered,MyColor.BLACK);
 	}
 	
 	protected void writeBar(int xFrom, int xUntil, int yFrom, int yUntil, double percentage, MyColor color) {
@@ -225,5 +233,8 @@ public class InformationContainer {
 	}
 	public int[] getPixels() {
 		return this.pixels;
+	}
+	public Point getAnchor() {
+		return new Point(xanchor,yanchor);
 	}
 }

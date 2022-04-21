@@ -1,9 +1,13 @@
 package rogue.game.pvp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import rogue.framework.resources.Resources;
 import rogue.game.pvp.individualcharacters.Balrog;
+import rogue.game.pvp.individualcharacters.BasicSoldier;
 import rogue.game.pvp.individualcharacters.Baumbart;
 import rogue.game.pvp.individualcharacters.BobaFett;
 import rogue.game.pvp.individualcharacters.DarthSion;
@@ -48,6 +52,7 @@ public class CharacterLibrary {
 		characters.put(Resources.HAGRID, new Hagrid());
 		characters.put(Resources.DUMBLEDORE, new Dumbledore());
 		characters.put(Resources.VOLDEMORT, new Voldemort());
+		characters.put(Resources.BASIC_SOLDIER,new BasicSoldier());
 		
 		
 //		characters.put(Resources.DARTH_VADER,new PlayableCharacter(
@@ -131,4 +136,15 @@ public class CharacterLibrary {
 	public static PlayableCharacter get(int id) {
 		return characters.get(id);
 	}
+	public static List<PlayableCharacter> getTier(int tier) {
+		List<PlayableCharacter> tieredPc = new ArrayList<>();
+		for(Map.Entry entry : characters.entrySet()) {
+			PlayableCharacter pc = PlayableCharacter.class.cast(entry.getValue());
+			if(pc.getTier()==tier) {
+				tieredPc.add(pc);
+			}
+		}
+		return tieredPc;
+	}
+	
 }

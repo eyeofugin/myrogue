@@ -14,6 +14,7 @@ import rogue.game.pvp.CharacterLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.world.Arena;
 import rogue.game.world.Draft;
+import rogue.game.world.HUD;
 import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import rogue.graphics.InformationContainer;
@@ -25,13 +26,15 @@ public class ArenaState extends State{
 
 	private Arena arena;
 	private Draft draft;
+	private HUD hud;
 	private List<Team> teams = new ArrayList<Team>();
 	private int activePointer;
 	private int maxPointer;
 	private PlayableCharacter activeCharacter;
 	private boolean inChangeTeam=false;
-	private boolean inDraft = true;
+	private boolean inDraft = false;
 	private EntityInformationContainer activeCharacterCanvas;
+	private int round = 1;
 	
 	public ArenaState(Connector connector) {
 		super(connector);
@@ -41,7 +44,7 @@ public class ArenaState extends State{
 		this.arena = new Arena(Init.ROOMS[1],this.connector);
 		this.arena.initTeams(teams);
 		this.arena.openViewForTeamNr(1);
-		this.draft=new Draft();
+		this.draft=new Draft(this.connector);
 		this.activePointer=1;
 		this.maxPointer=teams.size();
 	}
@@ -63,12 +66,19 @@ public class ArenaState extends State{
 			List<int[]>  draftPixels = this.draft.render();
 			
 			int[] options = draftPixels.get(0);
-			
 			int indexOptions = 0;
 			for(int i = Property.START_OF_ROOM_Y; i < Property.END_OF_ROOM_Y; i++) {
 				for(int j = Property.START_OF_ROOM_X; j < Property.END_OF_ROOM_X; j++) {
 					pixels[j+i*Property.END_OF_X] = options[indexOptions];
 					indexOptions++;
+				}
+			}
+			int[] team = draftPixels.get(1);
+			int indexTeam = 0;
+			for(int i = Property.START_OF_ACTIVE_CHAR_Y; i < Property.END_OF_Y; i++) {
+				for(int j = Property.START_OF_ACTIVE_CHAR_X; j < Property.END_OF_X; j++) {
+					pixels[j+i*Property.END_OF_X] = team[indexTeam];
+					indexTeam++;
 				}
 			}
 		}else {
@@ -108,15 +118,15 @@ public class ArenaState extends State{
 				}
 			}
 			//getButtons(pixels);
-			int[] card = roomPixels.get(3);
-			
-			int index = 0;
-			for(int y = 600; y < 1000; y++) {
-				for(int x = 30; x < 330; x++) {
-					pixels[x+y*Property.END_OF_X] = card[index];
-					index++;
-				}
-			}
+//			int[] card = roomPixels.get(3);
+//			
+//			int index = 0;
+//			for(int y = 600; y < 1000; y++) {
+//				for(int x = 30; x < 330; x++) {
+//					pixels[x+y*Property.END_OF_X] = card[index];
+//					index++;
+//				}
+//			}
 //			int[] minimap = roomPixels.get(3);
 //			int minimapIndex=0;
 //			for(int i = Property.MINIMAP_Y_FROM; i < Property.MINIMAP_Y_UNTIL; i++) {
@@ -167,22 +177,22 @@ public class ArenaState extends State{
 		List<PlayableCharacter> chars1 = new ArrayList<PlayableCharacter>();
 		PlayableCharacter char1 = CharacterLibrary.get(Resources.DUMBLEDORE);
 		char1.setTeam(Property.TEAM_1);
-		PlayableCharacter char2 = CharacterLibrary.get(Resources.VOLDEMORT);
+		PlayableCharacter char2 = CharacterLibrary.get(Resources.TALZIN);
 		char2.setTeam(Property.TEAM_1);
-		PlayableCharacter char3 = CharacterLibrary.get(Resources.DOBBY);
+		PlayableCharacter char3 = CharacterLibrary.get(Resources.BALROG);
 		char3.setTeam(Property.TEAM_1);
 		PlayableCharacter char4 = CharacterLibrary.get(Resources.UMBRIDGE);
 		char4.setTeam(Property.TEAM_1);
-		PlayableCharacter char5 = CharacterLibrary.get(Resources.MOODY);
+		PlayableCharacter char5 = CharacterLibrary.get(Resources.VOLDEMORT);
 		char5.setTeam(Property.TEAM_1);
 		PlayableCharacter char6 = CharacterLibrary.get(Resources.HAGRID);
 		char6.setTeam(Property.TEAM_1);
 		chars1.add(char1);
 		chars1.add(char2);
-		chars1.add(char3);
-		chars1.add(char4);
-		chars1.add(char5);
-		chars1.add(char6);
+//		chars1.add(char3);
+//		chars1.add(char4);
+//		chars1.add(char5);
+//		chars1.add(char6);
 		t1.setCharacters(chars1);
 		
 		Team t2 = new Team();
@@ -205,8 +215,13 @@ public class ArenaState extends State{
 		chars2.add(char9);
 		chars2.add(char10);
 		chars2.add(char11);
-		chars2.add(char12);
+//		chars2.add(char12);
 		t2.setCharacters(chars2);
+		List<PlayableCharacter> passive2 = new ArrayList<>();
+		PlayableCharacter char13 = CharacterLibrary.get(Resources.TALZIN);
+		char13.setTeam(Property.TEAM_2);
+		passive2.add(char13);
+		t2.setBench(passive2);
 		
 		this.teams.add(t1);
 		this.teams.add(t2);
@@ -221,20 +236,31 @@ public class ArenaState extends State{
 		return this.activePointer;
 		
 	}
+	private void confirmationDialog(Event confirm) {
+		this.hud.confirmationDialog(confirm);
+	}
 	private void confirmEnd() {
 		this.inChangeTeam=false;
 		int teamNr = getNextTeamNr();
 		this.inDraft = true;
-		this.draft.buildDraftFor(teamNr, this.teams);
+		this.draft.buildDraftFor(teamNr, this.teams,this.round);
 //		this.arena.openViewForTeamNr(teamNr);
 	}
 
 	@Override
 	protected void mouseClicked(Event e) {
+		if(e.getEventId().equals(Connector.REQUEST_CONFIRMATION)) {
+			confirmationDialog(e.getAfterConfirmEvent());
+		}
 		if(e.getEventId().equals("selectPlayerEvent")) {
 			activeCharacter = getCharacter(e.getEntity().getName());
 		}
-		this.arena.mouseClicked(e);
+		if(this.inDraft) {
+			this.draft.mouseClicked(e);
+		}else {
+			this.arena.mouseClicked(e);
+		}
+		
 		if(e.getEventId().equals(this.connector.END_TURN)) {
 			this.inChangeTeam=true;
 		}

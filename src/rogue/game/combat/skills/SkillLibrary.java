@@ -16,7 +16,14 @@ import rogue.game.world.objects.ObjectLibrary;
 
 public class SkillLibrary {
 	
-	public static int NONE = 7;
+	public static int NONE = 0;
+	public static int ZOMBIE_MINIONS = 1;
+	public static int HEART_SHOT = 2;
+	public static int STURDY = 3;
+	public static int FIEND_FYRE = 4;
+	public static int MURDER_FEST = 5;
+	public static int PSYSHOCK = 6;
+	public static int STUN = 7;
 	public static int HATEFUL_SWING = 8;
 	public static int WEAPON_THROW = 9;
 	public static int FORCE_CHOKE = 10;
@@ -115,13 +122,7 @@ public class SkillLibrary {
 	public static int WEAPON_SWING = 103;
 	public static int WIND_WALL = 104;
 	public static int WOOD_WALK = 105;
-	public static int ZOMBIE_MINIONS = 106;
-	public static int HEART_SHOT = 107;
-	public static int STURDY = 108;
-	public static int FIEND_FYRE = 109;
-	public static int MURDER_FEST = 110;
-	public static int PSYSHOCK = 111;
-	public static int STUN = 112;
+
 
 	public static Map<Integer,Skill> skills = new HashMap<>();
 	
@@ -449,7 +450,7 @@ public class SkillLibrary {
 				15, 75, 4, 0, 40, 0, 3));
 		skills.put(FLUFFY,Skill.getSummonSkill(FLUFFY, "Fluffy", "Hagrid summons Fluffy as a NPC.", 1, 0, 20, 0, 2, Resources.FLUFFY));
 		skills.put(GIANT_HAWK,null);
-		skills.put(GRAPPLING_HOOK,null);
+		skills.put(GRAPPLING_HOOK,Skill.getMovementSkill(GRAPPLING_HOOK, "Grappling Hook", "Pulls towards Spot", null, null, 1, 0, 0, 1));
 		skills.put(GRAWP,null);
 		skills.put(GUARD_AREA,null);
 		skills.put(HIPPOGRYFF,null);

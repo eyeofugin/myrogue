@@ -223,6 +223,12 @@ public class TextEditor {
 		symbols.put("/", Symbol.slash5x8.pixels);
 		symbols.put("(", Symbol.bracketopen5x8.pixels);
 		symbols.put(")", Symbol.bracketclose5x8.pixels);
+		symbols.put("+", Symbol.red5x8.pixels);
+		symbols.put("*", Symbol.white5x8.pixels);
+		symbols.put("#", Symbol.green5x8.pixels);
+		symbols.put("~", Symbol.blue5x8.pixels);
+		symbols.put("°", Symbol.black5x8.pixels);
+		
 		
 		return symbols;
 	}

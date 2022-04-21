@@ -1,5 +1,7 @@
 package rogue.game.world;
 
-public class HUD {
+import rogue.graphics.InformationContainer;
+
+public class HUD extends InformationContainer{
 	
 }

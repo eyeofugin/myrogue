@@ -1,5 +1,10 @@
 package util;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
 public class Symbol {
 
 	public final int WIDTH,HEIGHT;
@@ -184,6 +189,11 @@ public class Symbol {
 	public static Symbol slash5x8 = 	initSlash5x8();
 	public static Symbol bracketopen5x8 = initBracketOpen5x8();
 	public static Symbol bracketclose5x8 =initBracketClose5x8();
+	public static Symbol red5x8 = 		new Symbol("res/fonts/red5x8.png",5,8);
+	public static Symbol white5x8 = 	new Symbol("res/fonts/white5x8.png",5,8);
+	public static Symbol blue5x8 = 		new Symbol("res/fonts/blue5x8.png",5,8);
+	public static Symbol green5x8 = 	new Symbol("res/fonts/green5x8.png",5,8);
+	public static Symbol black5x8 = 	new Symbol("res/fonts/black5x8.png",5,8);
 	
 	public Symbol(int sheetBaseWidth, int xfrom,int xuntil,int yfrom,int yuntil, SpriteSheet sheet) {
 		this.WIDTH = (xuntil-xfrom)+1;
@@ -195,6 +205,23 @@ public class Symbol {
 		this.WIDTH = width;
 		this.HEIGHT = height;
 		this.pixels = pixels;
+	}
+	public Symbol(String path, int width, int height) {
+		this.WIDTH=width;
+		this.HEIGHT=height;
+		pixels=new int[this.WIDTH*this.HEIGHT];
+		getSymbol(path);
+	}
+	private void getSymbol(String path) {
+		try {
+			BufferedImage image = ImageIO.read(new File(path));
+			int width = image.getWidth();
+			int height = image.getHeight();
+			image.getRGB(0, 0, width, height, pixels, 0, width);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	private void cutOutSymbol(int sheetBaseWidth, int[] sheet, int xfrom,int xuntil,int yfrom,int yuntil) {
 		int index = 0;

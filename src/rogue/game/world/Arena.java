@@ -167,7 +167,7 @@ public class Arena {
 		int[] minimap = new int[Property.MINIMAP_HEIGHT*Property.MINIMAP_WIDTH];
 		minimap = getMinimap(minimap);
 		//compartments.add(minimap);
-		compartments.add(getCard());
+		compartments.add(null);
 		
 		int[] buttons = new int[Property.BUTTON_PANEL_WIDTH*Property.BUTTON_PANEL_HEIGHT];
 		buttons = buttonPanel.getPixels();
@@ -296,11 +296,7 @@ public class Arena {
 		}
 		return map;
 	}
-	protected int[] getCard() {
-		CharacterCard cc = new CharacterCard(new Gimli());
-		cc.finish();
-		return cc.getPixels();
-	}
+
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------vision------------------------------------------------------------------------------------------------------//
 	//---------------------------------------------------------------------------------------------------------------------------------------//

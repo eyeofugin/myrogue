@@ -12,8 +12,11 @@ public class Event {
 	private Entity entity;
 	private int skill;
 	private CharacterTab tab;
+	private int cardnr;
+	private Event afterConfirmEvent;
 	
 	private int x,y;
+	private int width,height;
 	
 	public String getEventId() {
 		return eventId;
@@ -62,6 +65,28 @@ public class Event {
 	public void setEntity(Entity entity) {
 		this.entity = entity;
 	}
-	
-	
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public int getCardnr() {
+		return cardnr;
+	}
+	public void setCardnr(int cardnr) {
+		this.cardnr = cardnr;
+	}
+	public Event getAfterConfirmEvent() {
+		return afterConfirmEvent;
+	}
+	public void setAfterConfirmEvent(Event afterConfirmEvent) {
+		this.afterConfirmEvent = afterConfirmEvent;
+	}
 }

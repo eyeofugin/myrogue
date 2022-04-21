@@ -3,20 +3,20 @@ package rogue.game.pvp.individualcharacters;
 import java.util.Arrays;
 
 import rogue.framework.resources.Resources;
-import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.SkillLibrary;
+import rogue.game.combat.skills.Skill.DamageType;
+import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.game.world.objects.entities.Entity.Proficiency;
 import util.DraftColor;
-import rogue.game.world.objects.entities.PlayableCharacter;
 
-public class MotherTalzin extends PlayableCharacter{
+public class BasicSoldier extends PlayableCharacter{
 
-	public MotherTalzin() {
+	public BasicSoldier() {
 		super();
-		this.id=			Resources.TALZIN;
-		this.tier=			3;
-		this.name=			"Mother Talzin";
-		this.portraitId=	Resources.P_BOBA;
+		this.id=			Resources.BASIC_SOLDIER;
+		this.tier=			1;
+		this.name=			"Basic Soldier";
+		this.portraitId=	Resources.P_LUKE;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;
@@ -25,11 +25,9 @@ public class MotherTalzin extends PlayableCharacter{
 		this.maxMovement=	2;
 		this.range=			1;
 		this.setSkills(getSkills(
-				SkillLibrary.ALLY_HEAL,
-				SkillLibrary.ZOMBIE_MINIONS,
-				SkillLibrary.VOODOO_SHIT,0,0,0));
-		this.stdDamageType=DamageType.SHOCK;
-		this.stdDamageProf=Proficiency.FAITH;
+				SkillLibrary.WEAPON_THROW,0,0,0,0,0));
+		this.stdDamageType=DamageType.NORMAL;
+		this.stdDamageProf=Proficiency.PRECISION;
 		this.resistances=resistance(
 				20,//NORMAL
 				30,//BURNING
@@ -53,6 +51,6 @@ public class MotherTalzin extends PlayableCharacter{
 				35,//INTELLIGENCE
 				0, //LETHALITY
 				5);//PRECISION
-		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLACK,DraftColor.GREEN});
+		this.colors=Arrays.asList(new DraftColor[] {DraftColor.WHITE});
 	}
 }

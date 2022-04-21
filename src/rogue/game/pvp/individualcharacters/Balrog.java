@@ -14,6 +14,7 @@ public class Balrog extends PlayableCharacter{
 	public Balrog() {
 		super();
 		this.id=			Resources.BALROG;
+		this.tier=			4;
 		this.name=			"Balrog";
 		this.portraitId=	Resources.P_LUKE;
 		this.maxLife=		200;

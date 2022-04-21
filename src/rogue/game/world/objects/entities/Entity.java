@@ -35,6 +35,7 @@ public class Entity {
 	//draft
 	protected List<DraftColor> colors = new ArrayList<>();
 	protected int level = 0;
+	protected int tier=0;
 	protected int deathTimer = 5;
 	protected int deathTimerCurrent = 5;
 //Stats
@@ -434,10 +435,34 @@ public class Entity {
 	
 	//render
 	public String getLevelString() {
-		return "level "+ level;
+		return "Level "+ level;
 	}
 	public String getTierString() {
-		return "tier " + this.skills.size();
+		return "Tier " + this.tier;
+	}
+	public String getColorIcons() {
+		String result = "";
+		for(DraftColor c : this.colors) {
+			if(c.equals(DraftColor.BLACK)) {
+				result+="°";
+			}
+			if(c.equals(DraftColor.BLUE)) {
+				result+="~";
+			}
+			if(c.equals(DraftColor.RED)) {
+				result+="+";
+			}
+			if(c.equals(DraftColor.WHITE)) {
+				result+="*";
+			}
+			if(c.equals(DraftColor.GREEN)) {
+				result+="#";
+			}
+		}
+		return result;
+	}
+	public int getTier() {
+		return this.tier;
 	}
 	public double getCurrentResourcePercentage(String resource) {
 		switch(resource) {

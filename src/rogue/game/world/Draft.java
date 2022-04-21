@@ -1,91 +1,93 @@
 package rogue.game.world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import rogue.framework.eventhandling.Connector;
+import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Property;
 import rogue.game.pvp.Team;
-import rogue.game.pvp.individualcharacters.Balrog;
-import rogue.game.pvp.individualcharacters.Batman;
-import rogue.game.pvp.individualcharacters.Baumbart;
-import rogue.game.pvp.individualcharacters.LukeSkywalker;
 import rogue.game.world.objects.entities.Entity;
-import util.CharacterCard;
+import rogue.game.world.objects.entities.PlayableCharacter;
+import rogue.graphics.CardOverview;
+import rogue.graphics.TeamOverview;
 
 public class Draft {
 	
-	private int nrChoices=1;
-	private int nrOptions=4;
-	private int hMargin,vMargin;
-	private Entity[] entities = new Entity[] {new Balrog(),new Baumbart(),new Batman(), new LukeSkywalker()};
+	private TeamOverview teamOverview;
+	private CardOverview cardOverview;
 	
-	public void buildDraftFor(int teamNr, List<Team> teams) {
+	private Connector connector;
+	private Map<Integer,double[]> turnProbabilities = new HashMap<>();
+	private Team ownTeam=new Team();
+	
+	public Draft(Connector connector) {
+		this.connector=connector;
+		turnProbabilities.put(1, new double[] {0.75,0.2, 0.05,0.0, 0.0});
+		turnProbabilities.put(2, new double[] {0.65,0.25,0.1, 0.0, 0.0});
+		turnProbabilities.put(3, new double[] {0.5, 0.35,0.15,0.0, 0.0});
+		turnProbabilities.put(4, new double[] {0.25,0.6, 0.2, 0.05,0.0});
+		turnProbabilities.put(5, new double[] {0.0, 0.5, 0.25,0.2, 0.05});
+	}
+	
+	public void buildDraftFor(int teamNr, List<Team> teams, int turn) {
+		this.ownTeam = getTeam(teams,teamNr);
+		teamOverview = new TeamOverview(this.ownTeam,Property.START_OF_ACTIVE_CHAR_X,Property.START_OF_ACTIVE_CHAR_Y,this.connector);
+		cardOverview = new CardOverview(Property.START_OF_ROOM_X,Property.START_OF_ROOM_Y,this.connector);
+		cardOverview.buildDraft(this.ownTeam, teams.stream().filter(i->i.getTeamNr()!=teamNr).collect(Collectors.toList()), turn);
 		
 	}
+	private Team getTeam(List<Team> teams, int nr) {
+		for(Team t : teams) {
+			if(t.getTeamNr()==nr) {
+				return t;
+			}
+		}
+		return null;
+	}
+
 	public List<int[]> render(){
 		List<int[]> compartments = new ArrayList<int[]>();
-		int[] options = new int[Property.ROOM_SIZE*Property.ROOM_SIZE];
-		options=renderOptions(options);
-		compartments.add(options);
-		
+		compartments.add(this.cardOverview.finish());
+		compartments.add(this.teamOverview.render());
 		return compartments;
 	}
-	private int[] renderOptions(int[] p) {
-		switch(nrOptions) {
-		case 2:
-			show2Options(p);
-			break;
-		case 3:
-			show3Options(p);
-			break;
-		case 4:
-			show4Options(p);
-			break;
+	private boolean isChoosingValid(int newTier) {
+		if(cardOverview.getChoices()<1) {
+			return false;
 		}
-		return p;
+		if(this.ownTeam.isFull(newTier)) {
+			return false;
+		}
+		return true;
 	}
-	private int[] show2Options(int[] p) {
-		calcMargins(1,2);
-		showOneLine(p,0,2,0);
-		return p;
-	}
-	private int[] show3Options(int[] p) {
-		calcMargins(1,3);
-		showOneLine(p,0,3,0);
-		return p;
-	}
-	private int[] showOneLine(int[] p,int indexf, int indexu, int overflow) {
-		int xoff = hMargin;
-		int yOff = vMargin+overflow;
-		for(int i = indexf; i < indexu; i++) {
-			CharacterCard cc = new CharacterCard(this.entities[i]);
-			cc.finish();
-			int[] graphics = cc.getPixels();
-			int index = 0;
-			for(int y = yOff; y <=yOff+CharacterCard.CARD_HEIGHT-1; y++) {
-				for(int x = xoff; x <= xoff+CharacterCard.CARD_WIDTH-1; x++) {
+	private void chooseCard(Entity e) {
+		if(PlayableCharacter.class.isInstance(e)) {
+			PlayableCharacter pc = PlayableCharacter.class.cast(e);
+			if(isChoosingValid(pc.getTier())) {
 				
-					if(graphics[index]!=-12450784) {
-						p[x + y * Property.ROOM_SIZE] = graphics[index];
-					}
-					index++;
-				}
+				cardOverview.deactivate(pc);
+				teamOverview.add(pc);
 			}
-			xoff+=hMargin;
-			xoff+=CharacterCard.CARD_WIDTH;
 		}
-		return p;
+
 	}
-	private int[] show4Options(int[] p) {
-		calcMargins(2,2);
-		showOneLine(p,0,2,0);
-		int overFlow = vMargin+CharacterCard.CARD_HEIGHT;
-		showOneLine(p,2,4,overFlow);
-		return p;
+	private void moveCard(Event e) {
+		teamOverview.trySwitch(e.getCardnr());
 	}
-	private void calcMargins(int rows, int columns) {
-		this.hMargin = (Property.ROOM_SIZE-CharacterCard.CARD_WIDTH*columns) / (columns+1);
-		this.vMargin = (Property.ROOM_SIZE-CharacterCard.CARD_HEIGHT*rows) / (rows+1);
+
+	
+	public void mouseClicked(Event e) {
+		if(e.getEventId().equals(Connector.CHOOSE_CARD)) {
+			chooseCard(e.getEntity());
+		}
+		if(e.getEventId().equals(Connector.MOVE_TEAM_MEMBER)) {
+			System.out.println("id "+e.getCardnr());
+			moveCard(e);
+		}
 	}
 	
 }

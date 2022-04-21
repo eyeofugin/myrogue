@@ -1,6 +1,8 @@
 package rogue.framework.resources;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import util.TextEditor;
 import util.TextEditor.TextEditorConfig;
@@ -54,6 +56,7 @@ public class Resources {
 	public static final int ZOMBIE = 33;
 	public static final int ARAGOG = 34;
 	public static final int FLUFFY = 35;
+	public static final int BASIC_SOLDIER = 36;
 	
 	public static final ArrayList<int[]> CHARACTERS = new ArrayList<>();
 	
@@ -66,15 +69,18 @@ public class Resources {
 	
 	public static final ArrayList<int[]> PORTRAITSx64 = new ArrayList<>();
 	
-	public static final int MOVEMENT_ACTION =0;
-	public static final int ATTACK_ACTION =1;
-	public static final int CONFIRM_ACTION = 2;
-	public static final int END_TURN_ACTION = 3;
-	public static final int CANCEL_ACTION = 4;
-	public static final int UP = 5;
-	public static final int DOWN = 6;
-	//reserve 7 - 299 for skills
-	public static final ArrayList<int[]> PORTRAITSx32 = new ArrayList<>();
+	//!!!!! -- 0-300 reserved for skills
+	public static final int MOVEMENT_ACTION =301;
+	public static final int ATTACK_ACTION =302;
+	public static final int CONFIRM_ACTION = 303;
+	public static final int END_TURN_ACTION = 304;
+	public static final int CANCEL_ACTION = 305;
+	public static final int UP = 306;
+	public static final int DOWN = 307;
+	public static final int SWITCH = 308;
+	public static final int DELETE = 309;
+	//!!!!! -- 0-300 reserved for skills
+	public static final Map<Integer,int[]> ICONSx32 = new HashMap<>();
 	
 	public static final TextEditorConfig textEditorConfig = TextEditor.conf5x8;
 	

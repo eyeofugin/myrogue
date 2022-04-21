@@ -2,12 +2,15 @@ package rogue.game.pvp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import rogue.game.world.objects.entities.NPC;
 import rogue.game.world.objects.entities.PlayableCharacter;
+import util.DraftColor;
 
 public class Team {
 	
+	public static int TIER_THRESHHOLD = 15;
 	private boolean turn;
 	
 	private int teamNr;
@@ -16,6 +19,53 @@ public class Team {
 	private List<PlayableCharacter> bench =  new ArrayList<PlayableCharacter>();
 	private List<NPC> mobs = new ArrayList<NPC>();
 
+	
+	public List<DraftColor> getDraftColors(){
+		int redCounter=0,blueCounter=0,greenCounter=0,blackCounter=0,whiteCounter=0;
+		for(PlayableCharacter pc : characters) {
+			blackCounter+=pc.getColors().stream().filter(c->c.equals(DraftColor.BLACK)).collect(Collectors.toList()).size();
+			blueCounter+=pc.getColors().stream().filter(c->c.equals(DraftColor.BLUE)).collect(Collectors.toList()).size();
+			redCounter+=pc.getColors().stream().filter(c->c.equals(DraftColor.RED)).collect(Collectors.toList()).size();
+			whiteCounter+=pc.getColors().stream().filter(c->c.equals(DraftColor.WHITE)).collect(Collectors.toList()).size();
+			greenCounter+=pc.getColors().stream().filter(c->c.equals(DraftColor.GREEN)).collect(Collectors.toList()).size();
+		}
+		List<DraftColor> result = new ArrayList<>();
+		if(redCounter>2) {result.add(DraftColor.RED);}
+		if(blueCounter>2) {result.add(DraftColor.BLUE);}
+		if(blackCounter>2) {result.add(DraftColor.BLACK);}
+		if(whiteCounter>2) {result.add(DraftColor.WHITE);}
+		if(greenCounter>2) {result.add(DraftColor.GREEN);}
+		return result;
+	}
+	
+	public boolean isFull(int newTier) {
+		if(bench.size()>=getMaxBenchSize() && characters.size()>=getMaxTeamSize()) {
+			return true;
+		}
+		if(bench.size()>=getMaxBenchSize() && getTierValue()+newTier>TIER_THRESHHOLD) {
+			return true;
+		}
+		return false;
+	}
+	public int getMaxTeamSize() {
+		int teamSize=5;
+		if(getDraftColors().contains(DraftColor.RED)) {teamSize+=4;}
+		return teamSize;
+	}
+	public int getMaxBenchSize() {
+		int benchSize=2;
+		if(getDraftColors().contains(DraftColor.GREEN)) {benchSize+=4;}
+		return benchSize;
+	}
+	
+	
+	public int getTierValue() {
+		int value=0;
+		for(PlayableCharacter pc : characters) {
+			value+=pc.getTier();
+		}
+		return value;
+	}
 	public boolean isTurn() {
 		return turn;
 	}

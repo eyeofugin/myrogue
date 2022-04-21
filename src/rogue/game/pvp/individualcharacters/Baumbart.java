@@ -13,6 +13,7 @@ public class Baumbart extends PlayableCharacter{
 	public Baumbart() {
 		super();
 		this.id=			Resources.BAUMBART;
+		this.tier=			3;
 		this.name=			"Baumbart";
 		this.portraitId=	Resources.P_LUKE;
 		this.maxLife=		200;
