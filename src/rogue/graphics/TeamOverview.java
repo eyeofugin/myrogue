@@ -2,6 +2,7 @@ package rogue.graphics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.resources.Resources;
@@ -68,7 +69,7 @@ public class TeamOverview extends InformationContainer{
 	
 	public int[] render() {
 		this.connector.wipe(this.xanchor,this.yanchor,this.width,this.height);
-		green();
+		this.pixels=new int[width*height];
 		header();
 		slides();
 		activeInfo();
@@ -87,22 +88,48 @@ public class TeamOverview extends InformationContainer{
 	public void trySwitch(int id) {
 		CharacterSlide slide = getSlideViaId(id);
 		if(slide!=null) {
-			if(this.activeSlides.contains(slide)) {
+			if(this.activeSlides.stream().map(s->s.getId()).collect(Collectors.toList()).contains(id)) {
 				PlayableCharacter pc = slide.getPC();
 				if(this.passive.size()<=this.team.getMaxBenchSize()) {
-					this.active.removeIf(i->i.equals(pc));
+					for(int i = 0; i < this.active.size(); i++) {
+						if(this.active.get(i).equals(pc)) {
+							this.active.remove(i);
+							break;
+						}
+					}
+//					this.active.removeIf(i->i.getId(id));
 					this.passive.add(pc);
 					this.activeSlides.removeIf(s->s.equals(slide));
 					this.passiveSlides.add(slide);
 				}
 			}else {
 				PlayableCharacter pc = slide.getPC();
-				if(this.active.size()<=this.team.getMaxTeamSize()) {
-					this.passive.removeIf(i->i.equals(pc));
+				if(this.active.size()<this.team.getMaxTeamSize()) {
+					for(int i = 0; i < this.passive.size(); i++) {
+						if(this.passive.get(i).equals(pc)) {
+							this.passive.remove(i);
+							break;
+						}
+					}
+//					this.passive.removeIf(i->i.equals(pc));
 					this.active.add(pc);
 					this.passiveSlides.removeIf(s->s.equals(slide));
 					this.activeSlides.add(slide);
 				}
+			}
+		}
+	}
+	public void delete(int id) {
+		CharacterSlide slide = getSlideViaId(id);
+		if(slide!=null) {
+			if(this.activeSlides.contains(slide)) {
+				PlayableCharacter pc = slide.getPC();
+				this.active.removeIf(i->i.equals(pc));
+				this.activeSlides.removeIf(s->s.equals(slide));
+			}else {
+				PlayableCharacter pc = slide.getPC();
+				this.passive.removeIf(i->i.equals(pc));
+				this.passiveSlides.removeIf(s->s.equals(slide));
 			}
 		}
 	}

@@ -18,6 +18,8 @@ public class Resources {
 	public static final int SMOKE_SCREEN = 7;
 	public static final int WATER = 8;
 	public static final int HORCRUX = 9;
+	public static final int RUNE_TRAP = 10;
+	public static final int ENHANCEMENT_RUNE = 11;
 	public static final ArrayList<int[]> TEXTURES = new ArrayList<>();
 	
 	public static final int KNIGHT = 0;

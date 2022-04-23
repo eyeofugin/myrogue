@@ -17,6 +17,8 @@ public class ObjectLibrary {
 		enh.put(Resources.SMOKE_SCREEN,new Enhancement(Resources.SMOKE_SCREEN,Level.SUB,true,true,false,true,3));
 		enh.put(Resources.HORCRUX,new Enhancement(Resources.HORCRUX,Level.SUB,true,true,false,false,-1));
 		enh.put(Resources.WATER,new Enhancement(Resources.WATER,Level.TOP,true,true,true,false,-1));
+		enh.put(Resources.RUNE_TRAP,new Enhancement(Resources.RUNE_TRAP,Level.SUB,true,false,false,false,-1));
+		enh.put(Resources.ENHANCEMENT_RUNE,new Enhancement(Resources.ENHANCEMENT_RUNE,Level.SUB,true,false,false,false,5));
 	}
 	
 	public static Enhancement getEnhancement(int id) {

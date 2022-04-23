@@ -227,7 +227,7 @@ public class TextEditor {
 		symbols.put("*", Symbol.white5x8.pixels);
 		symbols.put("#", Symbol.green5x8.pixels);
 		symbols.put("~", Symbol.blue5x8.pixels);
-		symbols.put("Â°", Symbol.black5x8.pixels);
+		symbols.put("°", Symbol.black5x8.pixels);
 		
 		
 		return symbols;
@@ -376,6 +376,7 @@ public class TextEditor {
 				for (int y = 0; y < this.charHeight; y++) {
 					for (int x = lastWrittenWidth; x < lastWrittenWidth + this.charWidth; x++) {
 						word[x + y * resultWidth] = symbolarray[index];
+						
 						index++;
 					}
 				}

@@ -13,22 +13,25 @@ public class Moody extends PlayableCharacter{
 	public Moody() {
 		super();
 		this.id=			Resources.MOODY;
-		this.tier=			3;
+		this.tier=			2;
 		this.name=			"Moody";
 		this.portraitId=	Resources.P_BOBA;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
 				SkillLibrary.STUPOR,
-				SkillLibrary.TRUE_VISION,
-				SkillLibrary.DISGUISE,0,0,0));
+				SkillLibrary.TRUE_VISION,0,0,0,0));
 		this.stdDamageType=DamageType.MAGICAL;
-		this.stdDamageProf=Proficiency.INTELLIGENCE;
+		this.stdDamageProf=Proficiency.KNOWLEDGE;
 		this.resistances=resistance(
 				20,//NORMAL
 				30,//BURNING

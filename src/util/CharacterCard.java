@@ -34,18 +34,8 @@ public class CharacterCard extends InformationContainer{
 			event();
 		}
 	}
-	private void border() {
-		for(int i = 0; i < this.width; i++) {
-			this.pixels[i]=MyColor.WHITE.VALUE;
-			this.pixels[i+(this.height-1)*this.width]=MyColor.WHITE.VALUE;
-		}
-		for(int i = 0; i < this.height; i++) {
-			this.pixels[i*this.width]=MyColor.WHITE.VALUE;
-			this.pixels[this.width-1+i*this.width]=MyColor.WHITE.VALUE;
-		}
-	}
 	private void name() {
-		writeLine(this.entity.getName(), 5, 140, 2, 20,0,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+		writeLine(this.entity.getName(), 5, 250, 2, 20,0,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 	}
 	private void icon() {
 		int[] characterSprite = Resources.CHARACTERS.get(this.entity.getId());
@@ -62,7 +52,7 @@ public class CharacterCard extends InformationContainer{
 		return resized;
 	}
 	private void tier() {
-		writeLine(this.entity.getTierString(), 145, 251, 2, 20,0,TextAlignment.RIGHT,MyColor.BLACK,MyColor.WHITE);
+		writeLine(this.entity.getTierString(), 170, 252, 2, 20,0,TextAlignment.RIGHT,MyColor.BLACK,MyColor.WHITE);
 	}
 	private void event() {
 		Event e = new Event();

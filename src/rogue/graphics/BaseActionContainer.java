@@ -38,7 +38,10 @@ public class BaseActionContainer extends InformationContainer{
 		icons.put(BaseActionContainer.MOVEMENT,Resources.MOVEMENT_ACTION);
 		Event endTurn = new Event();
 		endTurn.setEventId(this.connector.END_TURN);
-		events.put(BaseActionContainer.END_TURN,endTurn);
+		Event confirmation = new Event();
+		confirmation.setEventId(Connector.REQUEST_CONFIRMATION);
+		confirmation.setAfterConfirmEvent(endTurn);
+		events.put(BaseActionContainer.END_TURN,confirmation);
 		icons.put(BaseActionContainer.END_TURN,Resources.END_TURN_ACTION);
 		
 	}

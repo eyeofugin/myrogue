@@ -171,11 +171,26 @@ public class InformationContainer {
 			
 				if(graphics[index]!=-12450784) {
 					pixels[j + i * this.width] = graphics[index];
-				}else {
+				}else if(!backgroundColor.equals(MyColor.VOID)) {
 					pixels[j + i * this.width] = backgroundColor.VALUE;
 				}
 				index++;
 			}
+		}
+	}
+	public void background(MyColor color) {
+		for(int i = 0; i < this.pixels.length; i++) {
+			this.pixels[i] = color.VALUE;
+		}
+	}
+	public void border() {
+		for(int i = 0; i < this.width; i++) {
+			this.pixels[i]=MyColor.WHITE.VALUE;
+			this.pixels[i+(this.height-1)*this.width]=MyColor.WHITE.VALUE;
+		}
+		for(int i = 0; i < this.height; i++) {
+			this.pixels[i*this.width]=MyColor.WHITE.VALUE;
+			this.pixels[this.width-1+i*this.width]=MyColor.WHITE.VALUE;
 		}
 	}
 	protected void fillWithGraphics(int xfrom, int xuntil, int yfrom, int yuntil, int[] graphics, boolean bordered) {

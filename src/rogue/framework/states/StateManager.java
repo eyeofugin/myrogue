@@ -22,6 +22,8 @@ public class StateManager {
 	public StateManager(int x, int y, int mapXFrom, int mapXUntil) {
 		states = new Stack<State>();
 		connector = new Connector(x,y,mapXFrom,mapXUntil);
+		ArenaState arena = new ArenaState(this.connector);
+		states.add(arena);
 	}
 	public void stackArenaState() {
 		ArenaState state = new ArenaState(this.connector);
@@ -57,6 +59,12 @@ public class StateManager {
 
 			System.out.println("event: " + event.getEventId());
 			this.states.peek().mouseClicked(event);
+			if(this.connector.firedEvent!=null) {
+				System.out.println(this.connector.firedEvent.getEventId() + " " + this.connector.firedEvent.getCardnr());
+				this.states.peek().mouseClicked(this.connector.firedEvent);
+				this.connector.firedEvent=null;
+			}
+
 		}
 	}
 	public void keyPressed(KeyEvent e) {

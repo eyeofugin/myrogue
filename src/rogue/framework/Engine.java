@@ -26,12 +26,13 @@ public class Engine {
 		stateManager = new StateManager(X,Y,MAP_X_FROM,MAP_X_UNTIL);
 //ToDo write main menu
 		//stateManager.stackDungeonState();
-		stateManager.stackArenaState();
+		//stateManager.stackArenaState();
 		//running  = true;
 		windowManager = new WindowManager(X,Y);
 		windowManager.addMouse(new Mouse());
 		windowManager.addKey(new KeyBoard());
 		windowManager.start();
+		loop();
 	}
 	private static void loop() {
 		update();
@@ -46,7 +47,6 @@ public class Engine {
 	}
 	private static void renderSprite() {
 		if(stateManager.hasSprite()) {
-			System.out.println("yess");
 		}
 	}
 	

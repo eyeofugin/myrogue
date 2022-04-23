@@ -21,12 +21,16 @@ public class V extends PlayableCharacter{
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
-				SkillLibrary.DAGGER_THROW,
-				SkillLibrary.THROW_GRANADE,0,0,0,0));
+				SkillLibrary.BATARANG,
+				SkillLibrary.ROCKET,0,0,0,0));
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.LETHALITY;
 		this.resistances=resistance(

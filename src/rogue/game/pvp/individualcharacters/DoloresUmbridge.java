@@ -14,20 +14,24 @@ public class DoloresUmbridge extends PlayableCharacter{
 		super();
 		this.id=			Resources.UMBRIDGE;
 		this.tier=			2;
-		this.name=			"Dolores Umbridge";
+		this.name=			"D. Umbridge";
 		this.portraitId=	Resources.P_BOBA;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
 				SkillLibrary.ROPES,
 				SkillLibrary.I_SHALL_NOT_TELL_LIES,0,0,0,0));
 		this.stdDamageType=DamageType.MAGICAL;
-		this.stdDamageProf=Proficiency.INTELLIGENCE;
+		this.stdDamageProf=Proficiency.KNOWLEDGE;
 		this.resistances=resistance(
 				20,//NORMAL
 				30,//BURNING

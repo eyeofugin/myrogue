@@ -11,29 +11,36 @@ import rogue.game.world.objects.entities.PlayableCharacter;
 
 public class Skill {
 	
+	private static int counter = 0;
+	
+	protected int unique;
 	protected int id;
 	protected String name;
 	protected String description;
 	protected Event event;
 	
-	private SkillType type;
+	protected SkillType type;
 	
-	private TargetType target;
-	private DamageType damageType;
-	private int radius;
-	private int distance;
-	private List<Effect> effects;
-	private List<Multiplier> multipliers;
+	protected TargetType target;
+	protected DamageType damageType;
+	protected int radius;
+	protected int distance;
+	protected List<Effect> effects;
+	protected List<Multiplier> multipliers;
 	
-	private boolean blocked;
+	protected boolean blocked;
 	
-	private int manaCost;
-	private int lifeCost;
-	private int actionCost;
-	private int accuracy;
+	protected int manaCost;
+	protected int lifeCost;
+	protected int actionCost;
+	protected int accuracy=100;
 	
-	private int power;
-	private int summonedId;
+	protected int power;
+	protected int summonedId;
+	
+	public Skill() {
+		this.unique=counter++;
+	}
 	
 	public Skill(int id, String name, String description) {
 		this.id = id;
@@ -70,10 +77,21 @@ public class Skill {
 		e.setSkill(id);
 		this.event=e;
 	}
-	public Skill() {
-		// TODO Auto-generated constructor stub
-	}
 
+	protected List<Effect> of(Effect[] effects){
+		List<Effect> result = new ArrayList<>();
+		for(Effect e : effects) {
+			result.add(e);
+		}
+		return result;
+	}
+	protected List<Multiplier> of(Multiplier[] multiplier){
+		List<Multiplier> result = new ArrayList<>();
+		for(Multiplier e : multiplier) {
+			result.add(e);
+		}
+		return result;
+	}
 	public static Skill getDamageSkill(int id, String name, String description, TargetType target,
 			DamageType damageType, Effect[] effects, Multiplier[] multipliers,
 			int power,int accuracy,int distance,int radius,int manaCost,int lifeCost,int actionCost) {

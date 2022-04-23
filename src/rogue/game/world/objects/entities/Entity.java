@@ -21,6 +21,8 @@ import util.DraftColor;
 
 public class Entity {
 	
+	private static int counter=0;
+	private int unique;
 	protected int id;
 	private int x,y;
 	protected String name = "dummy";
@@ -57,16 +59,17 @@ public class Entity {
 
 	
 	//Playing
-	private int currentActions;
+	protected int currentActions;
 	protected int maxActions;
 	
-	private int currentMovement;
+	protected int currentMovement;
 	protected int maxMovement;
 	
 	public Entity() {
-		
+		this.unique=counter++;
 	}
 	public Entity(int id, int portraitId, String name, Connector connector) {
+		this.unique=counter++;
 		this.id= id;
 		this.portraitId=portraitId;
 		this.name=name;
@@ -75,9 +78,10 @@ public class Entity {
 	public Entity(int id, int portraitId, String name, int team,
 			int maxLife,int lifeRegain,int maxMana,int manaRegain,int maxActions,int maxMovement,int range,List<Skill> skills,DamageType std,Proficiency stdP,
 			Map<DamageType,Integer> resistances,Map<DamageType,Double> multipliers,Map<Proficiency,Integer> proficiencies) {
+		this.unique=counter++;
 		this.id = id;
 		this.portraitId = portraitId;
-		this.name=name;
+		this.name=name;//Max 13 chars
 		this.currentLife = maxLife;
 		this.maxLife = maxLife;
 		this.lifeRegain=lifeRegain;
@@ -107,7 +111,7 @@ public class Entity {
 	public static enum Proficiency{
 		PRECISION("Precision"),
 		STRENGTH("Strength"),
-		INTELLIGENCE("Intelligence"),
+		KNOWLEDGE("Knowledge"),
 		FAITH("Faith"),
 		LETHALITY("Lethality");
 		private final String value;
@@ -157,7 +161,7 @@ public class Entity {
 		Map<Proficiency,Integer> proficiencies = new HashMap<>();
 		proficiencies.put(Proficiency.STRENGTH,strength);
 		proficiencies.put(Proficiency.FAITH,faith);
-		proficiencies.put(Proficiency.INTELLIGENCE,intelligence);
+		proficiencies.put(Proficiency.KNOWLEDGE,intelligence);
 		proficiencies.put(Proficiency.LETHALITY,lethality);
 		proficiencies.put(Proficiency.PRECISION,precision);
 		return proficiencies;
@@ -444,7 +448,7 @@ public class Entity {
 		String result = "";
 		for(DraftColor c : this.colors) {
 			if(c.equals(DraftColor.BLACK)) {
-				result+="Â°";
+				result+="°";
 			}
 			if(c.equals(DraftColor.BLUE)) {
 				result+="~";
@@ -749,6 +753,12 @@ public class Entity {
 		}
 		public void setColors(List<DraftColor> colors) {
 			this.colors = colors;
+		}
+		public int getUnique() {
+			return unique;
+		}
+		public void setUnique(int unique) {
+			this.unique = unique;
 		}
 
 

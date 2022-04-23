@@ -54,7 +54,7 @@ public class Team {
 	}
 	public int getMaxBenchSize() {
 		int benchSize=2;
-		if(getDraftColors().contains(DraftColor.GREEN)) {benchSize+=4;}
+		if(getDraftColors().contains(DraftColor.GREEN)) {benchSize+=3;}
 		return benchSize;
 	}
 	

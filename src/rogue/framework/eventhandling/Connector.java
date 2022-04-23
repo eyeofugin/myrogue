@@ -9,24 +9,27 @@ import rogue.framework.resources.Property;
 
 public class Connector {
 	
-	public static final String MOVE_PLAYER = "MOV";
-	public static final String SHOW_MOVEMENT = "SMV";
-	public static final String SHOW_ATTACK = "SAT";
-	public static final String ATTACK = "ATK";
-	public static final String END_TURN ="END";
-	public static final String SELECT_PLAYER = "SCT";
-	public static final String INFO_OBJECT = "IEN";
-	public static final String TAB_CHANGE ="TAB";
-	public static final String SKILL_CHOSEN ="SCH";
-	public static final String TARGET_CHOSEN ="TCH";
-	public static final String CONFIRM_SKILL = "COS";
-	public static final String CANCEL_SKILL = "CAS";
-	public static final String LOG_UP = "LUP";
-	public static final String LOG_DOWN = "LDO";
-	public static final String CHOOSE_CARD ="CCA";
-	public static final String MOVE_TEAM_MEMBER = "MTM";
-	public static final String DELETE_CHARACTER_SLIDE = "DCS";
-	public static final String REQUEST_CONFIRMATION="CON";
+	public static final String MOVE_PLAYER = "AAA";
+	public static final String SHOW_MOVEMENT = "AAB";
+	public static final String SHOW_ATTACK = "AAC";
+	public static final String ATTACK = "AAD";
+	public static final String END_TURN ="AAE";
+	public static final String SELECT_PLAYER = "AAF";
+	public static final String INFO_OBJECT = "AAG";
+	public static final String TAB_CHANGE ="AAH";
+	public static final String SKILL_CHOSEN ="AAI";
+	public static final String TARGET_CHOSEN ="AAJ";
+	public static final String CONFIRM_SKILL = "AAK";
+	public static final String CANCEL_SKILL = "AAL";
+	public static final String LOG_UP = "AAM";
+	public static final String LOG_DOWN = "AAN";
+	public static final String CHOOSE_CARD ="AAO";
+	public static final String MOVE_TEAM_MEMBER = "AAP";
+	public static final String DELETE_CHARACTER_SLIDE = "AAQ";
+	public static final String REQUEST_CONFIRMATION="AAR";
+	public static final String CANCEL_CONFIRM_DIALOG="AAS";
+	public static final String CONFIRM_DIALOG = "AAT";
+	
 	
 	private int mapXFrom,mapXUntil;
 	
@@ -35,6 +38,7 @@ public class Connector {
 	private List<Event> eventsList = new ArrayList<Event>();
 	private int x,y;
 	private int xOffset=0,yOffset=0;
+	public Event firedEvent;
 	
 	public Connector(int x, int y) {
 		this.x=x;this.y=y;
@@ -49,6 +53,9 @@ public class Connector {
 		this.mapXUntil = mapXUntil;
 	}
 	
+	public void fire(Event e) {
+		firedEvent=e;
+	}
 	public void addEvent(int xFrom, int yFrom, int xSize, int ySize, Event e) {
 		for(int x = xFrom; x < (xFrom+xSize); x++) {
 			for(int y = yFrom; y < (yFrom+ySize); y++) {

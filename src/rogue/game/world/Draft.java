@@ -78,6 +78,9 @@ public class Draft {
 	private void moveCard(Event e) {
 		teamOverview.trySwitch(e.getCardnr());
 	}
+	private void deleteCard(int nr) {
+		teamOverview.delete(nr);
+	}
 
 	
 	public void mouseClicked(Event e) {
@@ -85,8 +88,10 @@ public class Draft {
 			chooseCard(e.getEntity());
 		}
 		if(e.getEventId().equals(Connector.MOVE_TEAM_MEMBER)) {
-			System.out.println("id "+e.getCardnr());
 			moveCard(e);
+		}
+		if(e.getEventId().equals(Connector.DELETE_CHARACTER_SLIDE)) {
+			deleteCard(e.getCardnr());
 		}
 	}
 	

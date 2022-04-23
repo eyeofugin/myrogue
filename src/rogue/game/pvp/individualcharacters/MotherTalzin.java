@@ -21,13 +21,17 @@ public class MotherTalzin extends PlayableCharacter{
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
 				SkillLibrary.ALLY_HEAL,
 				SkillLibrary.ZOMBIE_MINIONS,
-				SkillLibrary.VOODOO_SHIT,0,0,0));
+				SkillLibrary.I_SHALL_NOT_TELL_LIES,0,0,0));
 		this.stdDamageType=DamageType.SHOCK;
 		this.stdDamageProf=Proficiency.FAITH;
 		this.resistances=resistance(

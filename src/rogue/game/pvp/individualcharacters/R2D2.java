@@ -20,14 +20,18 @@ public class R2D2 extends PlayableCharacter{
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
-				SkillLibrary.SCAN,
+				SkillLibrary.SHOW_AREA,
 				SkillLibrary.SMOKE_SCREEN,0,0,0,0));
 		this.stdDamageType=DamageType.SHOCK;
-		this.stdDamageProf=Proficiency.INTELLIGENCE;
+		this.stdDamageProf=Proficiency.KNOWLEDGE;
 		this.resistances=resistance(
 				20,//NORMAL
 				30,//BURNING

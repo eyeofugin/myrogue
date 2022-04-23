@@ -13,21 +13,24 @@ public class ChinaSorrows extends PlayableCharacter{
 	public ChinaSorrows() {
 		super();
 		this.id=			Resources.CHINA;
-		this.tier=			4;
+		this.tier=			3;
 		this.name=			"China Sorrows";
 		this.portraitId=	Resources.P_BOBA;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
 				SkillLibrary.RUNE_TRAP,
 				SkillLibrary.EQUIPMENT_UPGRADE,
-				SkillLibrary.EVASIVE,
-				SkillLibrary.ENHANCEMENT_RUNE,0,0));
+				SkillLibrary.ENHANCEMENT_RUNE,0,0,0));
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(

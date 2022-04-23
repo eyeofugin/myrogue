@@ -93,16 +93,6 @@ public class CharacterSlide extends InformationContainer{
 		this.connector.addEvent(this.xanchor+SMALL_ICON_X, this.yanchor+DELETE_Y, SMALL_ICON_SIZE, SMALL_ICON_SIZE,requestConfirmation);
 		
 	}
-	private void border() {
-		for(int i = 0; i < this.width; i++) {
-			this.pixels[i]=MyColor.WHITE.VALUE;
-			this.pixels[i+(this.height-1)*this.width]=MyColor.WHITE.VALUE;
-		}
-		for(int i = 0; i < this.height; i++) {
-			this.pixels[i*this.width]=MyColor.WHITE.VALUE;
-			this.pixels[this.width-1+i*this.width]=MyColor.WHITE.VALUE;
-		}
-	}
 	public void setXanch(int xanch) {
 		this.xanchor=xanch;
 	}

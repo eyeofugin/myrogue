@@ -20,14 +20,18 @@ public class Dobby extends PlayableCharacter{
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
 				SkillLibrary.TELEPORT,
 				SkillLibrary.BLUDGER,0,0,0,0));
 		this.stdDamageType=DamageType.MAGICAL;
-		this.stdDamageProf=Proficiency.INTELLIGENCE;
+		this.stdDamageProf=Proficiency.KNOWLEDGE;
 		this.resistances=resistance(
 				20,//NORMAL
 				30,//BURNING
@@ -51,6 +55,6 @@ public class Dobby extends PlayableCharacter{
 				35,//INTELLIGENCE
 				0, //LETHALITY
 				5);//PRECISION
-		this.colors=Arrays.asList(new DraftColor[] {DraftColor.WHITE});	
+		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLUE});	
 	}
 }

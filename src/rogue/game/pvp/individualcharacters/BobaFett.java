@@ -14,20 +14,23 @@ public class BobaFett extends PlayableCharacter{
 	public BobaFett() {
 		super();
 		this.id=			Resources.BOBA;
-		this.tier=			3;
+		this.tier=			2;
 		this.name=			"Boba Fett";
 		this.portraitId=	Resources.P_BOBA;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
 				SkillLibrary.FLAMETHROWER,
-				SkillLibrary.JETPACK_BOOST,
-				SkillLibrary.ROCKET,0,0,0));
+				SkillLibrary.ROCKET,0,0,0,0));
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.PRECISION;
 		this.resistances=resistance(
@@ -53,6 +56,6 @@ public class BobaFett extends PlayableCharacter{
 				35,//INTELLIGENCE
 				0, //LETHALITY
 				5);//PRECISION
-		this.colors=Arrays.asList(new DraftColor[] {DraftColor.RED,DraftColor.BLACK});
+		this.colors=Arrays.asList(new DraftColor[] {DraftColor.RED,DraftColor.BLUE});
 	}
 }

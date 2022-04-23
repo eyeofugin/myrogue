@@ -22,12 +22,16 @@ public class LukeSkywalker extends PlayableCharacter{
 		this.lifeRegain=	15;
 		this.maxMana=		60;
 		this.manaRegain=	10;
+		this.currentLife 	= this.maxLife;
+		this.currentMana 	= this.maxMana;
 		this.maxActions=	4;
 		this.maxMovement=	2;
+		this.currentActions=this.maxActions;
+		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
 				SkillLibrary.RIGHTEOUS_SWING,
-				SkillLibrary.FORCE_VISION,
+				SkillLibrary.SHOW_AREA,
 				SkillLibrary.FORCE_PUSH,
 				SkillLibrary.SHOCKWAVE_JUMP,0,0));
 		this.stdDamageType=DamageType.NORMAL;

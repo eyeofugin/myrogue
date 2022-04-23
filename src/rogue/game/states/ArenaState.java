@@ -15,6 +15,7 @@ import rogue.game.pvp.Team;
 import rogue.game.world.Arena;
 import rogue.game.world.Draft;
 import rogue.game.world.HUD;
+import rogue.game.world.Menu;
 import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import rogue.graphics.InformationContainer;
@@ -24,21 +25,29 @@ import util.TextEditor;
 
 public class ArenaState extends State{
 
+	private Menu menu;
 	private Arena arena;
 	private Draft draft;
 	private HUD hud;
+	
 	private List<Team> teams = new ArrayList<Team>();
 	private int activePointer;
 	private int maxPointer;
-	private PlayableCharacter activeCharacter;
+	private int round = 1;
 	private boolean inChangeTeam=false;
 	private boolean inDraft = false;
+	private boolean inMenu = false;
+	
+	private PlayableCharacter activeCharacter;
 	private EntityInformationContainer activeCharacterCanvas;
-	private int round = 1;
+	
+	
+	
 	
 	public ArenaState(Connector connector) {
 		super(connector);
 		mockTeams();
+		this.menu=new Menu(0,0,1920,1080,connector);
 		this.activeCharacter = teams.get(0).getCharacters().get(0);
 		this.activeCharacterCanvas = new EntityInformationContainer(this.activeCharacter,EntityInformationContainer.PLAYER_CONFIG,TextEditor.conf8x7,connector);
 		this.arena = new Arena(Init.ROOMS[1],this.connector);
@@ -47,6 +56,7 @@ public class ArenaState extends State{
 		this.draft=new Draft(this.connector);
 		this.activePointer=1;
 		this.maxPointer=teams.size();
+		this.hud=new HUD(connector);
 	}
 
 	@Override
@@ -57,12 +67,13 @@ public class ArenaState extends State{
 
 	@Override
 	protected int[] render() {
+		//this.connector.cleanAll();
+		
 		int[] pixels = new int[1920*1080];
 		pixels = backGround(pixels);
-		
-		if(inChangeTeam) {
-			getChangeConfirm(pixels);
-		}else if(inDraft){
+		if(inMenu) {
+			
+		}if(inDraft){
 			List<int[]>  draftPixels = this.draft.render();
 			
 			int[] options = draftPixels.get(0);
@@ -117,24 +128,6 @@ public class ArenaState extends State{
 					indexButtonPanel++;
 				}
 			}
-			//getButtons(pixels);
-//			int[] card = roomPixels.get(3);
-//			
-//			int index = 0;
-//			for(int y = 600; y < 1000; y++) {
-//				for(int x = 30; x < 330; x++) {
-//					pixels[x+y*Property.END_OF_X] = card[index];
-//					index++;
-//				}
-//			}
-//			int[] minimap = roomPixels.get(3);
-//			int minimapIndex=0;
-//			for(int i = Property.MINIMAP_Y_FROM; i < Property.MINIMAP_Y_UNTIL; i++) {
-//				for(int j = Property.MINIMAP_X_FROM; j < Property.MINIMAP_X_UNTIL; j++) {
-//					pixels[j+i*Property.END_OF_X] = minimap[minimapIndex];
-//					minimapIndex++;
-//				}
-//			}
 			
 			int[] log = roomPixels.get(5);
 			int logIndex=0;
@@ -145,16 +138,33 @@ public class ArenaState extends State{
 				}
 			}
 		}
+		
+		if(this.hud.active){
+//			this.connector.cleanAll();
+			int[] hudP = this.hud.render();
+			
+			int index = 0;
+			for(int i = 0; i <1080; i++) {
+				for(int j = 0; j <1920; j++) {
+				
+					if(hudP[index]!=-12450784) {
+						pixels[j + i * 1920] = hudP[index];
+					}
+					index++;
+				}
+			}
+		}
+		
 		return pixels;
 	}
-	private int[] getChangeConfirm(int[] p) {
-		InformationContainer.writeLineExt("end turn", Property.CHANGE_CONFIRM_X_FROM, Property.CHANGE_CONFIRM_X_UNTIL, Property.CHANGE_CONFIRM_Y_FROM, Property.CHANGE_CONFIRM_Y_UNTIL, 
-				0, TextAlignment.CENTER, MyColor.BLACK, MyColor.WHITE, p, Property.END_OF_X);
-		Event e = new Event();
-		e.setEventId("CONFIRM_END");
-		this.connector.addEvent(Property.CHANGE_CONFIRM_X_FROM, Property.CHANGE_CONFIRM_Y_FROM, Property.BUTTON_NORMAL_WIDTH, Property.BUTTON_NORMAL_HEIGHT, e);
-		return p;
-	}
+//	private int[] getChangeConfirm(int[] p) {
+//		InformationContainer.writeLineExt("end turn", Property.CHANGE_CONFIRM_X_FROM, Property.CHANGE_CONFIRM_X_UNTIL, Property.CHANGE_CONFIRM_Y_FROM, Property.CHANGE_CONFIRM_Y_UNTIL, 
+//				0, TextAlignment.CENTER, MyColor.BLACK, MyColor.WHITE, p, Property.END_OF_X);
+//		Event e = new Event();
+//		e.setEventId("CONFIRM_END");
+//		this.connector.addEvent(Property.CHANGE_CONFIRM_X_FROM, Property.CHANGE_CONFIRM_Y_FROM, Property.BUTTON_NORMAL_WIDTH, Property.BUTTON_NORMAL_HEIGHT, e);
+//		return p;
+//	}
 	private PlayableCharacter getCharacter(String name) {
 		for(PlayableCharacter p : teams.get(0).getCharacters()) {
 			if(p.getName().equals(name)) {
@@ -179,7 +189,7 @@ public class ArenaState extends State{
 		char1.setTeam(Property.TEAM_1);
 		PlayableCharacter char2 = CharacterLibrary.get(Resources.TALZIN);
 		char2.setTeam(Property.TEAM_1);
-		PlayableCharacter char3 = CharacterLibrary.get(Resources.BALROG);
+		PlayableCharacter char3 = CharacterLibrary.get(Resources.TALZIN);
 		char3.setTeam(Property.TEAM_1);
 		PlayableCharacter char4 = CharacterLibrary.get(Resources.UMBRIDGE);
 		char4.setTeam(Property.TEAM_1);
@@ -187,8 +197,9 @@ public class ArenaState extends State{
 		char5.setTeam(Property.TEAM_1);
 		PlayableCharacter char6 = CharacterLibrary.get(Resources.HAGRID);
 		char6.setTeam(Property.TEAM_1);
-		chars1.add(char1);
+		chars1.add(char1); 
 		chars1.add(char2);
+		chars1.add(char3);
 //		chars1.add(char3);
 //		chars1.add(char4);
 //		chars1.add(char5);
@@ -211,10 +222,15 @@ public class ArenaState extends State{
 		PlayableCharacter char12 = CharacterLibrary.get(Resources.BALROG);
 		char12.setTeam(Property.TEAM_2);
 		chars2.add(char7);
+//		chars2.add(char7);
+//		chars2.add(char7);
+//		chars2.add(char7);
+//		chars2.add(char7);
 		chars2.add(char8);
 		chars2.add(char9);
-		chars2.add(char10);
-		chars2.add(char11);
+//		chars2.add(char9);
+//		chars2.add(char10);
+//		chars2.add(char11);
 //		chars2.add(char12);
 		t2.setCharacters(chars2);
 		List<PlayableCharacter> passive2 = new ArrayList<>();
@@ -240,17 +256,19 @@ public class ArenaState extends State{
 		this.hud.confirmationDialog(confirm);
 	}
 	private void confirmEnd() {
-		this.inChangeTeam=false;
 		int teamNr = getNextTeamNr();
-		this.inDraft = true;
-		this.draft.buildDraftFor(teamNr, this.teams,this.round);
-//		this.arena.openViewForTeamNr(teamNr);
+//		this.inDraft = true;
+//		this.draft.buildDraftFor(teamNr, this.teams,this.round);
+		this.arena.openViewForTeamNr(teamNr);
 	}
 
 	@Override
 	protected void mouseClicked(Event e) {
 		if(e.getEventId().equals(Connector.REQUEST_CONFIRMATION)) {
 			confirmationDialog(e.getAfterConfirmEvent());
+		}
+		if(this.hud.active) {
+			this.hud.mouseClicked(e);
 		}
 		if(e.getEventId().equals("selectPlayerEvent")) {
 			activeCharacter = getCharacter(e.getEntity().getName());
@@ -262,11 +280,8 @@ public class ArenaState extends State{
 		}
 		
 		if(e.getEventId().equals(this.connector.END_TURN)) {
-			this.inChangeTeam=true;
-		}
-		if(e.getEventId().equals("CONFIRM_END")) {
 			confirmEnd();
-		}	
+		}
 //		if(e.getEventId().contains("tabChange")) {
 //			if(e.getEventId().startsWith(this.activeCharacterCanvas.getPrefix())) {
 //				if(this.activeCharacter!=null)

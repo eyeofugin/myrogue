@@ -157,7 +157,7 @@ public class Arena {
 		compartments.add(map);
 		
 		int[] largeCanvasPixels = new int[Property.ACTIVE_CHAR_HEIGHT*Property.ACTIVE_CHAR_WIDTH];
-		largeCanvasPixels = this.largeCanvas.getPixels();
+		largeCanvasPixels = this.largeCanvas.render();
 		compartments.add(largeCanvasPixels);
 		
 		int[] smallCanvasPixels = new int[Property.ACTIVE_NPC_HEIGHT*Property.ACTIVE_NPC_WIDTH];
@@ -336,7 +336,8 @@ public class Arena {
 			startx+=xs;
 			starty+=ys;
 		}
-		
+		if(startx>=Property.ROOM_VIEW_TILE_COUNT||starty>=Property.ROOM_VIEW_TILE_COUNT)
+			return;
 		if(!free) {
 			if(this.visionField[startx][starty]!=true)
 				this.visionField[startx][starty] = false;
@@ -355,7 +356,8 @@ public class Arena {
 			}
 		}
 		if(startx!=x || starty!=y) {
-			checkVisionOf(x, y, startx, starty, visF, free, cx, cy);
+			if(startx<Property.ROOM_VIEW_TILE_COUNT&&starty<Property.ROOM_VIEW_TILE_COUNT)
+				checkVisionOf(x, y, startx, starty, visF, free, cx, cy);
 		}
 	}
 	private int[][] getVisionValues(){
@@ -483,7 +485,7 @@ public class Arena {
 		if(movementDistance>0) {
 			for(int x = xGridPos-movementDistance; x <= xGridPos+movementDistance; x++) {
 				for(int y = yGridPos-movementDistance; y <= yGridPos+movementDistance;y++) {
-					if(!(x==xGridPos&&y==yGridPos)) {
+					if(!(x==xGridPos&&y==yGridPos) && x < Property.ROOM_VIEW_TILE_COUNT && y < Property.ROOM_VIEW_TILE_COUNT) {
 						
 						MovementOption move = getMovementViabilityFor(x,y,this.activeLarge.getTeam());
 						
@@ -818,27 +820,30 @@ public class Arena {
 		return null;
 	}
 	private MovementOption getMovementViabilityFor(int x, int y, int teamNr) {
-		if(data.getTileData()[y][x].isObstacle()) {
-			return MovementOption.OBSTACLE;
-		}
-		if(data.getTileData()[y][x].getId()==Resources.WATER) {
-			return MovementOption.WATER;
-		}
-		if(data.getTileData()[y][x].getId()==Resources.VOID) {
-			return MovementOption.VOID;
-		}
-		if(data.getTileData()[y][x].getId()==Resources.ENDWALL) {
-			return MovementOption.ENDWALL;
-		}
-		Entity e = getEntityAt(x, y);
-		if(e != null) {
-			if(e.getTeam() == teamNr) {
-				return MovementOption.SELF;
-			}else {
-				return MovementOption.ENEMY;
+		if(x < Property.ROOM_VIEW_TILE_COUNT && y < Property.ROOM_VIEW_TILE_COUNT) {
+			if(data.getTileData()[y][x].isObstacle()) {
+				return MovementOption.OBSTACLE;
 			}
+			if(data.getTileData()[y][x].getId()==Resources.WATER) {
+				return MovementOption.WATER;
+			}
+			if(data.getTileData()[y][x].getId()==Resources.VOID) {
+				return MovementOption.VOID;
+			}
+			if(data.getTileData()[y][x].getId()==Resources.ENDWALL) {
+				return MovementOption.ENDWALL;
+			}
+			Entity e = getEntityAt(x, y);
+			if(e != null) {
+				if(e.getTeam() == teamNr) {
+					return MovementOption.SELF;
+				}else {
+					return MovementOption.ENEMY;
+				}
+			}
+			return MovementOption.VALID;
 		}
-		return MovementOption.VALID;
+		return null;
 	}
 	private boolean isFreeMovement(Entity c) {
 		Tile t = this.data.getTileData()[c.getY()][c.getX()];
@@ -848,7 +853,7 @@ public class Arena {
 		return false;
 	}
 	private void highlightTile(int x, int y,Highlight h) {
-		if(x<0||y<0) {
+		if(x<0||y<0||x>=Property.ROOM_VIEW_TILE_COUNT || y>=Property.ROOM_VIEW_TILE_COUNT) {
 			return;
 		}
 		this.highlights[x][y] = h;

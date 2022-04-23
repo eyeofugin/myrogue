@@ -20,8 +20,8 @@ import util.DraftColor;
 public class CardOverview extends InformationContainer{
 	private Map<Integer,double[]> turnProbabilities = new HashMap<>();
 	private Entity[] entities = new Entity[] {new Batman(),new Batman(),new Batman(), new Batman()};
-	private int nrChoices=1;
-	private int nrOptions=3;
+	private int nrChoices=2;
+	private int nrOptions=4;
 	private int hMargin,vMargin;
 	
 	public CardOverview(int xanch,int yanch,Connector connector) {
@@ -56,7 +56,7 @@ public class CardOverview extends InformationContainer{
 	private Entity[] getRandomEntities(int amount, int turn) {
 		Entity[] result = new Entity[amount];
 		Random rand = new Random();
-		List<PlayableCharacter> inUse = new ArrayList<>();
+		List<Integer> inUse = new ArrayList<>();
 		for(int i = 0; i < amount; i++) {
 			boolean foundUnique = false;
 			PlayableCharacter pc = new PlayableCharacter();
@@ -64,9 +64,9 @@ public class CardOverview extends InformationContainer{
 				int tier = getTier(turn);
 				List<PlayableCharacter> tiered = CharacterLibrary.getTier(tier);
 				pc = tiered.get(rand.nextInt(tiered.size()));
-				if(!inUse.contains(pc)) {
+				if(!inUse.contains(pc.getId())) {
 					foundUnique=true;
-					inUse.add(pc);
+					inUse.add(pc.getId());
 				}
 			}
 
@@ -131,6 +131,12 @@ public class CardOverview extends InformationContainer{
 		case 4:
 			show4Options();
 			break;
+		case 5:
+			show5Options();
+			break;
+		case 6:
+			show6Options();
+			break;
 		}
 	}
 	private void show1Option() {
@@ -151,6 +157,19 @@ public class CardOverview extends InformationContainer{
 		showOneLine(0,2,0);
 		int overFlow = vMargin+CharacterCard.CARD_HEIGHT;
 		showOneLine(2,4,overFlow);
+	}
+	private void show5Options() {
+		calcMargins(2,3);
+		showOneLine(0,3,0);
+		calcMargins(2,2);
+		int overFlow = vMargin+CharacterCard.CARD_HEIGHT;
+		showOneLine(3,5,overFlow);
+	}
+	private void show6Options() {
+		calcMargins(2,3);
+		showOneLine(0,3,0);
+		int overFlow = vMargin+CharacterCard.CARD_HEIGHT;
+		showOneLine(3,6,overFlow);
 	}
 	private void showOneLine(int indexf, int indexu, int overflow) {
 		int xoff = hMargin;
