@@ -125,12 +125,12 @@ public class Entity {
 	
 	protected static List<Skill> getSkills(int s1, int s2, int s3, int s4, int s5, int s6) {
 		List<Skill> skills = new ArrayList<>();
-		if(s1!=0) {skills.add(SkillLibrary.getSkill(s1));}
-		if(s2!=0) {skills.add(SkillLibrary.getSkill(s2));}
-		if(s3!=0) {skills.add(SkillLibrary.getSkill(s3));}
-		if(s4!=0) {skills.add(SkillLibrary.getSkill(s4));}
-		if(s5!=0) {skills.add(SkillLibrary.getSkill(s5));}
-		if(s6!=0) {skills.add(SkillLibrary.getSkill(s6));}
+		if(s1!=0) {skills.add(SkillLibrary.get(s1));}
+		if(s2!=0) {skills.add(SkillLibrary.get(s2));}
+		if(s3!=0) {skills.add(SkillLibrary.get(s3));}
+		if(s4!=0) {skills.add(SkillLibrary.get(s4));}
+		if(s5!=0) {skills.add(SkillLibrary.get(s5));}
+		if(s6!=0) {skills.add(SkillLibrary.get(s6));}
 		
 		return skills;
 	}
@@ -448,7 +448,7 @@ public class Entity {
 		String result = "";
 		for(DraftColor c : this.colors) {
 			if(c.equals(DraftColor.BLACK)) {
-				result+="°";
+				result+="ï¿½";
 			}
 			if(c.equals(DraftColor.BLUE)) {
 				result+="~";

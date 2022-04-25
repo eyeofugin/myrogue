@@ -723,7 +723,7 @@ public class Arena {
 		}
 	}
 	private void onExecuteSkill(Event e) {
-		Skill s = SkillLibrary.getSkill(e.getSkill());
+		Skill s = SkillLibrary.get(e.getSkill());
 		boolean success = CombatManager.executeSkill(this.activeLarge,getAffectedTargets(s),s,this.log);
 		update();
 		if(success) {
@@ -1055,9 +1055,9 @@ public class Arena {
 		}else if(e.getEventId().contains(	Connector.TAB_CHANGE)) {
 			onTabChange(e);
 		}else if(e.getEventId().equals(		Connector.SKILL_CHOSEN)) {
-			onSkillChosen(SkillLibrary.getSkill(e.getSkill()));
+			onSkillChosen(SkillLibrary.get(e.getSkill()));
 		}else if(e.getEventId().startsWith(	Connector.TARGET_CHOSEN)) {
-			onTargetChosen(SkillLibrary.getSkill(e.getSkill()),e.getX(),e.getY());
+			onTargetChosen(SkillLibrary.get(e.getSkill()),e.getX(),e.getY());
 		}else if(e.getEventId().equals(		Connector.CONFIRM_SKILL)) {
 			onExecuteSkill(e);
 		}else if(e.getEventId().equals(		Connector.CANCEL_SKILL)) {

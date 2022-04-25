@@ -86,7 +86,6 @@ public class Loader {
 		Resources.ICONSx32.put(SkillLibrary.MERCILESS_MASSACRE,new Sprite("res/skills/mercilessmassacre.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.RIGHTEOUS_SWING,new Sprite("res/skills/righteousswing.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.FORCE_PUSH,new Sprite("res/skills/forcepush.png",32,32).getPixels());	
-		Resources.ICONSx32.put(SkillLibrary.FORCE_VISION,new Sprite("res/skills/forceprojection.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.SHOCKWAVE_JUMP,new Sprite("res/skills/shockwavejump.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.UNSTOPPABLE,new Sprite("res/skills/unstoppable.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.CONDEMN,new Sprite("res/skills/condemn.png",32,32).getPixels());	

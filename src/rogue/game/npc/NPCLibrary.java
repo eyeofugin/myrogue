@@ -39,12 +39,12 @@ public class NPCLibrary extends CharacterLibrary{
 	}
 	protected static Skill[] getSkills(int s1, int s2, int s3, int s4, int s5, int s6) {
 		return new Skill[] {
-			SkillLibrary.getSkill(s1),
-			SkillLibrary.getSkill(s2),
-			SkillLibrary.getSkill(s3),
-			SkillLibrary.getSkill(s4),
-			SkillLibrary.getSkill(s5),
-			SkillLibrary.getSkill(s6)
+			SkillLibrary.get(s1),
+			SkillLibrary.get(s2),
+			SkillLibrary.get(s3),
+			SkillLibrary.get(s4),
+			SkillLibrary.get(s5),
+			SkillLibrary.get(s6)
 		};
 	}
 	
