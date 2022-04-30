@@ -16,7 +16,7 @@ public class Hellboy extends PlayableCharacter{
 		this.id=			Resources.HELLBOY;
 		this.tier=			4;
 		this.name=			"Hellboy";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_HELLBOY;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

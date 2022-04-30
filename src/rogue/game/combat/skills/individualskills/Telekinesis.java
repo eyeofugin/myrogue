@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class Telekinesis extends Skill{
 	public Telekinesis() {
-		super();
-		this.id=SkillLibrary.BLUDGER;
+		super(SkillLibrary.BLUDGER);
 		this.name="Telekinesis";
 		this.description="Throws Objects with the Mind";
 		this.target=TargetType.LINE;

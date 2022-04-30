@@ -29,6 +29,8 @@ public class Connector {
 	public static final String REQUEST_CONFIRMATION="AAR";
 	public static final String CANCEL_CONFIRM_DIALOG="AAS";
 	public static final String CONFIRM_DIALOG = "AAT";
+	public static final String END_DRAFT = "AAU";
+	public static final String TEAM_WON_ROUND = "AAV";
 	
 	
 	private int mapXFrom,mapXUntil;
@@ -64,6 +66,14 @@ public class Connector {
 		}
 		eventsList.add(e);
 	}
+	public void removeEvent(int xFrom, int yFrom, int xSize, int ySize) {
+		for(int x = xFrom; x < (xFrom+xSize); x++) {
+			for(int y = yFrom; y < (yFrom+ySize); y++) {
+				eventsList.remove(events[x][y]);
+				events[x][y] = null;
+			}
+		}
+	}
 	public void addSingleEvent(int x, int y, Event e) {
 		events[x][y] = e;
 		addSingleEventToList(e);
@@ -90,6 +100,13 @@ public class Connector {
 		for(int x = xFrom; x < (xFrom+xSize); x++) {
 			for(int y = yFrom; y < (yFrom+ySize); y++) {
 				context[x][y] = e;
+			}
+		}
+	}
+	public void removeContext(int xFrom, int yFrom, int xSize, int ySize) {
+		for(int x = xFrom; x < (xFrom+xSize); x++) {
+			for(int y = yFrom; y < (yFrom+ySize); y++) {
+				context[x][y] = null;
 			}
 		}
 	}

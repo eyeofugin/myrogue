@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class HatefulSwing extends Skill{
 	public HatefulSwing() {
-		super();
-		this.id = SkillLibrary.HATEFUL_SWING;
+		super(SkillLibrary.HATEFUL_SWING);
 		this.name="Hateful Swing";
 		this.description="Perform a rage infused Swing";
 		this.target=TargetType.SINGLE_TARGET;

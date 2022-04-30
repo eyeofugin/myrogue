@@ -9,8 +9,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class ForceChoke extends Skill{
 	public ForceChoke() {
-		super();
-		this.id=SkillLibrary.FORCE_CHOKE;
+		super(SkillLibrary.FORCE_CHOKE);
 		this.name="Vaders Force Choke";
 		this.description="Chokes Foe and pulls them";
 		this.target=TargetType.SINGLE_TARGET;
@@ -18,7 +17,13 @@ public class ForceChoke extends Skill{
 		this.effects=of(new Effect[] {
 				new Effect(EffectType.STATUS_INFLICTION,1,0,StatusInfliction.STUNNED,null),
 				new Effect(EffectType.STAT_CHANGE,1,0,null,new StatChange(
-								DamageType.ALL,0.8,null,0)),
+						DamageType.DARK,0.8,null,0)),
+				new Effect(EffectType.STAT_CHANGE,1,0,null,new StatChange(
+						DamageType.BURNING,0.8,null,0)),
+				new Effect(EffectType.STAT_CHANGE,1,0,null,new StatChange(
+						DamageType.SHOCK,0.8,null,0)),
+				new Effect(EffectType.STAT_CHANGE,1,0,null,new StatChange(
+						DamageType.NORMAL,0.8,null,0)),
 				new Effect(EffectType.OBJECT_PULL,0,1,null,null)
 		});
 		this.multipliers=of(new Multiplier[] {

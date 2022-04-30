@@ -15,7 +15,7 @@ public class SkulduggeryPleasant extends PlayableCharacter{
 		this.id=			Resources.SKULDUGGERY;
 		this.tier=			5;
 		this.name=			"Skulduggery";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_SKULDUGGERY;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

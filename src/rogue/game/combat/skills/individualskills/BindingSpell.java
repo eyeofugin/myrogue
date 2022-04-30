@@ -7,8 +7,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class BindingSpell extends Skill{
 	public BindingSpell(){
-		super();
-		this.id=SkillLibrary.ROPES;
+		super(SkillLibrary.ROPES);
 		this.name="Binding Spell";
 		this.description="Binds Enemy";
 		this.target=TargetType.SINGLE_TARGET;

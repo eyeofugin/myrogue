@@ -28,6 +28,7 @@ import rogue.game.world.objects.entities.Entity;
 import rogue.game.world.objects.entities.NPC;
 import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.game.world.objects.tiles.Enhancement;
+import rogue.game.world.objects.tiles.Enhancement.Level;
 import rogue.game.world.objects.tiles.Tile;
 import rogue.graphics.BaseActionContainer;
 import rogue.graphics.EntityInformationContainer;
@@ -43,8 +44,8 @@ public class Arena {
 	private Connector connector;
 	private Point[][] teamPlacements=new Point[][] {
 		null,
-		new Point[] {new Point(10,2),new Point(11,2),new Point(9,2),new Point(8,2),new Point(7,2),new Point(12,2)}, 
-		new Point[] {new Point(10,13),new Point(11,13),new Point(9,13),new Point(8,13),new Point(7,13),new Point(12,13)}
+		new Point[] {new Point(10,6),new Point(11,6),new Point(9,6),new Point(8,6),new Point(7,6),new Point(12,6)}, 
+		new Point[] {new Point(10,10),new Point(11,10),new Point(9,10),new Point(8,10),new Point(7,10),new Point(12,10)}
 	};
 	protected int xOffset = 0;
 	protected int yOffset = 0;
@@ -52,7 +53,6 @@ public class Arena {
 	
 	//new and improved
 	private Tile[][] tiles;
-	private Entity[][] enties;
 	
 	private List<Entity> entities = new ArrayList<Entity>();
 	private List<Entity> theDead = new ArrayList<Entity>();
@@ -116,10 +116,10 @@ public class Arena {
 		for(Entity e : this.entities) {
 			if(e.getTeam()==nr && PlayableCharacter.class.isInstance(e)) {
 				PlayableCharacter pc = PlayableCharacter.class.cast(e);
-				setSelectPlayerEvent(pc, pc.getX(), pc.getY());
+				setSelectPlayerEvent(pc, pc.getX(), pc.getY(), pc.getX(), pc.getY());
 				this.activeLarge=pc;
 			}
-			if(e.getTeam()!=nr && PlayableCharacter.class.isInstance(e)) {
+			if(e.getTeam()!=nr/* && PlayableCharacter.class.isInstance(e)*/) {
 				Event event = new Event();
 				event.setEntity(e);
 				event.setEventId(Connector.INFO_OBJECT);
@@ -227,6 +227,9 @@ public class Arena {
 				if(e.getTeam()!=this.activeTeam && !this.visionField[e.getX()][e.getY()]) {
 					continue;
 				}
+				if(e.getTeam()!=this.activeTeam && tarned(e)) {
+					continue;
+				}
 				for(int y = 0; y < Property.TILE_SIZE; y++) {
 					for(int x = 0; x < Property.TILE_SIZE; x++) {
 						int relX = ((e.getX()+(-1)*xOffset)*Property.TILE_SIZE)+x;
@@ -304,10 +307,22 @@ public class Arena {
 		this.visionField = new boolean[this.width][this.height];
 		for(Entity e : this.entities) {
 			if(e.getTeam()==this.activeTeam) {
-				getVision(e.getX(),e.getY(),e.getVisionDistance());
+				if(e.hasAbility(SkillLibrary.TRUE_VISION)) {
+					trueVision(e.getX(),e.getY(),e.getVisionDistance());}
+				else {
+					getVision(e.getX(),e.getY(),e.getVisionDistance());}
 			}
 		}
 		print();
+	}
+	private void trueVision(int x, int y, int vis) {
+		for(int i = x-vis; i <= x+vis; i++) {
+			for(int j = y-vis; j <= y+vis; j++) {
+				if(i>=0&&i<this.width  &&  j<this.height&&j>=0) {
+					this.visionField[i][j]=true;
+				}
+			}
+		}
 	}
 	private void getVision(int x, int y, int vis) {
 		int[][] visionValues = getVisionValues();
@@ -402,6 +417,17 @@ public class Arena {
 			}
 		}
 	}
+	private boolean tarned(Entity e) {
+		if(e.hasAbility(SkillLibrary.TARNING)) {
+			for(Entity ent : this.entities.stream().filter(i->i.getTeam()==this.activeTeam).collect(Collectors.toList())) {
+				if(proxCheck(e.getX(), e.getY(), ent.getX(), ent.getY())) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	//---------------------------object-handling---------------------------------------------------------------------------------------------//
@@ -409,6 +435,7 @@ public class Arena {
 	private void moveObject(Entity o, int x, int y,boolean manual, boolean tp) {
 		int currentX = o.getX();
 		int currentY = o.getY();
+		this.tiles[currentX][currentY].onLeave(o);
 		o.setX(x);
 		o.setY(y);
 		int distance = calcDistance(currentX,currentY,x,y);
@@ -431,6 +458,16 @@ public class Arena {
 			if(!tp)
 				e.useMovement(distance);
 		}
+		this.connector.removeContext(getRelationalX(currentX),getRelationalY(currentY),Property.TILE_SIZE,Property.TILE_SIZE);
+		if(o.getTeam()!=this.activeTeam) {
+			Event event = new Event();
+			event.setEntity(o);
+			event.setEventId(Connector.INFO_OBJECT);
+			event.setX(x);
+			event.setY(y);
+			this.connector.addContext(getRelationalX(x),getRelationalY(y),Property.TILE_SIZE,Property.TILE_SIZE,event);
+		}
+		this.tiles[y][x].onEnter(o);
 	}
 	private void manageRelocations() {
 		for(Entity e : this.entities) {
@@ -438,22 +475,24 @@ public class Arena {
 			if(effect!=null) {
 				if(effect.getType().equals(EffectType.OBJECT_PULL)) {
 					Point a = getNextPointTowards(new Point(e.getX(),e.getY()),new Point(this.activeLarge.getX(),this.activeLarge.getY()));
-					if(getMovementViabilityFor(a.x, a.y, 1).equals(MovementOption.VALID)) {
+					if(getMovementViabilityFor(a.x, a.y, 1,e.isFlying()).equals(MovementOption.VALID)) {
 						moveObject(e, a.x, a.y, false, false);
 					}
 				}else {
 					Point a = getNextPointFrom(new Point(e.getX(),e.getY()),new Point(this.activeLarge.getX(),this.activeLarge.getY()));
-					if(getMovementViabilityFor(a.x, a.y, 1).equals(MovementOption.VALID)) {
+					if(getMovementViabilityFor(a.x, a.y, 1,e.isFlying()).equals(MovementOption.VALID)) {
 						moveObject(e, a.x, a.y, false, false);
 					}
 				}
 				e.removeRelocations();
 			}
+			
 		}
 	}
 	private void onMoveCharacter(int x, int y,boolean isTp) {
 		int currentX = this.activeLarge.getX();
 		int currentY = this.activeLarge.getY();
+		this.tiles[currentY][currentX].onLeave(this.activeLarge);
 		
 		this.activeLarge.setX(x);
 		this.activeLarge.setY(y);
@@ -463,7 +502,8 @@ public class Arena {
 			this.activeLarge.useMovement(dist);
 		removeMovements();
 		highLightActive();
-		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge), x, y);
+		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge), x, y,currentX,currentY);
+		this.tiles[y][x].onEnter(this.activeLarge);
 		refreshVision();
 		
 	}
@@ -476,7 +516,17 @@ public class Arena {
 				operatedList.add(e);
 				this.log.formulateDeath(e.getName());
 				});
+		for(Entity e:operatedList) {
+			deathEffect(e);
+		}
 		this.entities.removeAll(operatedList);
+	}
+	private void deathEffect(Entity e) {
+		for(Skill s : e.getSkills()) {
+			if(s.isOnDeath()) {
+				executeOnDeathSkill(e, s);
+			}
+		}
 	}
 	private void showMovementOptions() {
 		int xGridPos = this.activeLarge.getX();
@@ -487,9 +537,9 @@ public class Arena {
 				for(int y = yGridPos-movementDistance; y <= yGridPos+movementDistance;y++) {
 					if(!(x==xGridPos&&y==yGridPos) && x < Property.ROOM_VIEW_TILE_COUNT && y < Property.ROOM_VIEW_TILE_COUNT) {
 						
-						MovementOption move = getMovementViabilityFor(x,y,this.activeLarge.getTeam());
+						MovementOption move = getMovementViabilityFor(x,y,this.activeLarge.getTeam(),this.activeLarge.isFlying());
 						
-						if(move.equals(MovementOption.VALID) || (this.activeLarge.isAllTerrain() && move.equals(MovementOption.WATER))) {
+						if(move.equals(MovementOption.VALID) || (this.activeLarge.hasAbility(SkillLibrary.ALL_TERRAIN) && move.equals(MovementOption.WATER))) {
 							highlightTile(x,y,Highlight.MVMNT_BLUE);
 							Event e = new Event();
 							e.setX(x);
@@ -510,7 +560,7 @@ public class Arena {
 		for(int x = xGridPos-1; x <= xGridPos+1; x++) {
 			for(int y = yGridPos-1; y <= yGridPos+1;y++) {
 				if(!(x==xGridPos&&y==yGridPos)) {
-					MovementOption move = getMovementViabilityFor(x,y,this.activeLarge.getTeam());
+					MovementOption move = getMovementViabilityFor(x,y,this.activeLarge.getTeam(),this.activeLarge.isFlying());
 					if(move.equals(MovementOption.ENEMY)) {
 						highlightTile(x,y,Highlight.CMBT_RED);
 						Event e = new Event();
@@ -557,28 +607,37 @@ public class Arena {
 		removeHighlightsOfType(Highlight.SELECT_WHITE);
 		highlightTile(this.activeLarge.getX(), this.activeLarge.getY(), Highlight.SELECT_WHITE);
 	}
-	private void summonNpc(Skill s) {
-		
-		for(int x = 0; x < highlights.length; x++) {
-			for(int y = 0; y < highlights[0].length; y++) {
-				if(highlights[x][y]!=null &&
-						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
-								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
-					if(getMovementViabilityFor(x, y, this.activeTeam).equals(MovementOption.VALID)) {
-						NPC npc = NPCLibrary.getNpc(s.getSummonedId());
-						npc.setX(x);npc.setY(y);npc.setTeam(this.activeTeam);
-						this.entities.add(npc);
-						Event event = new Event();
-						event.setEntity(npc);
-						event.setEventId(Connector.INFO_OBJECT);
-						event.setX(x);
-						event.setY(y);
-						this.connector.addContext(getRelationalX(x), getRelationalY(y), Property.TILE_SIZE, Property.TILE_SIZE, event);
+	private void summonNpc(Skill s, List<Point> points, int team) {
+		if(points==null) {
+			points = new ArrayList<>();
+			for(int x = 0; x < highlights.length; x++) {
+				for(int y = 0; y < highlights[0].length; y++) {
+					if(highlights[x][y]!=null &&
+							(highlights[x][y].equals(Highlight.SKLL_GREEN)||
+									highlights[x][y].equals(Highlight.SKILL_SELECT))) {
+						if(getMovementViabilityFor(x, y, this.activeTeam,false).equals(MovementOption.VALID)) {
+							points.add(new Point(x,y));
+						}	
 					}
 				}
 			}
 		}
+		for(Point p : points) {
+			NPC npc = NPCLibrary.getNpc(s.getSummonedId());
+			npc.setX(p.x);npc.setY(p.y);npc.setTeam(team);
+			this.entities.add(npc);
+			Event event = new Event();
+			event.setEntity(npc);
+			event.setEventId(Connector.INFO_OBJECT);
+			event.setX(p.x);
+			event.setY(p.y);
+			this.connector.addContext(getRelationalX(p.x), getRelationalY(p.y), Property.TILE_SIZE, Property.TILE_SIZE, event);
+		
+		}
 		refreshVision();
+	}
+	private void summonNpc(Skill s) {
+		summonNpc(s,null,this.activeTeam);
 	}
 	private void summon(Skill s) {
 		for(int x = 0; x < highlights.length; x++) {
@@ -586,8 +645,16 @@ public class Arena {
 				if(highlights[x][y]!=null &&
 						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
 								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
-					Enhancement enh = ObjectLibrary.getEnhancement(s.getSummonedId());
-					this.tiles[y][x].addEnhancement(enh);
+					Enhancement enh = ObjectLibrary.getEnhancement(s.getEnhancementId());
+					enh.setTeam(activeTeam);
+//					if(enh==null){
+//						this.tiles[y][x] = new Tile(s.getEnhancementId());
+//					}else 
+						if(this.tiles[y][x].hasTop() && enh.getLevel().equals(Level.TOP)) {
+						continue;
+					}else {
+						this.tiles[y][x].addEnhancement(enh);
+					}
 				}
 			}
 		}
@@ -598,21 +665,22 @@ public class Arena {
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	private void onSkillChosen(Skill s) {
 		clear();
-		if(s.getType().equals(SkillType.PASSIVE))
-			return;
 		int currentX = this.activeLarge.getX();
 		int currentY = this.activeLarge.getY();
 		
 		int skillRange = s.getDistance();
-		if(s.getTarget().equals(TargetType.SURROUNDING)||s.getTarget().equals(TargetType.SELF)||s.getTarget().equals(TargetType.ALL_ENEMY)) {
+		if(s.getTarget()!=null && (s.getTarget().equals(TargetType.SURROUNDING)||s.getTarget().equals(TargetType.SELF)||s.getTarget().equals(TargetType.ALL_ENEMY))) {
 			onTargetChosen(s,currentX,currentY);
 			return;
 		}
 		for(int x = currentX-skillRange; x <= currentX+skillRange; x++) {
 			for(int y = currentY-skillRange; y <= currentY+skillRange;y++) {
-				if(x>0 && y>0 && x<16 && y<16) {
+				if(x>=0 && y>=0 && x<16 && y<16) {
 					if(s.getTarget().equals(TargetType.SINGLE_FREE) && 
-							!getMovementViabilityFor(x, y, this.activeTeam).equals(MovementOption.VALID)) {
+							!getMovementViabilityFor(x, y, this.activeTeam,this.activeLarge.isFlying()).equals(MovementOption.VALID)) {
+						continue;
+					}
+					if(checkHexproof(x,y)) {
 						continue;
 					}
 					highlightTile(x,y,Highlight.SKLL_GREEN);
@@ -629,6 +697,14 @@ public class Arena {
 			}
 		}
 
+	}
+	private boolean checkHexproof(int x, int y) {
+		Entity e = getEntityAt(x, y);
+		if(e==null) {return false;}
+		if(e.hasAbility(SkillLibrary.HEXPROOF)) {
+			return true;
+		}
+		return false;
 	}
 
 	private void onTargetChosen(Skill s,int targetX,int targetY) {
@@ -722,26 +798,36 @@ public class Arena {
 			}
 		}
 	}
-	private void onExecuteSkill(Event e) {
-		Skill s = SkillLibrary.get(e.getSkill());
-		boolean success = CombatManager.executeSkill(this.activeLarge,getAffectedTargets(s),s,this.log);
+	private void executeOnDeathSkill(Entity e, Skill s) {
+		s = SkillLibrary.get(s.getId());
+		List<Point> points = getOnDeathPoints(e,s);
+		CombatManager.executeSkill(e, getEntitiesFromPoints(points),getTilesFromPoints(points), s, this.log);
+		update();
+		if(s.getSummonedId()!=0) {
+			summonNpc(s,points,e.getTeam());
+		}
+	}
+	private void onExecuteSkill(int skillId) {
+		Skill s = SkillLibrary.get(skillId);
+		boolean success = CombatManager.executeSkill(this.activeLarge,getAffectedTargets(s),getTilesFromHighight(),s,this.log);
 		update();
 		if(success) {
-			if((s.getType().equals(SkillType.MOVEMENT) || 
+
+			if(s.getType()!=null && (s.getType().equals(SkillType.MOVEMENT) || 
 					s.hasTP())){
 				Point p = getSkillSelect();
 				if(p!=null)
 					onMoveCharacter(p.x, p.y, true);
 				highLightActive();
 			}
-			if(s.getType().equals(SkillType.SUMMONNPC)) {
+			if(s.getType()!=null && s.getType().equals(SkillType.VISION)) {
+				vision(s); 
+			}
+			if(s.getSummonedId()!=0) {
 				summonNpc(s);
 			}
-			if(s.getType().equals(SkillType.SUMMON)) {
+			if(s.getEnhancementId()!=0) {
 				summon(s);
-			}
-			if(s.getType().equals(SkillType.VISION)) {
-				vision(s); 
 			}
 			manageRelocations();
 		}
@@ -781,6 +867,18 @@ public class Arena {
 		}
 		return obj;
 	}
+	private List<Point> getOnDeathPoints(Entity e, Skill s){
+		int x = e.getX();
+		int y = e.getY();
+		int radius = s.getRadius();
+		List<Point> targets = new ArrayList<>();
+		for(int i = x - radius; i <= x+radius; i++) {
+			for(int j = y -radius; j <= y+radius; j++) {
+				targets.add(new Point(i,j));
+			}
+		}
+		return targets;
+	}
 	private Point getSkillSelect() {
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y = 0; y < highlights[0].length; y++) {
@@ -802,11 +900,40 @@ public class Arena {
 		int result = y*Property.TILE_SIZE + Property.START_OF_ROOM_Y;
 		return result;
 	}
-	private void setSelectPlayerEvent(PlayableCharacter pc, int x, int y) {
+	private List<Entity> getEntitiesFromPoints(List<Point> points) {
+		List<Entity> results = new ArrayList<>();
+		for(Point p : points) {
+			results.add(getEntityAt(p.x, p.y));
+		}
+		return results;
+	}
+	private List<Tile> getTilesFromHighight(){
+		List<Tile> tiles = new ArrayList<>();
+		for(int x = 0; x < highlights.length; x++) {
+			for(int y = 0; y < highlights[0].length; y++) {
+				if(highlights[x][y]!=null &&
+						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
+								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
+					tiles.add(this.tiles[x][y]);
+				}
+			}
+		}
+		return tiles;
+	}
+	private List<Tile> getTilesFromPoints(List<Point> points){
+		List<Tile> tiles = new ArrayList<>();
+		for(Point p: points) {
+			tiles.add(this.tiles[p.x][p.y]);
+		}
+		return tiles;
+	}
+ 	private void setSelectPlayerEvent(PlayableCharacter pc, int x, int y,int oldx, int oldy) {
 		Event selectPlayerEvent = new Event();
 		selectPlayerEvent.setEventId(Connector.SELECT_PLAYER);
 		selectPlayerEvent.setCharacter(pc);
+		this.connector.removeEvent(getRelationalX(oldx),getRelationalY(oldy),Property.TILE_SIZE,Property.TILE_SIZE);
 		this.connector.addEvent(getRelationalX(x),getRelationalY(y),Property.TILE_SIZE,Property.TILE_SIZE,selectPlayerEvent);
+		
 	}
 	private void removeSelectPlayer() {
 		this.connector.removeEvent(Connector.SELECT_PLAYER);
@@ -819,20 +946,27 @@ public class Arena {
 		}
 		return null;
 	}
-	private MovementOption getMovementViabilityFor(int x, int y, int teamNr) {
+	private MovementOption getMovementViabilityFor(int x, int y, int teamNr,boolean flying) {
 		if(x < Property.ROOM_VIEW_TILE_COUNT && y < Property.ROOM_VIEW_TILE_COUNT) {
-			if(data.getTileData()[y][x].isObstacle()) {
-				return MovementOption.OBSTACLE;
-			}
-			if(data.getTileData()[y][x].getId()==Resources.WATER) {
-				return MovementOption.WATER;
-			}
 			if(data.getTileData()[y][x].getId()==Resources.VOID) {
 				return MovementOption.VOID;
 			}
 			if(data.getTileData()[y][x].getId()==Resources.ENDWALL) {
 				return MovementOption.ENDWALL;
 			}
+			if(data.getTileData()[y][x].isObstacle()) {
+				if(flying) {
+					return MovementOption.VALID;
+				}
+				return MovementOption.OBSTACLE;
+			}
+			if(data.getTileData()[y][x].getId()==Resources.WATER) {
+				if(flying) {
+					return MovementOption.VALID;
+				}
+				return MovementOption.WATER;
+			}
+
 			Entity e = getEntityAt(x, y);
 			if(e != null) {
 				if(e.getTeam() == teamNr) {
@@ -878,14 +1012,35 @@ public class Arena {
 				e.endOfTurn(this.log);
 			}
 		}
+		for(int x = 0; x < Property.ROOM_VIEW_TILE_COUNT; x++) {
+			for(int y = 0; y < Property.ROOM_VIEW_TILE_COUNT; y++) {
+				this.tiles[x][y].onEnd(this.getEntityAt(x, y));
+				this.tiles[x][y].turn();
+			}
+		}
 		removeTheDead();
+	}
+	private void checkWin() {
+		List<Integer> remainingTeams = new ArrayList<>();
+		for(Entity e : this.entities) {
+			if(remainingTeams.contains(e.getTeam())) {
+				continue;
+			}
+			remainingTeams.add(e.getTeam());
+		}
+		if(remainingTeams.size()<2) {
+			Event teamWonRound = new Event();
+			teamWonRound.setEventId(Connector.TEAM_WON_ROUND);
+			teamWonRound.setTeamNr(remainingTeams.get(0));
+			this.connector.fire(teamWonRound);
+		}
 	}
 
 	private void turnsForNPC() {
 		for(Entity e: this.entities) {
 			if(NPC.class.isInstance(e)&&e.getTeam()==this.activeTeam) {
 				NPC npc = NPC.class.cast(e);
-				boolean[][] mvmntMap = getMvmntMapFor(e.getTeam(), e.getX(), e.getY());
+				boolean[][] mvmntMap = getMvmntMapFor(e.getTeam(), e.getX(), e.getY(),npc.isFlying());
 				Entity closestEnemy = getClosestEnemy(mvmntMap,npc.getX(),npc.getY());
 				if(closestEnemy!=null) {
 					if(proxCheck(npc.getX(), npc.getY(), closestEnemy.getX(), closestEnemy.getY())) {
@@ -918,11 +1073,11 @@ public class Arena {
 	private boolean isVisible(Entity e) {
 		return this.visionField[e.getX()][e.getY()];
 	}
-	private boolean[][] getMvmntMapFor(int team, int selfx,int selfy){
+	private boolean[][] getMvmntMapFor(int team, int selfx,int selfy,boolean isFlying){
 		boolean[][] mvmntMap = new boolean[data.getTileData().length][data.getTileData()[0].length];
 		for(int x = 0; x < this.data.getTileData().length; x++) {
 			for(int y = 0; y < data.getTileData()[0].length; y++) {
-				MovementOption m = getMovementViabilityFor(x, y,team);
+				MovementOption m = getMovementViabilityFor(x, y,team,isFlying);
 				if(x==selfx && y==selfy) {
 					mvmntMap[x][y]=true;
 				}else if(m==MovementOption.VALID||m==MovementOption.ENEMY) {
@@ -940,13 +1095,14 @@ public class Arena {
 	private void clear() {
 		removeMovements();
 		this.connector.cleanMapEvents();
-		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge),this.activeLarge.getX(),this.activeLarge.getY());
+		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge),this.activeLarge.getX(),this.activeLarge.getY(),this.activeLarge.getX(),this.activeLarge.getY());
 	}
 	private void endTurn() {
 		endForTeam();
 		//endForEnhancements();
 		removeMovements();
 		removeSelectPlayer();
+		checkWin();
 		this.activeLarge.refresh();
 	}
 	private void removeHighlightsOfType(Highlight h) {
@@ -962,7 +1118,7 @@ public class Arena {
 		for(Entity e : this.entities) {
 			if(PlayableCharacter.class.isInstance(e) && e.getTeam()==this.activeTeam) {
 				PlayableCharacter pc  = PlayableCharacter.class.cast(e);
-				setSelectPlayerEvent(pc, pc.getX(), pc.getY());
+				setSelectPlayerEvent(pc, pc.getX(), pc.getY(), pc.getX(), pc.getY());
 			}
 		}
 	}
@@ -1059,7 +1215,7 @@ public class Arena {
 		}else if(e.getEventId().startsWith(	Connector.TARGET_CHOSEN)) {
 			onTargetChosen(SkillLibrary.get(e.getSkill()),e.getX(),e.getY());
 		}else if(e.getEventId().equals(		Connector.CONFIRM_SKILL)) {
-			onExecuteSkill(e);
+			onExecuteSkill(e.getSkill());
 		}else if(e.getEventId().equals(		Connector.CANCEL_SKILL)) {
 			onCancelSkill(e);
 		}else if(e.getEventId().equals(		Connector.END_TURN)) {

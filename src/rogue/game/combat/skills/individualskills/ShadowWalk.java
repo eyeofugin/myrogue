@@ -5,8 +5,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class ShadowWalk extends Skill{
 	public ShadowWalk() {
-		super();
-		this.id=SkillLibrary.SHADOW_WALK;
+		super(SkillLibrary.SHADOW_WALK);
 		this.name="Shadow Walk";
 		this.description="Glide through Shadows";
 		this.target=TargetType.SINGLE_FREE;

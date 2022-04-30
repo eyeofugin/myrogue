@@ -6,8 +6,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class WideSwing extends Skill{
 	public WideSwing() {
-		super();
-		this.id=SkillLibrary.WEAPON_SWING;
+		super(SkillLibrary.WEAPON_SWING);
 		this.name="Wide Swing";
 		this.description="Hurls Weapon around";
 		this.target=TargetType.SURROUNDING;

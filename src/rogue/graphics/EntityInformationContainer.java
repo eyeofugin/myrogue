@@ -244,11 +244,12 @@ public class EntityInformationContainer extends InformationContainer{
 		List<StndColumn> lines = new ArrayList<>();
 		for(Effect e : this.copy.getCurrentEffects()) {
 			if(e.getType().equals(effect)) {
+				String turns = e.getTurns()>=0 ? e.getTurns()+"" : " ";
 				if(e.getType().equals(EffectType.STATUS_INFLICTION)) {
 					StndColumn column = new StndColumn(new String[] {
 							e.getStatus().value(),
 							e.getIntensity()+"",
-							e.getTurns()+""
+							turns
 						});
 						lines.add(column);
 				}else if(e.getType().equals(EffectType.STAT_CHANGE)){
@@ -257,12 +258,12 @@ public class EntityInformationContainer extends InformationContainer{
 					if(sc.getProf()!=null) {
 						entries[0] = sc.getProf().value();
 						entries[1] = sc.getAmnt()+"";
-						entries[2] = e.getTurns()+"";	
+						entries[2] = turns;	
 					}
 					if(sc.getStat()!=null) {
 						entries[0] = sc.getStat().value();
 						entries[1] = sc.getAmnt()+"";
-						entries[2] = e.getTurns()+"";	
+						entries[2] = turns;	
 					}
 					StndColumn column = new StndColumn(entries);
 						lines.add(column);
@@ -311,8 +312,12 @@ public class EntityInformationContainer extends InformationContainer{
 			int yu = C_SKILLS_ICONS_Y_UNTIL;
 			for(Skill s : characterSkills) {
 				fillWithGraphics(xf, xu-1, yf, yf+ICON_SIZE-1, Resources.ICONSx32.get(s.getId()), true);
-				writeLine(s.getDescription(), NEW_DESCR_X_FROM, C_SKILLS_ICONS_X_UNTIL, yf, yf+ICON_SIZE-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
-				this.connector.addEvent(xf+this.offsetLeft,+yf+this.offsetTop, ICON_SIZE, ICON_SIZE, s.getEvent());
+				writeLine(s.getName(), NEW_DESCR_X_FROM, C_SKILLS_ICONS_X_UNTIL, yf, yf+ICON_SIZE-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+				if(!s.isPassive()) {
+					this.connector.addEvent(xf+this.offsetLeft,+yf+this.offsetTop, ICON_SIZE, ICON_SIZE, s.getEvent());
+				}else {
+					this.connector.removeEvent(xf+this.offsetLeft,+yf+this.offsetTop, ICON_SIZE, ICON_SIZE);
+				}
 				yf+=C_SKILLS_HEIGHT;
 			}
 //			int[] skillIds = new int[characterSkills.size()];
@@ -357,6 +362,8 @@ public class EntityInformationContainer extends InformationContainer{
 		copy.setActiveTab(c.getActiveTab());
 		copy.setCurrentLife(c.getCurrentLife());
 		copy.setMaxLife(c.getMaxLife());
+		copy.setLifeRegain(c.getLifeRegain());
+		copy.setManaRegain(c.getManaRegain());
 		copy.setCurrentActions(c.getCurrentActions());
 		copy.setMaxActions(c.getMaxActions());
 		copy.setCurrentMana(c.getCurrentMana());

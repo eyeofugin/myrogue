@@ -1,17 +1,24 @@
 package rogue.game.world.objects.tiles;
 
+import rogue.game.world.objects.entities.Entity;
+
 public class Enhancement {
 	private int id;
-	private int team;
-	private Level level;
-	private boolean visTeam;
-	private boolean visEnemy;
-	private boolean solid;
-	private boolean blockVis;
-	private int duration;
+	protected int team;
+	protected Level level;
+	protected boolean visTeam;
+	protected boolean visEnemy;
+	protected boolean solid;
+	protected boolean blockVis;
+	protected int duration;
 	
+	
+//--DEFINITIONS
 	public Enhancement() {
 		
+	}
+	public Enhancement(int id) {
+		this.id = id;
 	}
 	public Enhancement(int id, Level level,boolean visTeam, boolean visEnemy, boolean solid, boolean blockVis, int duration) {
 		this.id=id;
@@ -22,15 +29,25 @@ public class Enhancement {
 		this.blockVis=blockVis;
 		this.duration=duration;
 	}
-	
-	
 	public static enum Level{
 		TOP,
 		SUB
 	}
+	
+//--UTIL
 	public void turn() {
 		this.duration--;
 	}
+//--INTERACTION
+	public void onEnter(Entity e) {
+		
+	}
+	public void onLeave(Entity e) {
+		
+	}
+	
+	
+	//Getters setters
 
 
 	public int getId() {

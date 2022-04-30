@@ -7,8 +7,7 @@ import rogue.game.combat.skills.SkillLibrary;
 public class SummonZombie extends Skill{
 	
 	public SummonZombie() {
-		super();
-		this.id = SkillLibrary.ZOMBIE_MINIONS;
+		super(SkillLibrary.ZOMBIE_MINIONS);
 		this.name="Summon the Undead";
 		this.description="Summons a Zombie";
 		this.distance=1;

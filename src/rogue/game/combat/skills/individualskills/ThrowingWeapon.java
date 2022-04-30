@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class ThrowingWeapon extends Skill{
 	public ThrowingWeapon() {
-		super();
-		this.id=SkillLibrary.BATARANG;
+		super(SkillLibrary.BATARANG);
 		this.name="Throwing Weapon";
 		this.description="Throw a small Weapon";
 		this.target=TargetType.LINE;

@@ -15,7 +15,7 @@ public class ProfessorX extends PlayableCharacter{
 		this.id=			Resources.PROFESSOR;
 		this.tier=			4;
 		this.name=			"Professor X";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_PROF_X;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

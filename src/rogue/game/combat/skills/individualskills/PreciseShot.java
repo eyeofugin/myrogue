@@ -9,8 +9,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 public class PreciseShot extends Skill{
 
 	public PreciseShot() {
-		super();
-		this.id=SkillLibrary.HEART_SHOT;
+		super(SkillLibrary.HEART_SHOT);
 		this.name="Precise Shot";
 		this.description="Shot with possible Effect";
 		this.target=TargetType.SINGLE_TARGET;

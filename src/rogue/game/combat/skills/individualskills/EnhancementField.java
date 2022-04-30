@@ -6,8 +6,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class EnhancementField extends Skill{
 	public EnhancementField() {
-		super();
-		this.id=SkillLibrary.ENHANCEMENT_RUNE;
+		super(SkillLibrary.ENHANCEMENT_RUNE);
 		this.name="Enhancement Field";
 		this.description="Prepare a Field to Enhance your Allies";
 		this.target=TargetType.SINGLE_FREE;
@@ -15,6 +14,6 @@ public class EnhancementField extends Skill{
 		this.distance=1;
 		this.manaCost=20;
 		this.actionCost=1;
-		this.summonedId=Resources.ENHANCEMENT_RUNE;
+		this.enhancementId=Resources.ENHANCEMENT_RUNE;
 	}
 }

@@ -113,7 +113,11 @@ public class InformationContainer {
 		int index = 0;
 		for(int y = yFrom; y <= yUntil; y++) {
 			for(int x = xFrom; x <= xUntil; x++) {
-				this.pixels[x+y*width] = result[index];
+				if(result[index]!=-12450784) {
+					pixels[x + y * this.width] = result[index];
+				}else if(!backGround.equals(MyColor.VOID)) {
+					pixels[x + y * this.width] = backGround.VALUE;
+				}
 				index++;
 			}
 		}

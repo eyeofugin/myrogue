@@ -8,8 +8,7 @@ import rogue.game.combat.skills.SkillLibrary;
 public class MassBleeding extends Skill{
 
 	public MassBleeding(){
-		super();
-		this.id=SkillLibrary.I_SHALL_NOT_TELL_LIES;
+		super(SkillLibrary.I_SHALL_NOT_TELL_LIES);
 		this.name="Mass Bleeding";
 		this.description="Make your Enemies bleed";
 		this.target=TargetType.ALL_ENEMY;

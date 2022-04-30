@@ -12,19 +12,18 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class ForceLeap extends Skill{
 	public ForceLeap() {
-		super();
-		this.id=SkillLibrary.SHOCKWAVE_JUMP;
+		super(SkillLibrary.SHOCKWAVE_JUMP);
 		this.name="Lukes Force Leap";
 		this.description="Leaps to Spot and paralyses Enemies";
 		this.target=TargetType.SINGLE_FREE;
 		this.damageType=DamageType.LIGHT;
 		this.effects=of(new Effect[] {
-				new Effect(EffectType.TELEPORT,0,0,null,null),
 				new Effect(EffectType.STATUS_INFLICTION,1,1,StatusInfliction.PARALYSED,null)
 			});
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.FAITH,0.3)
 		});
+		this.type=SkillType.MOVEMENT;
 		this.power=20;
 		this.accuracy=100;
 		this.distance=1;

@@ -16,7 +16,7 @@ public class MotherTalzin extends PlayableCharacter{
 		this.id=			Resources.TALZIN;
 		this.tier=			3;
 		this.name=			"Mother Talzin";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_TALZIN;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

@@ -15,7 +15,7 @@ public class Obelix extends PlayableCharacter{
 		this.id=			Resources.OBELIX;
 		this.tier=			3;
 		this.name=			"Obelix";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_OBELIX;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

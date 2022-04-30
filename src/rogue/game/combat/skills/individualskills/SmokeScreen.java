@@ -7,8 +7,7 @@ import rogue.game.combat.skills.SkillLibrary;
 public class SmokeScreen extends Skill{
 
 	public SmokeScreen() {
-		super();
-		this.id=SkillLibrary.SMOKE_SCREEN;
+		super(SkillLibrary.SMOKE_SCREEN);
 		this.name="Smoke Screen";
 		this.description="Area is covered by thick smoke";
 		this.target=TargetType.SINGLE_TARGET;
@@ -16,6 +15,6 @@ public class SmokeScreen extends Skill{
 		this.radius=1;
 		this.manaCost=20;
 		this.actionCost=1;
-		this.summonedId=Resources.SMOKE_SCREEN;
+		this.enhancementId=Resources.SMOKE_SCREEN;
 	}	
 }

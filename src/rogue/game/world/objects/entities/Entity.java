@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Random;
 
 import rogue.framework.eventhandling.Connector;
@@ -18,6 +19,7 @@ import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.world.objects.BattleLog;
 import rogue.game.world.objects.Equipment;
 import util.DraftColor;
+import util.calc.MyMaths;
 
 public class Entity {
 	
@@ -48,7 +50,7 @@ public class Entity {
 	protected int currentMana;
 	protected int manaRegain;
 	protected int range;
-	protected int visionDistance = 5;
+	protected int visionDistance = 3;
 	protected DamageType stdDamageType;
 	protected Proficiency stdDamageProf;
 	
@@ -182,6 +184,8 @@ public class Entity {
 			}
 		}
 		this.currentEffects.removeIf(e->e.getTurns()==0);
+		this.currentLife=this.currentLife+this.lifeRegain>this.maxLife? this.maxLife : this.currentLife+ this.lifeRegain;
+		this.currentMana=this.currentMana+this.manaRegain>this.maxMana? this.maxMana : this.currentMana+ this.manaRegain;
 	}
 	private void tickStatus(Effect e,BattleLog log) {
 		switch(e.getStatus()) {
@@ -239,6 +243,15 @@ public class Entity {
 		//this.skills[e.getIntensity()].setBlocked(true);
 	}
 	public void addEffect(Effect e) {
+		if(this.hasAbility(SkillLibrary.FELL_IN_THE_POT)||
+				(this.hasAbility(SkillLibrary.UNSTOPPABLE) &&(e.getType().equals(EffectType.OBJECT_PULL) || 
+														e.getType().equals(EffectType.OBJECT_PUSH) ||
+													   (e.getType().equals(EffectType.STATUS_INFLICTION)
+															   && (e.getStatus().equals(StatusInfliction.PARALYSED)||
+																   e.getStatus().equals(StatusInfliction.ROOTED)||
+															       e.getStatus().equals(StatusInfliction.STUNNED)))))) {
+			return;
+		}
 		Effect copy = new Effect();
 		copy.setIntensity(e.getIntensity());
 		copy.setStatChange(e.getStatChange());
@@ -246,7 +259,21 @@ public class Entity {
 		copy.setTurns(e.getTurns());
 		copy.setType(e.getType());
 		copy.setTransformId(e.getTransformId());
+		copy.setEnhancementId(e.getEnhancementId());
 		this.currentEffects.add(copy);
+		if(copy.getType().equals(EffectType.STATUS_INFLICTION)) {
+			if(copy.getStatus().equals(StatusInfliction.ROOTED)) {
+				this.currentMovement=0;
+			}
+			if(copy.getStatus().equals(StatusInfliction.STUNNED)) {
+				this.currentMovement=0;
+				this.currentActions=0;
+			}
+			if(copy.getStatus().equals(StatusInfliction.PARALYSED)) {
+				this.currentMovement=this.currentMovement<copy.getIntensity()? 0 : this.currentMovement-copy.getIntensity();
+				this.currentActions=this.currentActions<copy.getIntensity()? 0 : this.currentActions-copy.getIntensity();
+			}
+		}
 		if(copy.getType().equals(EffectType.STAT_CHANGE)) {
 			applyStatChange(copy);
 		}if(copy.getStatus()!=null && copy.getStatus().equals(StatusInfliction.CLEAR)) {
@@ -259,8 +286,14 @@ public class Entity {
 			applyBlock(copy);
 		}
 	}
+	public void removeEffectOfEnhancement(int id) {
+		this.currentEffects.removeIf(eff->eff.getEnhancementId()==id);
+	}
 	private void removeStatusEffects() {
 		this.currentEffects.removeIf(e->e.getType().equals(EffectType.STATUS_INFLICTION));
+	}
+	public boolean isFlying() {
+		 return this.getSkills().stream().map(i->i.getId()).collect(Collectors.toList()).contains(SkillLibrary.ALL_TERRAIN);
 	}
 	public void refresh() {
 		this.currentActions=this.maxActions-actionInfliction();
@@ -377,6 +410,14 @@ public class Entity {
 	public void damage(int damage) {
 		this.currentLife-=damage;
 	}
+	public int damage(int damage, DamageType type, int lethality) {
+		int result = MyMaths.getDamage(damage, this.getResistance(type), lethality);
+		if(result<1) {
+			return 0;
+		}
+		this.currentLife-= result;
+		return result;
+	}
 	public void heal(int heal) {
 		this.currentLife+=heal;
 		if(this.currentLife>this.maxLife)
@@ -410,15 +451,15 @@ public class Entity {
 	}
 	public boolean isCursed() {
 		for(Effect e:this.currentEffects) {
-			if(e.getStatus().equals(StatusInfliction.CURSED)) {
+			if(e.getStatus()!=null && e.getStatus().equals(StatusInfliction.CURSED)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	public boolean isAllTerrain() {
+	public boolean hasAbility(int id) {
 		for(Skill s : this.skills) {
-			if(s.getId()==SkillLibrary.ALL_TERRAIN){
+			if(s.getId()==id){
 				return true;
 			}
 		}
@@ -448,7 +489,7 @@ public class Entity {
 		String result = "";
 		for(DraftColor c : this.colors) {
 			if(c.equals(DraftColor.BLACK)) {
-				result+="ï¿½";
+				result+="°";
 			}
 			if(c.equals(DraftColor.BLUE)) {
 				result+="~";

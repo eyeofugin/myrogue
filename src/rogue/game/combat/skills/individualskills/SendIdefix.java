@@ -5,8 +5,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class SendIdefix extends Skill{
 	public SendIdefix() {
-		super();
-		this.id=SkillLibrary.SEND_IDEFIX;
+		super(SkillLibrary.SEND_IDEFIX);
 		this.name="Pet Scout";
 		this.description="Pet Scout reveals Area";
 		this.target=TargetType.LINE;

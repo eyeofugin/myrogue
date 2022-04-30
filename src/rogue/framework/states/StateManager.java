@@ -59,10 +59,12 @@ public class StateManager {
 
 			System.out.println("event: " + event.getEventId());
 			this.states.peek().mouseClicked(event);
-			if(this.connector.firedEvent!=null) {
+			while(this.connector.firedEvent!=null) {
 				System.out.println(this.connector.firedEvent.getEventId() + " " + this.connector.firedEvent.getCardnr());
-				this.states.peek().mouseClicked(this.connector.firedEvent);
+				Event firedEvent = this.connector.firedEvent;
 				this.connector.firedEvent=null;
+				this.states.peek().mouseClicked(firedEvent);
+				
 			}
 
 		}

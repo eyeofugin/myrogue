@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class RockThrow extends Skill{
 	public RockThrow() {
-		super();
-		this.id=SkillLibrary.ROCK_THROW;
+		super(SkillLibrary.ROCK_THROW);
 		this.name="Rock Throw";
 		this.description="Throws Rock at Spot";
 		this.target=TargetType.SINGLE_TARGET;

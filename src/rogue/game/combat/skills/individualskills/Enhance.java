@@ -9,8 +9,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 public class Enhance extends Skill{
 
 	public Enhance() {
-		super();
-		this.id=SkillLibrary.EQUIPMENT_UPGRADE;
+		super(SkillLibrary.EQUIPMENT_UPGRADE);
 		this.name="Enhance";
 		this.description="Enhance your Allies Stats";
 		this.target=TargetType.SINGLE_TARGET;

@@ -6,8 +6,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class SummonHellspawn extends Skill{
 	public SummonHellspawn() {
-		super();
-		this.id = SkillLibrary.FLUFFY;
+		super(SkillLibrary.FLUFFY);
 		this.name="Summon Hellspawn";
 		this.description="Summons a Hellspawn";
 		this.distance=1;

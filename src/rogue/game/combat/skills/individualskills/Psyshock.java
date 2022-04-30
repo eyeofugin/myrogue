@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class Psyshock extends Skill{
 	public Psyshock() {
-		super();
-		this.id=SkillLibrary.PSYSHOCK;
+		super(SkillLibrary.PSYSHOCK);
 		this.name="Psyshock";
 		this.description="Inflicts great Damage with their Mind";
 		this.target=TargetType.SINGLE_TARGET;

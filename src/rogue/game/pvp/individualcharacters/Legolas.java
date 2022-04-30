@@ -16,7 +16,7 @@ public class Legolas extends PlayableCharacter{
 		this.id=			Resources.LEGOLAS;
 		this.tier=			3;
 		this.name=			"Legolas";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_LEGOLAS;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

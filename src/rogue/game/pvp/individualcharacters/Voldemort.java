@@ -15,7 +15,7 @@ public class Voldemort extends PlayableCharacter{
 		this.id=			Resources.VOLDEMORT;
 		this.tier=			5;
 		this.name=			"Voldemort";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_VOLDEMORT;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

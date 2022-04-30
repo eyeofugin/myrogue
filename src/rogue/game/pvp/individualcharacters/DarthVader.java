@@ -19,7 +19,7 @@ public class DarthVader extends PlayableCharacter{
 		this.portraitId=	Resources.P_VADER;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
-		this.maxMana=		60;
+		this.maxMana=		600;
 		this.manaRegain=	10;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;

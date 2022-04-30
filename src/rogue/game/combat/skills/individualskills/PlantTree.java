@@ -6,8 +6,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class PlantTree extends Skill{
 	public PlantTree() {
-		super();
-		this.id=SkillLibrary.PLANT;
+		super(SkillLibrary.PLANT);
 		this.name="Plant Tree";
 		this.description="Plants a Tree";
 		this.target=TargetType.SINGLE_FREE;
@@ -15,6 +14,6 @@ public class PlantTree extends Skill{
 		this.distance=1;
 		this.manaCost=20;
 		this.actionCost=1;
-		this.summonedId=Resources.TREE;
+		this.enhancementId=Resources.TREE;
 	}	
 }

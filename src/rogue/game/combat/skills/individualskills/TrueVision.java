@@ -5,9 +5,9 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class TrueVision extends Skill{
 	public TrueVision() {
-		super();
-		this.id=SkillLibrary.TRUE_VISION;
+		super(SkillLibrary.TRUE_VISION);
 		this.name="True Vision";
 		this.description="They see it all";
+		this.isPassive=true;
 	}
 }

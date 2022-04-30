@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class Torture extends Skill{
 	public Torture() {
-		super();
-		this.id=SkillLibrary.CRUCIO;
+		super(SkillLibrary.CRUCIO);
 		this.name="Torture Spell";
 		this.description="Tortures Enemy";
 		this.target=TargetType.SINGLE_TARGET;

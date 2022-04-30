@@ -15,7 +15,7 @@ public class Baumbart extends PlayableCharacter{
 		this.id=			Resources.BAUMBART;
 		this.tier=			3;
 		this.name=			"Baumbart";
-		this.portraitId=	Resources.P_LUKE;
+		this.portraitId=	Resources.P_BAUMBART;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		7000;
@@ -51,7 +51,7 @@ public class Baumbart extends PlayableCharacter{
 				1.0,//SHOCK
 				1.1);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				1000,//STRENGTH
 				0, //FAITH
 				35,//INTELLIGENCE
 				0, //LETHALITY

@@ -7,8 +7,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class Condemn extends Skill{
 	public Condemn() {
-		super();
-		this.id=SkillLibrary.CONDEMN;
+		super(SkillLibrary.CONDEMN);
 		this.name="Condemn";
 		this.description="Condemns a Character";
 		this.target=TargetType.SINGLE_TARGET;

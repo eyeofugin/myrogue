@@ -371,6 +371,8 @@ public class TextEditor {
 			}else {
 				String symbolS = String.valueOf(symbol);
 				int[] symbolarray = symbols.get(symbolS);
+				if(symbolarray==null || symbolarray.length==0)
+					symbolarray=symbols.get("0");
 				int index = 0;
 
 				for (int y = 0; y < this.charHeight; y++) {

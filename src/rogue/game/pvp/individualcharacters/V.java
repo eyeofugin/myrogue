@@ -16,7 +16,7 @@ public class V extends PlayableCharacter{
 		this.id=			Resources.V;
 		this.tier=			2;
 		this.name=			"V";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_V;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

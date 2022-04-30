@@ -15,7 +15,7 @@ public class WhiteCleaver extends PlayableCharacter{
 		this.id=			Resources.WHITESCYTHE;
 		this.tier=			3;
 		this.name=			"White Cleaver";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_W_CLEAVER;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

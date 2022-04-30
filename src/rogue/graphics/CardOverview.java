@@ -38,8 +38,7 @@ public class CardOverview extends InformationContainer{
 		turnProbabilities.put(4, new double[] {0.25,0.6, 0.2, 0.05,0.0});
 		turnProbabilities.put(5, new double[] {0.0, 0.5, 0.25,0.2, 0.05});
 	}
-	public void buildDraft(Team t, List<Team> enemies,int turn) {
-		List<DraftColor> enemyDraftColors = getDraftColors(enemies);
+	public void buildDraft(Team t, List<DraftColor> enemyDraftColors,int turn) {
 		List<DraftColor> ownDraftColors = t.getDraftColors();
 		adjustDraftParameters(enemyDraftColors,ownDraftColors);
 		entities = getRandomEntities(nrOptions, turn);

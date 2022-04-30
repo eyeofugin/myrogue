@@ -9,8 +9,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 public class FlameWhip extends Skill{
 
 	public FlameWhip() {
-		super();
-		this.id=SkillLibrary.FLAME_WHIP;
+		super(SkillLibrary.FLAME_WHIP);
 		this.name="Flame Whip";
 		this.description="A Flaming Whip strikes your foes.";
 		this.target=TargetType.LINE_PIERCING;

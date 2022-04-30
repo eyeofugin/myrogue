@@ -5,8 +5,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class Heal extends Skill{
 	public Heal() {
-		super();
-		this.id=SkillLibrary.TEND_THE_GARDEN;
+		super(SkillLibrary.TEND_THE_GARDEN);
 		this.name="Heal";
 		this.description="Heal yourself";
 		this.target=TargetType.SELF;

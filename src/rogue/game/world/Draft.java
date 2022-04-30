@@ -14,6 +14,7 @@ import rogue.game.world.objects.entities.Entity;
 import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.CardOverview;
 import rogue.graphics.TeamOverview;
+import util.DraftColor;
 
 public class Draft {
 	
@@ -33,11 +34,11 @@ public class Draft {
 		turnProbabilities.put(5, new double[] {0.0, 0.5, 0.25,0.2, 0.05});
 	}
 	
-	public void buildDraftFor(int teamNr, List<Team> teams, int turn) {
+	public void buildDraftFor(int teamNr, List<Team> teams,List<DraftColor> enemyDraftColors, int turn) {
 		this.ownTeam = getTeam(teams,teamNr);
 		teamOverview = new TeamOverview(this.ownTeam,Property.START_OF_ACTIVE_CHAR_X,Property.START_OF_ACTIVE_CHAR_Y,this.connector);
 		cardOverview = new CardOverview(Property.START_OF_ROOM_X,Property.START_OF_ROOM_Y,this.connector);
-		cardOverview.buildDraft(this.ownTeam, teams.stream().filter(i->i.getTeamNr()!=teamNr).collect(Collectors.toList()), turn);
+		cardOverview.buildDraft(this.ownTeam, enemyDraftColors, turn);
 		
 	}
 	private Team getTeam(List<Team> teams, int nr) {
@@ -68,7 +69,7 @@ public class Draft {
 		if(PlayableCharacter.class.isInstance(e)) {
 			PlayableCharacter pc = PlayableCharacter.class.cast(e);
 			if(isChoosingValid(pc.getTier())) {
-				
+				pc.setTeam(this.ownTeam.getTeamNr());
 				cardOverview.deactivate(pc);
 				teamOverview.add(pc);
 			}

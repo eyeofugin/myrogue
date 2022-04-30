@@ -5,8 +5,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class CrowScout extends Skill{
 	public CrowScout() {
-		super();
-		this.id=SkillLibrary.CROW_SCOUT;
+		super(SkillLibrary.CROW_SCOUT);
 		this.name="Pet Scout";
 		this.description="Pet Scout reveals Area";
 		this.target=TargetType.SINGLE_TARGET;

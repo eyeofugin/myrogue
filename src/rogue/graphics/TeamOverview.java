@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import rogue.framework.eventhandling.Connector;
+import rogue.framework.eventhandling.Event;
+import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.game.pvp.Team;
 import rogue.game.world.objects.entities.PlayableCharacter;
@@ -41,6 +43,9 @@ public class TeamOverview extends InformationContainer{
 	private static int PASSIVE_AMOUNT_INFO_WIDTH = 200;
 	private static int PASSIVE_AMOUNT_INFO_HEIGHT = 40;
 	
+	private static int END_BUTTON_X_FROM = 340;
+	private static int END_BUTTON_Y_FROM = 540;
+	
 	private static int C1_X_FROM = 15;
 	private static int C2_X_FROM = 212;
 	
@@ -74,6 +79,7 @@ public class TeamOverview extends InformationContainer{
 		slides();
 		activeInfo();
 		passiveInfo();
+		buttons();
 		return this.pixels;
 	}
 	public void add(PlayableCharacter e) {
@@ -187,7 +193,15 @@ public class TeamOverview extends InformationContainer{
 	}
 	private void passiveInfo() {
 		writeLine(getPassiveAmountInfo(),PASSIVE_AMOUNT_INFO_X, PASSIVE_AMOUNT_INFO_X-1+PASSIVE_AMOUNT_INFO_WIDTH,PASSIVE_INFO_Y_FROM,PASSIVE_INFO_Y_FROM-1+PASSIVE_AMOUNT_INFO_HEIGHT,3,TextAlignment.RIGHT,MyColor.BLACK,MyColor.WHITE);
-
+	}
+	private void buttons() {
+		writeButton("End Draft",END_BUTTON_X_FROM,END_BUTTON_Y_FROM);
+		Event follow = new Event();
+		follow.setEventId(Connector.END_DRAFT);
+		Event e = new Event();
+		e.setEventId(Connector.REQUEST_CONFIRMATION);
+		e.setAfterConfirmEvent(follow);
+		this.connector.addEvent(this.xanchor+END_BUTTON_X_FROM, this.yanchor+END_BUTTON_Y_FROM, Property.BUTTON_NORMAL_WIDTH, Property.BUTTON_NORMAL_HEIGHT, e);
 	}
 	private String getTierInfo() {
 		int currentTier=0;
@@ -195,7 +209,6 @@ public class TeamOverview extends InformationContainer{
 			currentTier+=pc.getTier();
 		}
 		return "Tier "+currentTier+"/"+Team.TIER_THRESHHOLD;
-		
 	}
 	private String getActiveAmountInfo() {
 		return "Amount "+this.active.size()+"/"+this.team.getMaxTeamSize();

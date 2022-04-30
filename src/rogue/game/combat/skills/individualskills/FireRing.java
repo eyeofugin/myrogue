@@ -9,8 +9,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 public class FireRing extends Skill{
 
 	public FireRing() {
-		super();
-		this.id=SkillLibrary.FIRE_RING;
+		super(SkillLibrary.FIRE_RING);
 		this.name="Fire Ring";
 		this.description="Cast Flames Surrounding them";
 		this.target=TargetType.SURROUNDING;

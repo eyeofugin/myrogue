@@ -15,14 +15,14 @@ public class Dobby extends PlayableCharacter{
 		this.id=			Resources.DOBBY;
 		this.tier=			2;
 		this.name=			"Dobby";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_DOBBY;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
-		this.maxMana=		60;
+		this.maxMana=		6000;
 		this.manaRegain=	10;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	40;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -52,7 +52,7 @@ public class Dobby extends PlayableCharacter{
 		this.proficiencies=proficiencies(
 				10,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
+				900,//INTELLIGENCE
 				0, //LETHALITY
 				5);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLUE});	

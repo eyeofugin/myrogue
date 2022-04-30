@@ -7,8 +7,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class FireStream extends Skill{
 	public FireStream() {
-		super();
-		this.id=SkillLibrary.FLAMETHROWER;
+		super(SkillLibrary.FLAMETHROWER);
 		this.name="Fire Stream";
 		this.description="A Stream of Fire";
 		this.target=TargetType.LINE_PIERCING;

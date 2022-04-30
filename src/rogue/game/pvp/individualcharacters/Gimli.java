@@ -16,7 +16,7 @@ public class Gimli extends PlayableCharacter{
 		this.id=			Resources.GIMLI;
 		this.tier=			3;
 		this.name=			"Gimli";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_GIMLI;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

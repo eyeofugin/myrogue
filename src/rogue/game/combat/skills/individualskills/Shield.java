@@ -7,8 +7,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class Shield extends Skill{
 	public Shield() {
-		super();
-		this.id=SkillLibrary.ALLY_SHIELD;
+		super(SkillLibrary.ALLY_SHIELD);
 		this.name="Shield";
 		this.description="Shields an Ally for some Time";
 		this.target=TargetType.SINGLE_TARGET;

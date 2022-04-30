@@ -16,7 +16,7 @@ public class Radagast extends PlayableCharacter{
 		this.id=			Resources.RADAGAST;
 		this.tier=			2;
 		this.name=			"Radagast";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_RADAGAST;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

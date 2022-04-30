@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class MurderFest extends Skill{
 	public MurderFest() {
-		super();
-		this.id=SkillLibrary.MURDER_FEST;
+		super(SkillLibrary.MURDER_FEST);
 		this.name="Voldemorts Murder Fest";
 		this.description="Voldemort inflicts great Damage to Surrounding Characters";
 		this.target=TargetType.SURROUNDING;

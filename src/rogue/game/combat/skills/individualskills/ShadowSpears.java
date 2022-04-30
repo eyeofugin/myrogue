@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class ShadowSpears extends Skill{
 	public ShadowSpears() {
-		super();
-		this.id=SkillLibrary.SHADOW_SPEARS;
+		super(SkillLibrary.SHADOW_SPEARS);
 		this.name="Shadow Spears";
 		this.description="Cast Spears made out of Darkness";
 		this.target=TargetType.LINE_PIERCING;

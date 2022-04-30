@@ -15,7 +15,7 @@ public class Serpine extends PlayableCharacter{
 		this.id=			Resources.SERPINE;
 		this.tier=			3;
 		this.name=			"Serpine";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_SERPINE;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;
@@ -28,7 +28,7 @@ public class Serpine extends PlayableCharacter{
 		this.currentMovement=this.maxMovement;
 		this.range=			1;
 		this.setSkills(getSkills(
-				SkillLibrary.ENERGY_BIND,
+				SkillLibrary.ROPES,
 				SkillLibrary.ZOMBIE_MINIONS,
 				SkillLibrary.CRUCIO,0,0,0));
 		this.stdDamageType=DamageType.MAGICAL;

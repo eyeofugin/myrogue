@@ -3,15 +3,20 @@ package rogue.game.combat.skills;
 import java.util.HashMap;
 import java.util.Map;
 
+import rogue.game.combat.skills.individualskills.AllyHeal;
 import rogue.game.combat.skills.individualskills.AreaFire;
 import rogue.game.combat.skills.individualskills.Barrage;
+import rogue.game.combat.skills.individualskills.Behead;
 import rogue.game.combat.skills.individualskills.BindingSpell;
+import rogue.game.combat.skills.individualskills.C4;
+import rogue.game.combat.skills.individualskills.CalmBeast;
 import rogue.game.combat.skills.individualskills.Cerebro;
 import rogue.game.combat.skills.individualskills.Condemn;
 import rogue.game.combat.skills.individualskills.CrowScout;
 import rogue.game.combat.skills.individualskills.DemonicForm;
 import rogue.game.combat.skills.individualskills.DuelToTheDeath;
 import rogue.game.combat.skills.individualskills.Enhance;
+import rogue.game.combat.skills.individualskills.EnhancementField;
 import rogue.game.combat.skills.individualskills.Explosion;
 import rogue.game.combat.skills.individualskills.FastShots;
 import rogue.game.combat.skills.individualskills.FireArmor;
@@ -24,13 +29,20 @@ import rogue.game.combat.skills.individualskills.Flying;
 import rogue.game.combat.skills.individualskills.ForceChoke;
 import rogue.game.combat.skills.individualskills.ForceLeap;
 import rogue.game.combat.skills.individualskills.ForcePush;
+import rogue.game.combat.skills.individualskills.FrostWalk;
+import rogue.game.combat.skills.individualskills.GhostDeath;
 import rogue.game.combat.skills.individualskills.Grapple;
 import rogue.game.combat.skills.individualskills.GrowGrass;
 import rogue.game.combat.skills.individualskills.HatefulSwing;
 import rogue.game.combat.skills.individualskills.Heal;
+import rogue.game.combat.skills.individualskills.Hexproof;
+import rogue.game.combat.skills.individualskills.HitOrMiss;
+import rogue.game.combat.skills.individualskills.Lifelink;
 import rogue.game.combat.skills.individualskills.LordVile;
 import rogue.game.combat.skills.individualskills.MassBleeding;
+import rogue.game.combat.skills.individualskills.Maul;
 import rogue.game.combat.skills.individualskills.MurderFest;
+import rogue.game.combat.skills.individualskills.Outlast;
 import rogue.game.combat.skills.individualskills.Phoenixportation;
 import rogue.game.combat.skills.individualskills.PlantTree;
 import rogue.game.combat.skills.individualskills.PreciseShot;
@@ -39,6 +51,7 @@ import rogue.game.combat.skills.individualskills.Rage;
 import rogue.game.combat.skills.individualskills.Resistant;
 import rogue.game.combat.skills.individualskills.RighteousSwing;
 import rogue.game.combat.skills.individualskills.RockThrow;
+import rogue.game.combat.skills.individualskills.SacrificialCurse;
 import rogue.game.combat.skills.individualskills.SendIdefix;
 import rogue.game.combat.skills.individualskills.ShadowSpears;
 import rogue.game.combat.skills.individualskills.ShadowWalk;
@@ -47,6 +60,7 @@ import rogue.game.combat.skills.individualskills.Shield;
 import rogue.game.combat.skills.individualskills.ShowArea;
 import rogue.game.combat.skills.individualskills.SmokeScreen;
 import rogue.game.combat.skills.individualskills.StunningSpell;
+import rogue.game.combat.skills.individualskills.SummonGoblin;
 import rogue.game.combat.skills.individualskills.SummonHellspawn;
 import rogue.game.combat.skills.individualskills.SummonSpider;
 import rogue.game.combat.skills.individualskills.SummonZombie;
@@ -57,6 +71,7 @@ import rogue.game.combat.skills.individualskills.ThrowingWeapon;
 import rogue.game.combat.skills.individualskills.Torture;
 import rogue.game.combat.skills.individualskills.Trap;
 import rogue.game.combat.skills.individualskills.TrueVision;
+import rogue.game.combat.skills.individualskills.Underdog;
 import rogue.game.combat.skills.individualskills.Unstoppable;
 import rogue.game.combat.skills.individualskills.WeaponThrow;
 import rogue.game.combat.skills.individualskills.WideSwing;
@@ -171,8 +186,20 @@ public class SkillLibrary {
 	public static int WIND_WALL = 104;
 	public static int WOOD_WALK = 105;
 	public static int DUEL_TO_THE_DEATH=106;
-
-
+	
+	public static int FROSTWALK = 107;
+	public static int MAUL = 108;
+	public static int C4 = 109;
+	public static int CALM_BEAST = 110;
+	public static int GHOST_DEATH=111;
+	public static int UNDERDOG = 112;
+	public static int HIT_OR_MISS = 113;
+	public static int SUMMON_GOBLIN = 114;
+	public static int OUTLAST = 115;
+	public static int LIFELINK = 116;
+	public static int SACRIFICIAL_CURSE = 117;
+	public static int HEXPROOF = 118;
+	
 	public static Map<Integer,Class> skills = new HashMap<>();
 	
 	public static void init() {
@@ -186,7 +213,7 @@ public class SkillLibrary {
 		skills.put(DUEL_TO_THE_DEATH,DuelToTheDeath.class);
 		skills.put(EQUIPMENT_UPGRADE, Enhance.class);
 		skills.put(ROCKET, Explosion.class);
-		skills.put(ARROW_SHOTS,FastShots.class);
+		skills.put(EMPTY_REVOLVER,FastShots.class);
 		skills.put(FIRE_ARMOR,FireArmor.class);
 		skills.put(FIREBALL,Fireball.class);
 		skills.put(FIRE_RING,FireRing.class);
@@ -235,7 +262,22 @@ public class SkillLibrary {
 		skills.put(WEAPON_SWING,WideSwing.class);
 		skills.put(WIND_WALL,WindWall.class);
 		skills.put(WOOD_WALK,WoodWalk.class);
+		skills.put(ALLY_HEAL,AllyHeal.class);
 		
+		skills.put(C4,C4.class);
+		skills.put(ENHANCEMENT_RUNE,EnhancementField.class);
+		skills.put(FROSTWALK,FrostWalk.class);
+		skills.put(MAUL, Maul.class);
+		skills.put(CALM_BEAST,CalmBeast.class);
+		skills.put(GHOST_DEATH,GhostDeath.class);
+		skills.put(UNDERDOG,Underdog.class);
+		skills.put(HIT_OR_MISS,HitOrMiss.class);
+		skills.put(SUMMON_GOBLIN,SummonGoblin.class);
+		skills.put(OUTLAST,Outlast.class);
+		skills.put(LIFELINK,Lifelink.class);
+		skills.put(SACRIFICIAL_CURSE,SacrificialCurse.class);
+		skills.put(HEXPROOF,Hexproof.class);
+		skills.put(BEHEAD,Behead.class);
 	}
 	public static Skill get(int id) {
 		try {

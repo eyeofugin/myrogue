@@ -5,8 +5,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class Cerebro extends Skill{
 	public Cerebro() {
-		super();
-		this.id=SkillLibrary.CEREBRO;
+		super(SkillLibrary.CEREBRO);
 		this.name="Charles Cerebro";
 		this.description="Reveals all Enemies";
 		this.target=TargetType.ALL_ENEMY;

@@ -16,7 +16,7 @@ public class Hagrid extends PlayableCharacter{
 		this.id=			Resources.HAGRID;
 		this.tier=			2;
 		this.name=			"Hagrid";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_HAGRID;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

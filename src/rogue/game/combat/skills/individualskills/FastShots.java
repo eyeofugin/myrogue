@@ -6,8 +6,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class FastShots extends Skill{
 	public FastShots() {
-		super();
-		this.id=SkillLibrary.EMPTY_REVOLVER;
+		super(SkillLibrary.EMPTY_REVOLVER);
 		this.name="Fast Shots";
 		this.description="Shoots in quick Succession";
 		this.target=TargetType.LINE;

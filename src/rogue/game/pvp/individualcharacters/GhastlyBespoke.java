@@ -15,7 +15,7 @@ public class GhastlyBespoke extends PlayableCharacter{
 		this.id=			Resources.GRAESSLICH;
 		this.tier=			3;
 		this.name=			"Graesslich Schneider";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_GRAESSLICH;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

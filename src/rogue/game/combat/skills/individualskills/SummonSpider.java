@@ -6,8 +6,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class SummonSpider extends Skill{
 	public SummonSpider() {
-		super();
-		this.id = SkillLibrary.ARAGOG;
+		super(SkillLibrary.ARAGOG);
 		this.name="Summon Spiderling";
 		this.description="Summons a Spider";
 		this.distance=1;

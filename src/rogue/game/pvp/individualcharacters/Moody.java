@@ -15,7 +15,7 @@ public class Moody extends PlayableCharacter{
 		this.id=			Resources.MOODY;
 		this.tier=			2;
 		this.name=			"Moody";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_MOODY;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

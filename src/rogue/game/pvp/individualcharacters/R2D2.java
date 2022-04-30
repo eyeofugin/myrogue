@@ -15,7 +15,7 @@ public class R2D2 extends PlayableCharacter{
 		this.id=			Resources.R2D2;
 		this.tier=			2;
 		this.name=			"R2D2";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_R2D2;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

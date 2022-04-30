@@ -5,17 +5,25 @@ package rogue.game.combat;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import rogue.game.combat.skills.Skill;
+import rogue.game.combat.skills.Skill.DamageType;
 import rogue.game.combat.skills.Skill.Effect;
 import rogue.game.combat.skills.Skill.Effect.EffectType;
+import rogue.game.combat.skills.Skill.Effect.StatusInfliction;
+import rogue.game.combat.skills.Skill.TargetType;
+import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.world.objects.BattleLog;
 import rogue.game.world.objects.entities.Entity;
 import rogue.game.world.objects.entities.Entity.Proficiency;
+import rogue.game.world.objects.entities.NPC;
 import rogue.game.world.objects.entities.PlayableCharacter;
+import rogue.game.world.objects.tiles.Tile;
+import rogue.game.world.objects.tiles.Enhancement.Level;
 
 public class CombatManager {
-	static public boolean executeSkill(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
+	static public boolean executeSkill(Entity p, List<Entity> os,List<Tile> targets, Skill s, BattleLog log) {
 		if(p.getCurrentActions()<s.getActionCost())
 			return false;
 		if(!p.useAction(s.getActionCost())) {
@@ -27,105 +35,106 @@ public class CombatManager {
 		if(!p.useLife(s.getLifeCost())) {
 			return false;
 		};
-		switch(s.getType()) {
-		case DAMAGE:
-			return executeDamage(p,os,s,log);
-		case ENHANCEMENT:
-			return executeEnhancement(p,os,s,log);
-		case MOVEMENT:
-			return executeMovementOrSummon(p,s,log);
-		case PASSIVE:
-			return executePassive(p,os,s,log);
-		case SUMMONNPC:
-			return executeMovementOrSummon(p,s,log);
-		case HEALING:
-			return executeHeal(p,os,s,log);
-		case VISION:
-			return true;
-		case SUMMON:
-			return executeMovementOrSummon(p,s,log);
+		if(s.getDamageType()!=DamageType.NULL && s.getTarget()!=TargetType.NONE) {
+			executeDamage(p,os,s,log);
 		}
-		return false;
+		if(s.getEffects()!=null && s.getEffects().size()>0) {
+			applyEffects(p,os,targets,s,log);
+		}
+		if(s.getId()==SkillLibrary.DUEL_TO_THE_DEATH) {
+			duelToTheDeath(p,os,log);
+		}
+//		switch(s.getType()) {
+//		case DAMAGE:
+//			return executeDamage(p,os,s,log);
+//		case ENHANCEMENT:
+//			return executeEnhancement(p,os,s,log);
+//		case MOVEMENT:
+//			return executeMovementOrSummon(p,s,log);
+//		case PASSIVE:
+//			return executePassive(p,os,s,log);
+//		case SUMMONNPC:
+//			return executeMovementOrSummon(p,s,log);
+//		case HEALING:
+//			return executeHeal(p,os,s,log);
+//		case VISION:
+//			return true;
+//		case SUMMON:
+//			return executeMovementOrSummon(p,s,log);
+//		}
+		return true;
 
 	}
-	static public boolean executeDamage(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
+	static public boolean executeDamage(Entity p, List<Entity> targets, Skill s, BattleLog log) {
 		log.formulateUse(s.getName(), p.getName());
-		if(miss(s)) {
+		if(miss(s.getAccuracy())) {
 			log.formulateMiss();
 			return false;
 		}
 		int rawDamage = s.getSkillDamage(p);
 		int lethality = p.getProficiency(Proficiency.LETHALITY);
-		
-		for(Entity o: os) {
+		DamageType dmg = s.getDamageType();
+		for(Entity o: targets) {
 			Entity defender = Entity.class.cast(o);
-			if(defender.isIndestructible()) {
-				log.formulateIndesctructible(defender.getName());
-				continue;
-			}
-			int defense = defender.getResistance(s.getDamageType());
-			int damage = (int)(rdmize(rawDamage) * ((100+lethality)  /  (100+(double)rdmize(defense))));
-			defender.damage(damage);
-			log.formulateEffect(o.getName(),damage);
-			if(defender.getCurrentLife()<1) {
-				log.formulateDeath(o.getName());
-			}
-			
-			if(s.getEffects()!=null) {
-				for(Effect e : s.getEffects()) {
-					if(e.getType().equals(EffectType.STATUS_INFLICTION)||
-							e.getType().equals(EffectType.STAT_CHANGE)||
-							e.getType().equals(EffectType.OBJECT_PUSH)||
-							e.getType().equals(EffectType.OBJECT_PULL))
-						defender.addEffect(e);
+			if(dmg.equals(DamageType.HEAL)) {
+				o.heal(s.getPower());
+			}else {
+				if(defender.isIndestructible()) {
+					log.formulateIndesctructible(defender.getName());
+					continue;
 				}
-			}
-			
-		}
-		return true;
-	}
-	static public boolean executeHeal(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
-		log.formulateUse(s.getName(), p.getName());
-		if(miss(s)) {
-			log.formulateMiss();
-			return false;
-		}
-		int heal = s.getSkillDamage(p);
-		for(Entity o: os) {
-			Entity target = Entity.class.cast(o);
-			if(target.isCursed()) {
-				log.formulate(target.getName(),"cursed");
-				continue;
-			}
-			target.heal(heal);
-			log.formulateHeal(o.getName(),heal);
-			if(s.getEffects()!=null) {
-				for(Effect e : s.getEffects()) {
-					if(e.getType().equals(EffectType.STATUS_INFLICTION)||
-							e.getType().equals(EffectType.STAT_CHANGE))
-						target.addEffect(e);
+				int damage = defender.damage(rawDamage,s.getDamageType(),lethality);
+
+				log.formulateEffect(o.getName(),damage);
+				if(defender.getCurrentLife()<1) {
+					log.formulateDeath(o.getName());
 				}
 			}
 		}
 		return true;
 	}
-	static public boolean executeEnhancement(PlayableCharacter p, List<Entity> os, Skill s, BattleLog log) {
-		log.formulateUse(s.getName(), p.getName());
-		if(miss(s)) {
-			log.formulateMiss();
-			return false;
-		}
-		for(Entity o: os) {
-			Entity target = Entity.class.cast(o);
-			
-			if(s.getEffects()!=null) {
-				for(Effect e : s.getEffects()) {
-					if(e.getType().equals(EffectType.STATUS_INFLICTION)||
-							e.getType().equals(EffectType.STAT_CHANGE) || 
-							e.getType().equals(EffectType.TRANSFORMATION )||
-							e.getType().equals(EffectType.BLOCK_ABILITY))
-						target.addEffect(e);
+	static private boolean applyEffects(Entity p, List<Entity> targets,List<Tile>tiles, Skill s, BattleLog log) {
+		for(Entity defender : targets) {
+			for(Effect e : s.getEffects()) {
+				if(		e.getType().equals(EffectType.STATUS_INFLICTION)||
+						e.getType().equals(EffectType.STAT_CHANGE)||
+						e.getType().equals(EffectType.OBJECT_PUSH)||
+						e.getType().equals(EffectType.OBJECT_PULL)) {
+					if(e.getStatus()!=null && e.getStatus().equals(StatusInfliction.REMOVE_NPC)) {
+						if(NPC.class.isInstance(defender)) {
+							defender.setCurrentLife(0);
+							log.formulate(defender.getName(), "Fled");
+						}
+					}
+					defender.addEffect(e);
 				}
+			}
+		}
+		for(Tile tile : tiles) {
+			for(Effect e : s.getEffects()) {
+				if(e.getType().equals(EffectType.TERRAIN_ENHANCEMENT)) {
+					if(e.getStatus().equals(StatusInfliction.REMOVE_OBSTACLE)) {
+						tile.getEnhancements().removeIf(i->i.getLevel().equals(Level.TOP));
+					}
+				}
+			}
+		}
+		return true;
+	}
+	static public boolean duelToTheDeath(Entity p, List<Entity> os, BattleLog log) {
+		for(Entity e : os) {
+			log.formulateUse(e.getName(), p.getName());
+			if(p.getCurrentLife()>e.getCurrentLife()) {
+				e.damage(e.getCurrentLife());
+				p.damage(e.getCurrentLife());
+				log.formulateEffect(p.getName(),e.getCurrentLife());
+				log.formulateDeath(e.getName());
+			}else {
+				p.damage(p.getCurrentLife());
+				e.damage(p.getCurrentLife());
+				log.formulateEffect(e.getName(),p.getCurrentLife());
+				log.formulateDeath(p.getName());
+				return true;
 			}
 		}
 		return true;
@@ -149,7 +158,25 @@ public class CombatManager {
 
 	static public void normalMelee(Entity p, Entity o, BattleLog log) {
 		
+		double attMult = 1.0;
+		int    attFlat = 0;
+		double defMult = 1.0;
+		int    defFlat = 0;
 		log.formulateUse("Basic attack", p.getName());
+		if(p.hasAbility(SkillLibrary.HIT_OR_MISS) && miss(50)) {
+			log.formulateMiss();
+			return;
+		}
+		if(p.hasAbility(SkillLibrary.UNDERDOG) && p.getTier()<o.getTier()) {
+			attMult=2.0;
+		}
+		if(p.hasAbility(SkillLibrary.BEHEAD)) {
+			double defLifePercentage = o.getCurrentLife()*100 / (double)o.getMaxLife();
+			if(defLifePercentage<50) {attMult=1.5;}
+			if(defLifePercentage<40) {attMult=2.0;}
+			if(defLifePercentage<30) {attMult=3.0;}
+			if(defLifePercentage<20) {attMult=5.0;}
+		}
 		
 		Entity defender = Entity.class.cast(o);
 		Entity attacker = Entity.class.cast(p);
@@ -159,12 +186,20 @@ public class CombatManager {
 			return ;
 		}
 		
-		int normalMeleeDamage = attacker.getProficiency(Proficiency.STRENGTH);
-		int normalMeleeDefense = defender.getResistance(attacker.getBasicDamageType());
+		int normalMeleeDamage = (int)((attacker.getProficiency(Proficiency.STRENGTH) + attFlat)* attMult);
+		int normalMeleeDefense = (int)((defender.getResistance(attacker.getBasicDamageType()) +defFlat)*defMult);
 		
 		int damage = (int)(rdmize(normalMeleeDamage) * (10/(10+(double)rdmize(normalMeleeDefense))));
 		
 		defender.damage(damage);
+		if(attacker.hasAbility(SkillLibrary.LIFELINK)) {
+			attacker.heal(damage/2);
+			log.formulateHeal(attacker.getName(), damage/2);
+		}
+		if(defender.getSkills().stream().map(i->i.getId()).collect(Collectors.toList()).contains(SkillLibrary.FIRE_ARMOR)) {
+			Skill firearmor = SkillLibrary.get(SkillLibrary.FIRE_ARMOR);
+			p.damage(firearmor.getPower(),DamageType.BURNING,0);
+		}
 		
 		log.formulateEffect(o.getName(), damage);
 	}
@@ -172,10 +207,10 @@ public class CombatManager {
 		return a + ThreadLocalRandom.current().nextInt(-5, 5);
 		
 	}
-	static private boolean miss(Skill s) {
+	static private boolean miss(int acc) {
 		Random rand = new Random();
 		float f = rand.nextFloat();
-		if(f>(s.getAccuracy()/100.0)) {
+		if(f>(acc/100.0)) {
 			return true;
 		}else {
 			return false;

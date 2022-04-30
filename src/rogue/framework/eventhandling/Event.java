@@ -14,6 +14,7 @@ public class Event {
 	private CharacterTab tab;
 	private int cardnr;
 	private Event afterConfirmEvent;
+	private int teamNr;
 	
 	private int x,y;
 	private int width,height;
@@ -88,5 +89,11 @@ public class Event {
 	}
 	public void setAfterConfirmEvent(Event afterConfirmEvent) {
 		this.afterConfirmEvent = afterConfirmEvent;
+	}
+	public int getTeamNr() {
+		return teamNr;
+	}
+	public void setTeamNr(int teamNr) {
+		this.teamNr = teamNr;
 	}
 }

@@ -12,8 +12,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class WindWall extends Skill{
 	public WindWall() {
-		super();
-		this.id=SkillLibrary.WIND_WALL;
+		super(SkillLibrary.WIND_WALL);
 		this.name="Wind Wall";
 		this.description="Push against the Air";
 		this.target=TargetType.SINGLE_TARGET;

@@ -8,8 +8,7 @@ import rogue.game.combat.skills.SkillLibrary;
 public class Fireball extends Skill{
 
 	public Fireball() {
-		super();
-		this.id=SkillLibrary.FIREBALL;
+		super(SkillLibrary.FIREBALL);
 		this.name="Fireball";
 		this.description="Hurls Fireball at first Target";
 		this.target=TargetType.LINE;

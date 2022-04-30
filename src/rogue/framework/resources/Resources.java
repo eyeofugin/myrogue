@@ -20,6 +20,7 @@ public class Resources {
 	public static final int HORCRUX = 9;
 	public static final int RUNE_TRAP = 10;
 	public static final int ENHANCEMENT_RUNE = 11;
+	public static final int FROSTED = 12;
 	public static final ArrayList<int[]> TEXTURES = new ArrayList<>();
 	
 	public static final int KNIGHT = 0;
@@ -59,6 +60,26 @@ public class Resources {
 	public static final int ARAGOG = 34;
 	public static final int FLUFFY = 35;
 	public static final int BASIC_SOLDIER = 36;
+	public static final int WAMPA = 37;
+	public static final int GREEDO = 38;
+	public static final int YISAN = 39;
+	public static final int MTG_SOLDIER = 40;
+	public static final int REBEL = 41;
+	public static final int WHITE_MAGE = 42;
+	public static final int RED_MAGE = 43;
+	public static final int BLUE_MAGE = 44;
+	public static final int GREEN_MAGE = 45;
+	public static final int BLACK_MAGE = 46;
+	public static final int STORMTROOPER = 47;
+	public static final int GOBLIN = 48;
+	public static final int EWOK = 49;
+	public static final int OOZE = 50;
+	public static final int VAMPIRE = 51;
+	public static final int FANATIC = 52;
+	public static final int ROGUE = 53;
+	public static final int GHOST = 54;
+	public static final int GOBLINNPC = 55;
+	public static final int GHOSTNPC = 56;
 	
 	public static final ArrayList<int[]> CHARACTERS = new ArrayList<>();
 	
@@ -68,6 +89,31 @@ public class Resources {
 	public static final int P_VADER = 3;
 	public static final int P_D_SION = 4;
 	public static final int P_LUKE = 5;
+	public static final int P_BALROG = 6;
+	public static final int P_BATMAN = 7;
+	public static final int P_BAUMBART = 8;
+	public static final int P_CHINA = 9;
+	public static final int P_DOBBY = 10;
+	public static final int P_DUMBLEDORE = 11;
+	public static final int P_GIMLI = 12;
+	public static final int P_GRAESSLICH = 13;
+	public static final int P_HAGRID = 14;
+	public static final int P_HELLBOY = 15;
+	public static final int P_LEGOLAS = 16;
+	public static final int P_MOODY = 17;
+	public static final int P_OBELIX = 18;
+	public static final int P_PROF_X = 19;
+	public static final int P_R2D2 = 20;
+	public static final int P_RADAGAST = 21;
+	public static final int P_SAMWISE = 22;
+	public static final int P_SERPINE = 23;
+	public static final int P_SKULDUGGERY = 24;
+	public static final int P_SOLOMON = 25;
+	public static final int P_TALZIN = 26;
+	public static final int P_UMBRIDGE = 27;
+	public static final int P_V = 28;
+	public static final int P_VOLDEMORT = 29;
+	public static final int P_W_CLEAVER = 30;
 	
 	public static final ArrayList<int[]> PORTRAITSx64 = new ArrayList<>();
 	

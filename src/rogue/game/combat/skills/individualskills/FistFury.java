@@ -12,8 +12,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class FistFury extends Skill{
 	public FistFury() {
-		super();		
-		this.id=SkillLibrary.FIST_BARRAGE;
+		super(SkillLibrary.FIST_BARRAGE);		
 		this.name="Fist Fury";
 		this.description="Punches in quick Succession";
 		this.target=TargetType.SINGLE_TARGET;

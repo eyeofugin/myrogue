@@ -7,8 +7,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class ShadowWave extends Skill{
 	public ShadowWave() {
-		super();
-		this.id=SkillLibrary.SHADOW_WAVE;
+		super(SkillLibrary.SHADOW_WAVE);
 		this.name="Shadow Wave";
 		this.description="Crush a Wave of Darkness into your Enemies";
 		this.target=TargetType.SINGLE_TARGET;

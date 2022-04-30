@@ -8,8 +8,7 @@ import rogue.game.combat.skills.Skill.TargetType;
 public class ShowArea extends Skill{
 
 	public ShowArea() {
-		super();
-		this.id=SkillLibrary.SHOW_AREA;
+		super(SkillLibrary.SHOW_AREA);
 		this.name="Show Area";
 		this.description="Reveals an Area";
 		this.target=TargetType.SINGLE_TARGET;

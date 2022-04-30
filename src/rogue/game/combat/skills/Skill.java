@@ -6,6 +6,7 @@ import java.util.List;
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.game.combat.skills.Skill.Effect.EffectType;
+import rogue.game.world.objects.entities.Entity;
 import rogue.game.world.objects.entities.Entity.Proficiency;
 import rogue.game.world.objects.entities.PlayableCharacter;
 
@@ -21,14 +22,16 @@ public class Skill {
 	
 	protected SkillType type;
 	
-	protected TargetType target;
-	protected DamageType damageType;
+	protected TargetType target = TargetType.NONE;
+	protected DamageType damageType= DamageType.NULL;
 	protected int radius;
 	protected int distance;
 	protected List<Effect> effects;
 	protected List<Multiplier> multipliers;
 	
 	protected boolean blocked;
+	protected boolean onDeath = false;
+	protected boolean isPassive = false;
 	
 	protected int manaCost;
 	protected int lifeCost;
@@ -37,9 +40,15 @@ public class Skill {
 	
 	protected int power;
 	protected int summonedId;
+	protected int enhancementId;
 	
-	public Skill() {
+	public Skill(int id) {
+		this.id=id;
 		this.unique=counter++;
+		Event e = new Event();
+		e.setEventId(Connector.SKILL_CHOSEN);
+		e.setSkill(id);
+		this.event=e;
 	}
 	
 	public Skill(int id, String name, String description) {
@@ -202,7 +211,7 @@ public class Skill {
 		SUMMON
 	}
 	public static enum DamageType{
-		
+		NULL("null"),
 		NORMAL("Normal"),
 		BURNING("Burning"),
 		FREEZING("Freezing"),
@@ -232,6 +241,7 @@ public class Skill {
 		NONE,
 	}
 	public static class Effect{
+		private int enhancementId=0;
 		private EffectType type;
 		private int turns;
 		private int intensity; //for status inflictions
@@ -258,9 +268,16 @@ public class Skill {
 			// TODO Auto-generated constructor stub
 		}
 		public void turn() {
-			this.turns--;
+			if(turns>=0) {
+				this.turns--;	
+			}
 		}
-		
+		public void setEnhancementId(int id) {
+			this.enhancementId=id;
+		}
+		public int getEnhancementId() {
+			return this.enhancementId;
+		}
 		public EffectType getType() {
 			return type;
 		}
@@ -321,7 +338,8 @@ public class Skill {
 			ROOTED("Rooted"),
 			INDESCTRUCTIBLE("Indestructible"),
 			CLEAR("Clear"),
-			REMOVE_OBSTACLE("Remove Obstacle");
+			REMOVE_OBSTACLE("Remove Obstacle"),
+			REMOVE_NPC("Remove Npc");
 			private String value;
 			private StatusInfliction(String s) {
 				this.value = s;
@@ -387,14 +405,14 @@ public class Skill {
 			this.percentage = percentage;
 		}
 	}
-	public int getSkillDamage(PlayableCharacter p) {
+	public int getSkillDamage(Entity p) {
 		int dmg = 0;
 		int multiplierBonus = getMultiBonus(p);
 		dmg += this.power;
 		dmg += multiplierBonus;
 		return (int)(dmg * p.getMultiplier(this.damageType));
 	}
-	private int getMultiBonus(PlayableCharacter p) {
+	private int getMultiBonus(Entity p) {
 		if(this.multipliers==null) {
 			return 0;
 		}
@@ -558,6 +576,30 @@ public class Skill {
 
 	public void setSummonedId(int summonedId) {
 		this.summonedId = summonedId;
+	}
+
+	public int getEnhancementId() {
+		return enhancementId;
+	}
+
+	public void setEnhancementId(int enhancementId) {
+		this.enhancementId = enhancementId;
+	}
+
+	public boolean isOnDeath() {
+		return onDeath;
+	}
+
+	public void setOnDeath(boolean onDeath) {
+		this.onDeath = onDeath;
+	}
+
+	public boolean isPassive() {
+		return isPassive;
+	}
+
+	public void setPassive(boolean isPassive) {
+		this.isPassive = isPassive;
 	}
 
 }

@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import rogue.framework.resources.Resources;
+import rogue.game.combat.skills.SkillLibrary;
 import rogue.game.world.objects.ObjectLibrary;
 import rogue.game.world.objects.entities.Entity;
+import rogue.game.world.objects.tiles.Enhancement.Level;
 
 public class Tile {
 	
@@ -18,14 +20,21 @@ public class Tile {
 	public Tile(int id) {
 		this.id=id;
 		if(id==Resources.TREE) {
-			enhancements.add(ObjectLibrary.getEnhancement(id));				
+			enhancements.add(ObjectLibrary.getEnhancement(id));
+			this.id=Resources.MEADOW;
 		}
 		if(id==Resources.TALLGRASS ) {
-			enhancements.add(ObjectLibrary.getEnhancement(id));				
+			enhancements.add(ObjectLibrary.getEnhancement(id));	
+			this.id=Resources.MEADOW;			
+		}
+		if(id==Resources.WATER) {
+			enhancements.add(ObjectLibrary.getEnhancement(id));
+			this.id=Resources.MEADOW;
 		}
 	}
 	
 	public void turn() {
+		enhancements.removeIf(e->e.getDuration()==0);
 		for(Enhancement e : enhancements) {
 			e.turn();
 		}
@@ -33,18 +42,32 @@ public class Tile {
 	}
 	
 	public void onEnter(Entity e) {
-		
+		for(Enhancement enh : this.enhancements) {
+			enh.onEnter(e);
+		}
+		if(e.hasAbility(SkillLibrary.FROSTWALK)) {
+			this.enhancements.add(ObjectLibrary.getEnhancement(Resources.FROSTED));
+		}
 	}
 	public void onEnd(Entity e) {
-		
 	}
 	public void onLeave(Entity e) {
-		
+		for(Enhancement enh : this.enhancements) {
+			enh.onLeave(e);
+		}
 	}
 
 	public boolean isVisBlock() {
 		return this.visBlock || 
 				getEnhancementVisBlock();
+	}
+	public boolean hasTop() {
+		for(Enhancement enh : this.enhancements) {
+			if(enh.getLevel().equals(Level.TOP)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	private boolean getEnhancementVisBlock() {
 		return this.enhancements.stream()
@@ -60,7 +83,7 @@ public class Tile {
 		this.enhancements.add(enh);
 	}
 	public boolean isObstacle() {
-		return getEnhancementObstacle();
+		return getEnhancementObstacle()||this.id == Resources.WALL;
 	}
 	
 	

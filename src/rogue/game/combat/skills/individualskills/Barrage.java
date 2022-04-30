@@ -6,8 +6,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class Barrage extends Skill{
 	public Barrage() {
-		super();
-		this.id=SkillLibrary.ARROW_BARRAGE;
+		super(SkillLibrary.ARROW_BARRAGE);
 		this.name="Barrage";
 		this.description="Fires on Area";
 		this.target=TargetType.SINGLE_TARGET;

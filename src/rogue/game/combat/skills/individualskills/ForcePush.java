@@ -7,8 +7,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class ForcePush extends Skill{
 	public ForcePush() {
-		super();
-		this.id=SkillLibrary.FORCE_PUSH;
+		super(SkillLibrary.FORCE_PUSH);
 		this.name="Force Push";
 		this.description="Pushes Enemies";
 		this.target=TargetType.SURROUNDING;

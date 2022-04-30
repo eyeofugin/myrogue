@@ -16,7 +16,7 @@ public class Dumbledore extends PlayableCharacter{
 		this.id=			Resources.DUMBLEDORE;
 		this.tier=			5;
 		this.name=			"Albus Dumbledore";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_DUMBLEDORE;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

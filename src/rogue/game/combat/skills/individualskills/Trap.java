@@ -6,8 +6,7 @@ import rogue.game.combat.skills.SkillLibrary;
 
 public class Trap extends Skill{
 	public Trap() {
-		super();
-		this.id=SkillLibrary.RUNE_TRAP;
+		super(SkillLibrary.RUNE_TRAP);
 		this.name="Trap";
 		this.description="Plants a Trap";
 		this.target=TargetType.SINGLE_FREE;
@@ -15,6 +14,6 @@ public class Trap extends Skill{
 		this.distance=1;
 		this.manaCost=20;
 		this.actionCost=1;
-		this.summonedId=Resources.RUNE_TRAP;
+		this.enhancementId=Resources.RUNE_TRAP;
 	}
 }

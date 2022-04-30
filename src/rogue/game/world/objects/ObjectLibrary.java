@@ -5,33 +5,36 @@ import java.util.Map;
 
 import rogue.framework.resources.Resources;
 import rogue.game.world.objects.tiles.Enhancement;
-import rogue.game.world.objects.tiles.Enhancement.Level;
+import rogue.game.world.objects.tiles.individualenhancements.EnhancementRune;
+import rogue.game.world.objects.tiles.individualenhancements.Frosted;
+import rogue.game.world.objects.tiles.individualenhancements.RuneTrap;
+import rogue.game.world.objects.tiles.individualenhancements.SmokeScreen;
+import rogue.game.world.objects.tiles.individualenhancements.TallGrass;
+import rogue.game.world.objects.tiles.individualenhancements.Tree;
+import rogue.game.world.objects.tiles.individualenhancements.Water;
 
 public class ObjectLibrary {
 	
-	private static Map<Integer,Enhancement> enh = new HashMap<>();
+	private static Map<Integer,Class> enh = new HashMap<>();
 	
 	public static void init() {
-		enh.put(Resources.TALLGRASS,new Enhancement(Resources.TALLGRASS,Level.TOP,true,true,false,true,-1));
-		enh.put(Resources.TREE,new Enhancement(Resources.TREE,Level.TOP,true,true,true,true,-1));
-		enh.put(Resources.SMOKE_SCREEN,new Enhancement(Resources.SMOKE_SCREEN,Level.SUB,true,true,false,true,3));
-		enh.put(Resources.HORCRUX,new Enhancement(Resources.HORCRUX,Level.SUB,true,true,false,false,-1));
-		enh.put(Resources.WATER,new Enhancement(Resources.WATER,Level.TOP,true,true,true,false,-1));
-		enh.put(Resources.RUNE_TRAP,new Enhancement(Resources.RUNE_TRAP,Level.SUB,true,false,false,false,-1));
-		enh.put(Resources.ENHANCEMENT_RUNE,new Enhancement(Resources.ENHANCEMENT_RUNE,Level.SUB,true,false,false,false,5));
+		enh.put(Resources.TALLGRASS,TallGrass.class);
+		enh.put(Resources.TREE,Tree.class);
+		enh.put(Resources.SMOKE_SCREEN,SmokeScreen.class);
+		enh.put(Resources.WATER,Water.class);
+		enh.put(Resources.RUNE_TRAP,RuneTrap.class);
+		enh.put(Resources.ENHANCEMENT_RUNE,EnhancementRune.class);
+		enh.put(Resources.FROSTED,Frosted.class);
 	}
 	
 	public static Enhancement getEnhancement(int id) {
-		if( enh.get(id)==null) {
-			return null;
+		try {
+			return Enhancement.class.cast(enh.get(id).newInstance());
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		}
-		Enhancement e = new Enhancement();
-		e.setId(id);
-		e.setDuration(enh.get(id).getDuration());
-		e.setSolid(enh.get(id).isSolid());
-		e.setBlockVis(enh.get(id).isBlockVis());
-		e.setVisEnemy(enh.get(id).isVisEnemy());
-		e.setVisTeam(enh.get(id).isVisTeam());
-		return e;
+		return null;
 	}
 }

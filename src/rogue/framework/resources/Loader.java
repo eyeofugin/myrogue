@@ -22,6 +22,12 @@ public class Loader {
 		Resources.TEXTURES.add(Resources.TALLGRASS,new Sprite("res/textures/tallgrass.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.SMOKE_SCREEN,new Sprite("res/textures/smokescreen.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.TEXTURES.add(Resources.WATER,new Sprite("res/textures/water.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.HORCRUX,new Sprite("res/textures/water.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.RUNE_TRAP,new Sprite("res/textures/runetrap.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.ENHANCEMENT_RUNE,new Sprite("res/textures/enhancementrune.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.TEXTURES.add(Resources.FROSTED,new Sprite("res/textures/frosted.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		
+		
 		
 		Resources.CHARACTERS.add(Resources.KNIGHT,new Sprite("res/characters/knight.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.SKELETON,new Sprite("res/characters/skeleton.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
@@ -60,6 +66,26 @@ public class Loader {
 		Resources.CHARACTERS.add(Resources.ARAGOG,new Sprite("res/npcs/aragog.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.FLUFFY,new Sprite("res/npcs/fluffy.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		Resources.CHARACTERS.add(Resources.BASIC_SOLDIER,new Sprite("res/npcs/fluffy.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.WAMPA,new Sprite("res/characters/wampa.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.GREEDO,new Sprite("res/characters/greedo.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.YISAN,new Sprite("res/characters/yisan.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.MTG_SOLDIER,new Sprite("res/characters/soldier.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.REBEL,new Sprite("res/characters/rebel.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.WHITE_MAGE,new Sprite("res/characters/whitemage.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.RED_MAGE,new Sprite("res/characters/redmage.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.BLUE_MAGE,new Sprite("res/characters/bluemage.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.GREEN_MAGE,new Sprite("res/characters/greenmage.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.BLACK_MAGE,new Sprite("res/characters/blackmage.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.STORMTROOPER,new Sprite("res/characters/stormtrooper.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.GOBLIN,new Sprite("res/characters/goblin.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.EWOK,new Sprite("res/characters/ewok.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.OOZE,new Sprite("res/characters/ooze.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.VAMPIRE,new Sprite("res/characters/vampire.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.FANATIC,new Sprite("res/characters/fanatic.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.ROGUE,new Sprite("res/characters/rogue.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.GHOST,new Sprite("res/characters/ghost.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.GOBLINNPC,new Sprite("res/characters/goblin.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
+		Resources.CHARACTERS.add(Resources.GHOSTNPC,new Sprite("res/characters/ghost.png",Property.TILE_SIZE,Property.TILE_SIZE).getPixels());
 		
 		
 		Resources.PORTRAITSx64.add(Resources.DUMMY,new Sprite("res/skills/lockedskill.png",64,64).getPixels());
@@ -68,6 +94,31 @@ public class Loader {
 		Resources.PORTRAITSx64.add(Resources.P_VADER,new Sprite("res/portraits/p_vader.png",64,64).getPixels());
 		Resources.PORTRAITSx64.add(Resources.P_D_SION,new Sprite("res/portraits/p_d_sion.png",64,64).getPixels());
 		Resources.PORTRAITSx64.add(Resources.P_LUKE,new Sprite("res/portraits/p_luke.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_BALROG,new Sprite("res/portraits/p_balrog.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_BATMAN,new Sprite("res/portraits/p_batman.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_BAUMBART,new Sprite("res/portraits/p_baumbart.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_CHINA,new Sprite("res/portraits/p_china.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_DOBBY,new Sprite("res/portraits/p_dobby.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_DUMBLEDORE,new Sprite("res/portraits/p_dumbledore.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_GIMLI,new Sprite("res/portraits/p_gimli.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_GRAESSLICH,new Sprite("res/portraits/p_graesslich.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_HAGRID,new Sprite("res/portraits/p_hagrid.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_HELLBOY,new Sprite("res/portraits/p_hellboy.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_LEGOLAS,new Sprite("res/portraits/p_legolas.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_MOODY,new Sprite("res/portraits/p_moody.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_OBELIX,new Sprite("res/portraits/p_obelix.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_PROF_X,new Sprite("res/portraits/p_prof_x.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_R2D2,new Sprite("res/portraits/p_r2d2.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_RADAGAST,new Sprite("res/portraits/p_radagast.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_SAMWISE,new Sprite("res/portraits/p_samwise.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_SERPINE,new Sprite("res/portraits/p_serpine.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_SKULDUGGERY,new Sprite("res/portraits/p_skulduggery.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_SOLOMON,new Sprite("res/portraits/p_solomon.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_TALZIN,new Sprite("res/portraits/p_talzin.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_UMBRIDGE,new Sprite("res/portraits/p_umbridge.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_V,new Sprite("res/portraits/p_v.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_VOLDEMORT,new Sprite("res/portraits/p_voldemort.png",64,64).getPixels());
+		Resources.PORTRAITSx64.add(Resources.P_W_CLEAVER,new Sprite("res/portraits/p_w_cleaver.png",64,64).getPixels());
 			
 		Resources.ICONSx32.put(Resources.MOVEMENT_ACTION,new Sprite("res/icons/movement.png",32,32).getPixels());
 		Resources.ICONSx32.put(Resources.ATTACK_ACTION,new Sprite("res/icons/attack.png",32,32).getPixels());
@@ -154,7 +205,7 @@ public class Loader {
 		Resources.ICONSx32.put(SkillLibrary.ROCK_THROW,new Sprite("res/skills/rockthrow.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.ROPES,new Sprite("res/skills/roperoot.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.RUNE_TRAP,new Sprite("res/skills/runetrap.png",32,32).getPixels());	
-		Resources.ICONSx32.put(SkillLibrary.SCAN,new Sprite("res/skills/scan.png",32,32).getPixels());	
+		Resources.ICONSx32.put(SkillLibrary.SHOW_AREA,new Sprite("res/skills/scan.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.SEND_IDEFIX,new Sprite("res/skills/sendidefix.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.SHADOW_ARMOR,new Sprite("res/skills/shadowarmor.png",32,32).getPixels());	
 		Resources.ICONSx32.put(SkillLibrary.SHADOW_SPEARS,new Sprite("res/skills/shadowspears.png",32,32).getPixels());	
@@ -182,6 +233,16 @@ public class Loader {
 		Resources.ICONSx32.put(SkillLibrary.STURDY,new Sprite("res/skills/sturdy.png",32,32).getPixels());
 		Resources.ICONSx32.put(SkillLibrary.FIEND_FYRE,new Sprite("res/skills/fiendfyre.png",32,32).getPixels());
 		Resources.ICONSx32.put(SkillLibrary.MURDER_FEST,new Sprite("res/skills/murderfest.png",32,32).getPixels());
-		
+		Resources.ICONSx32.put(SkillLibrary.C4,new Sprite("res/skills/sxplosives.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.FROSTWALK,new Sprite("res/skills/frostwalk.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.CALM_BEAST,new Sprite("res/skills/calmbeast.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.GHOST_DEATH,new Sprite("res/skills/ghostdeath.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.HIT_OR_MISS,new Sprite("res/skills/hitormiss.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.SUMMON_GOBLIN,new Sprite("res/characters/goblin.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.OUTLAST,new Sprite("res/skills/outlast.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.LIFELINK,new Sprite("res/skills/lifelink.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.HEXPROOF,new Sprite("res/skills/hexproof.png",32,32).getPixels());
+
+	
 	}
 }

@@ -15,7 +15,7 @@ public class DoloresUmbridge extends PlayableCharacter{
 		this.id=			Resources.UMBRIDGE;
 		this.tier=			2;
 		this.name=			"D. Umbridge";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_UMBRIDGE;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

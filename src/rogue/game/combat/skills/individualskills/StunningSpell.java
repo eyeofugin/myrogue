@@ -8,8 +8,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class StunningSpell extends Skill{
 	public StunningSpell() {
-		super();
-		this.id=SkillLibrary.STUPOR;
+		super(SkillLibrary.STUPOR);
 		this.name="Stunning Spell";
 		this.description="Casts a Spell that stuns the first Target";
 		this.target=TargetType.LINE;

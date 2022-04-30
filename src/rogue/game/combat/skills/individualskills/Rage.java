@@ -10,8 +10,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 public class Rage extends Skill{
 
 	public Rage() {
-		super();
-		this.id=SkillLibrary.MERCILESS_MASSACRE;
+		super(SkillLibrary.MERCILESS_MASSACRE);
 		this.name="Rage";
 		this.description="User enters a state of rage and fury";
 		this.target=TargetType.SELF;

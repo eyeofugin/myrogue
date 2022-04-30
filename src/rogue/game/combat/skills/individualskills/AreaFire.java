@@ -6,8 +6,7 @@ import rogue.game.world.objects.entities.Entity.Proficiency;
 
 public class AreaFire extends Skill{
 	public AreaFire() {
-		super();
-		this.id=SkillLibrary.AREAFIRE;
+		super(SkillLibrary.AREAFIRE);
 		this.name="Area Fire";
 		this.description="Engulfs Area in Flames";
 		this.target=TargetType.SINGLE_TARGET;

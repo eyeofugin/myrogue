@@ -16,7 +16,7 @@ public class Sam extends PlayableCharacter{
 		this.id=			Resources.SAMWISE;
 		this.tier=			2;
 		this.name=			"Samwise";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_SAMWISE;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;

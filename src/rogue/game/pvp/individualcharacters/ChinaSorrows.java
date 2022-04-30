@@ -15,7 +15,7 @@ public class ChinaSorrows extends PlayableCharacter{
 		this.id=			Resources.CHINA;
 		this.tier=			3;
 		this.name=			"China Sorrows";
-		this.portraitId=	Resources.P_BOBA;
+		this.portraitId=	Resources.P_CHINA;
 		this.maxLife=		200;
 		this.lifeRegain=	15;
 		this.maxMana=		60;
