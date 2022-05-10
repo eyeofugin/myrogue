@@ -17,13 +17,13 @@ public class Balrog extends PlayableCharacter{
 		this.tier=			4;
 		this.name=			"Balrog";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		130;
+		this.lifeRegain=	8;
+		this.maxMana=		50;
+		this.manaRegain=	5;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -36,13 +36,13 @@ public class Balrog extends PlayableCharacter{
 		this.stdDamageType=DamageType.BURNING;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				64,//NORMAL
+				89,//BURNING
+				84,//DARK
+				86,//FREEZE
+				44,//LIGHT
+				43,//PSYCH
+				60);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -51,13 +51,13 @@ public class Balrog extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				59,//STRENGTH
+				12, //FAITH
+				10,//INTELLIGENCE
+				2, //LETHALITY
+				7);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLACK,DraftColor.RED});
 	}
 }

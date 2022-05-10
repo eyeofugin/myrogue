@@ -16,17 +16,17 @@ public class DoloresUmbridge extends PlayableCharacter{
 		this.tier=			2;
 		this.name=			"D. Umbridge";
 		this.portraitId=	Resources.P_UMBRIDGE;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		35;
+		this.lifeRegain=	2;
+		this.maxMana=		54;
+		this.manaRegain=	8;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
-		this.range=			1;
+		this.range=			2;
 		this.setSkills(getSkills(
 				SkillLibrary.ROPES,
 				SkillLibrary.I_SHALL_NOT_TELL_LIES,0,0,0,0));
@@ -35,9 +35,9 @@ public class DoloresUmbridge extends PlayableCharacter{
 		this.resistances=resistance(
 				20,//NORMAL
 				30,//BURNING
-				20,//DARK
+				24,//DARK
 				20,//FREEZE
-				30,//LIGHT
+				25,//LIGHT
 				15,//PSYCH
 				20);//SHOCK
 		this.multipliers=multipliers(
@@ -48,13 +48,13 @@ public class DoloresUmbridge extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				19,//STRENGTH
+				28, //FAITH
+				31,//INTELLIGENCE
+				10, //LETHALITY
+				30);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLACK,DraftColor.WHITE});	
 	}
 }

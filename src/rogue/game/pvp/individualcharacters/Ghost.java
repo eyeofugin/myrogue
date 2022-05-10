@@ -15,13 +15,13 @@ public class Ghost extends PlayableCharacter{
 		this.tier=			1;
 		this.name=			"Ghost";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		20;
+		this.lifeRegain=	10;
+		this.maxMana=		0;
+		this.manaRegain=	0;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -29,15 +29,15 @@ public class Ghost extends PlayableCharacter{
 		this.setSkills(getSkills(
 				SkillLibrary.ALL_TERRAIN,0,0,0,0,0));
 		this.stdDamageType=DamageType.DARK;
-		this.stdDamageProf=Proficiency.STRENGTH;
+		this.stdDamageProf=Proficiency.LETHALITY;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				90,//NORMAL
+				90,//BURNING
+				1,//DARK
+				90,//FREEZE
+				1,//LIGHT
+				1,//PSYCH
+				90);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -46,13 +46,13 @@ public class Ghost extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				0,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				20,//INTELLIGENCE
+				40, //LETHALITY
+				10);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLUE});
 	}
 }

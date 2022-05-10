@@ -17,17 +17,17 @@ public class Legolas extends PlayableCharacter{
 		this.tier=			3;
 		this.name=			"Legolas";
 		this.portraitId=	Resources.P_LEGOLAS;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		43;
+		this.lifeRegain=	5;
+		this.maxMana=		69;
+		this.manaRegain=	13;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
-		this.range=			1;
+		this.range=			4;
 		this.setSkills(getSkills(
 				SkillLibrary.EMPTY_REVOLVER,
 				SkillLibrary.WOOD_WALK,
@@ -35,12 +35,12 @@ public class Legolas extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.PRECISION;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
+				22,//NORMAL
+				23,//BURNING
+				28,//DARK
+				24,//FREEZE
+				20,//LIGHT
+				28,//MAGIC
 				20);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
@@ -50,13 +50,13 @@ public class Legolas extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				32,//STRENGTH
+				11, //FAITH
+				30,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				60);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.GREEN,DraftColor.RED});
 	}
 }

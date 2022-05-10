@@ -315,7 +315,11 @@ public class Entity {
 	}
 	public boolean useLife(int amnt) {
 		if(amnt<=this.currentLife) {
-			this.currentLife-=amnt;
+			if(amnt==-1) {
+				this.currentLife=0;
+			}else {
+				this.currentLife-=amnt;
+			}
 			return true;
 		}
 		return false;
@@ -330,14 +334,16 @@ public class Entity {
 	private int actionInfliction() {
 		int infl = 0;
 		for(Effect e:this.currentEffects) {
-			if(e.getStatus().equals(StatusInfliction.FROZEN)) {
-				infl+=this.maxActions;
-			}
-			if(e.getStatus().equals(StatusInfliction.PARALYSED)) {
-				infl+=e.getIntensity();
-			}
-			if(e.getStatus().equals(StatusInfliction.STUNNED)) {
-				infl+=this.maxActions;
+			if(e.getStatus()!=null) {
+				if(e.getStatus().equals(StatusInfliction.FROZEN)) {
+					infl+=this.maxActions;
+				}
+				if(e.getStatus().equals(StatusInfliction.PARALYSED)) {
+					infl+=e.getIntensity();
+				}
+				if(e.getStatus().equals(StatusInfliction.STUNNED)) {
+					infl+=this.maxActions;
+				}
 			}
 		}
 		return infl;
@@ -345,18 +351,21 @@ public class Entity {
 	private int movementInfliction() {
 		int infl = 0;
 		for(Effect e:this.currentEffects) {
-			if(e.getStatus().equals(StatusInfliction.FROZEN)) {
-				infl+=this.maxMovement;
+			if(e.getStatus()!=null) {
+				if(e.getStatus().equals(StatusInfliction.FROZEN)) {
+					infl+=this.maxMovement;
+				}
+				if(e.getStatus().equals(StatusInfliction.PARALYSED)) {
+					infl+=e.getIntensity();
+				}
+				if(e.getStatus().equals(StatusInfliction.STUNNED)) {
+					infl+=this.maxMovement;
+				}
+				if(e.getStatus().equals(StatusInfliction.ROOTED)) {
+					infl+=this.maxMovement;
+					
 			}
-			if(e.getStatus().equals(StatusInfliction.PARALYSED)) {
-				infl+=e.getIntensity();
-			}
-			if(e.getStatus().equals(StatusInfliction.STUNNED)) {
-				infl+=this.maxMovement;
-			}
-			if(e.getStatus().equals(StatusInfliction.ROOTED)) {
-				infl+=this.maxMovement;
-			}
+}
 		}
 		return infl;
 	}
@@ -489,7 +498,7 @@ public class Entity {
 		String result = "";
 		for(DraftColor c : this.colors) {
 			if(c.equals(DraftColor.BLACK)) {
-				result+="°";
+				result+="ï¿½";
 			}
 			if(c.equals(DraftColor.BLUE)) {
 				result+="~";

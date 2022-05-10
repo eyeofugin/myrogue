@@ -33,13 +33,13 @@ public class Moody extends PlayableCharacter{
 		this.stdDamageType=DamageType.MAGICAL;
 		this.stdDamageProf=Proficiency.KNOWLEDGE;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
+				35,//NORMAL
+				32,//BURNING
+				30,//DARK
+				32,//FREEZE
 				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				40,//PSYCH
+				32);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -48,13 +48,13 @@ public class Moody extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				26,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				33,//INTELLIGENCE
+				10, //LETHALITY
+				30);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.WHITE});	
 	}
 }

@@ -17,13 +17,13 @@ public class Dumbledore extends PlayableCharacter{
 		this.tier=			5;
 		this.name=			"Albus Dumbledore";
 		this.portraitId=	Resources.P_DUMBLEDORE;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		43;
+		this.lifeRegain=	1;
+		this.maxMana=		70;
+		this.manaRegain=	15;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	3;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -36,13 +36,13 @@ public class Dumbledore extends PlayableCharacter{
 		this.stdDamageType=DamageType.MAGICAL;
 		this.stdDamageProf=Proficiency.KNOWLEDGE;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				28,//NORMAL
+				25,//BURNING
+				39,//DARK
+				25,//FREEZE
+				34,//LIGHT
+				39,//PSYCH
+				25);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -51,13 +51,13 @@ public class Dumbledore extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				21,//STRENGTH
+				10, //FAITH
+				65,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				30);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLUE,DraftColor.WHITE,DraftColor.GREEN});	
 	}
 }

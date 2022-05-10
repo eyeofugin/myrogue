@@ -242,6 +242,9 @@ public class Loader {
 		Resources.ICONSx32.put(SkillLibrary.OUTLAST,new Sprite("res/skills/outlast.png",32,32).getPixels());
 		Resources.ICONSx32.put(SkillLibrary.LIFELINK,new Sprite("res/skills/lifelink.png",32,32).getPixels());
 		Resources.ICONSx32.put(SkillLibrary.HEXPROOF,new Sprite("res/skills/hexproof.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.SACRIFICIAL_CURSE,new Sprite("res/skills/sacrificialcurse.png",32,32).getPixels());
+		Resources.ICONSx32.put(SkillLibrary.PSYSHOCK,new Sprite("res/skills/forceprojection.png",32,32).getPixels());
+		
 
 	
 	}

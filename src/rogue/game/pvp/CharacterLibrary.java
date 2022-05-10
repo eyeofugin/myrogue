@@ -22,6 +22,7 @@ import rogue.game.pvp.individualcharacters.DoomedTraveler;
 import rogue.game.pvp.individualcharacters.Dumbledore;
 import rogue.game.pvp.individualcharacters.Ewok;
 import rogue.game.pvp.individualcharacters.Fanatic;
+import rogue.game.pvp.individualcharacters.GhastlyBespoke;
 import rogue.game.pvp.individualcharacters.Ghost;
 import rogue.game.pvp.individualcharacters.Gimli;
 import rogue.game.pvp.individualcharacters.Goblin;
@@ -107,6 +108,7 @@ public class CharacterLibrary {
 		chars.put(Resources.WAMPA, Wampa.class);
 		chars.put(Resources.WHITESCYTHE, WhiteCleaver.class);
 		chars.put(Resources.YISAN, Yisan.class);
+		chars.put(Resources.GRAESSLICH, GhastlyBespoke.class);
 		
 		
 		

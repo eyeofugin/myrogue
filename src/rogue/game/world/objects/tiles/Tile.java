@@ -85,6 +85,14 @@ public class Tile {
 	public boolean isObstacle() {
 		return getEnhancementObstacle()||this.id == Resources.WALL;
 	}
+	public boolean hasEnhancement(int id) {
+		for(Enhancement enh : this.enhancements) {
+			if(enh.getId() == id) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	
 	public int getId() {

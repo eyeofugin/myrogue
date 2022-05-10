@@ -38,7 +38,7 @@ public class ArenaState extends State{
 	private int maxPointer;
 	private int round = 1;
 	private boolean inChangeTeam=false;
-	private boolean inDraft = true;
+	private boolean inDraft = false;
 	private boolean inMenu = false;
 	
 	private PlayableCharacter activeCharacter;
@@ -60,7 +60,8 @@ public class ArenaState extends State{
 		this.activePointer=1;
 		this.maxPointer=teams.size();
 		this.hud=new HUD(connector);
-		startDraft();
+//		startDraft();
+		startArena();
 	}
 	private void startArena() {
 		this.activePointer=0;
@@ -253,17 +254,17 @@ public class ArenaState extends State{
 		Team t1 = new Team();
 		t1.setTeamNr(Property.TEAM_1);
 		List<PlayableCharacter> chars1 = new ArrayList<PlayableCharacter>();
-		PlayableCharacter char1 = CharacterLibrary.get(Resources.BALROG);
+		PlayableCharacter char1 = CharacterLibrary.get(Resources.MOODY);
 		char1.setTeam(Property.TEAM_1);
-		PlayableCharacter char2 = CharacterLibrary.get(Resources.BATMAN);
+		PlayableCharacter char2 = CharacterLibrary.get(Resources.TALZIN);
 		char2.setTeam(Property.TEAM_1);
-		PlayableCharacter char3 = CharacterLibrary.get(Resources.BAUMBART);
+		PlayableCharacter char3 = CharacterLibrary.get(Resources.OBELIX);
 		char3.setTeam(Property.TEAM_1);
-		PlayableCharacter char4 = CharacterLibrary.get(Resources.BLACK_MAGE);
+		PlayableCharacter char4 = CharacterLibrary.get(Resources.OOZE);
 		char4.setTeam(Property.TEAM_1);
-		PlayableCharacter char5 = CharacterLibrary.get(Resources.BLUE_MAGE);
+		PlayableCharacter char5 = CharacterLibrary.get(Resources.PROFESSOR);
 		char5.setTeam(Property.TEAM_1);
-		PlayableCharacter char6 = CharacterLibrary.get(Resources.BOBA);
+		PlayableCharacter char6 = CharacterLibrary.get(Resources.R2D2);
 		char6.setTeam(Property.TEAM_1);
 		chars1.add(char1); 
 		chars1.add(char2);
@@ -276,17 +277,17 @@ public class ArenaState extends State{
 		Team t2 = new Team();
 		t2.setTeamNr(Property.TEAM_2);
 		List<PlayableCharacter> chars2 = new ArrayList<PlayableCharacter>();
-		PlayableCharacter char7 = CharacterLibrary.get(Resources.CHINA);
+		PlayableCharacter char7 = CharacterLibrary.get(Resources.RADAGAST);
 		char7.setTeam(Property.TEAM_2);
-		PlayableCharacter char8 = CharacterLibrary.get(Resources.DARTH_SION);
+		PlayableCharacter char8 = CharacterLibrary.get(Resources.REBEL);
 		char8.setTeam(Property.TEAM_2);
-		PlayableCharacter char9 = CharacterLibrary.get(Resources.DARTH_VADER);
+		PlayableCharacter char9 = CharacterLibrary.get(Resources.RED_MAGE);
 		char9.setTeam(Property.TEAM_2);
-		PlayableCharacter char10 = CharacterLibrary.get(Resources.DOBBY);
+		PlayableCharacter char10 = CharacterLibrary.get(Resources.ROGUE);
 		char10.setTeam(Property.TEAM_2);
-		PlayableCharacter char11 = CharacterLibrary.get(Resources.UMBRIDGE);
+		PlayableCharacter char11 = CharacterLibrary.get(Resources.SAMWISE);
 		char11.setTeam(Property.TEAM_2);
-		PlayableCharacter char12 = CharacterLibrary.get(Resources.MTG_SOLDIER);
+		PlayableCharacter char12 = CharacterLibrary.get(Resources.SERPINE);
 		char12.setTeam(Property.TEAM_2);
 		chars2.add(char7);
 		chars2.add(char8);
@@ -295,11 +296,6 @@ public class ArenaState extends State{
 		chars2.add(char11);
 		chars2.add(char12);
 		t2.setCharacters(chars2);
-		List<PlayableCharacter> passive2 = new ArrayList<>();
-		PlayableCharacter char13 = CharacterLibrary.get(Resources.TALZIN);
-		char13.setTeam(Property.TEAM_2);
-		passive2.add(char13);
-		t2.setBench(passive2);
 		
 		this.teams.add(t1);
 		this.teams.add(t2);

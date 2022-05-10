@@ -16,13 +16,13 @@ public class GhastlyBespoke extends PlayableCharacter{
 		this.tier=			3;
 		this.name=			"Graesslich Schneider";
 		this.portraitId=	Resources.P_GRAESSLICH;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		54;
+		this.lifeRegain=	5;
+		this.maxMana=		55;
+		this.manaRegain=	9;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -34,13 +34,13 @@ public class GhastlyBespoke extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				56,//NORMAL
+				32,//BURNING
+				40,//DARK
+				32,//FREEZE
+				40,//LIGHT
+				40,//PSYCH
+				35);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -49,13 +49,13 @@ public class GhastlyBespoke extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				60,//STRENGTH
+				10, //FAITH
+				30,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				40);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.WHITE});	
 	}
 }

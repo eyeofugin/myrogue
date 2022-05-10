@@ -406,6 +406,13 @@ public class Arena {
 		}
 	}
 	private void vision(Skill s) {
+		if(s.getTarget().equals(TargetType.ALL_ENEMY)) {
+			for(Entity e : this.entities) {
+				if(e.getTeam()!=this.activeTeam) {
+					this.visionField[e.getX()][e.getY()] = true;
+				}
+			}
+		}
 		
 		for(int x = 0; x < highlights.length; x++) {
 			for(int y = 0; y < highlights[0].length; y++) {
@@ -499,13 +506,24 @@ public class Arena {
 		
 		int dist = calcDistance(currentX, currentY, x, y);
 		if(!isTp && !isFreeMovement(this.activeLarge))
-			this.activeLarge.useMovement(dist);
+			if(isFree(this.activeLarge,x,y)) {
+				this.activeLarge.useMovement(0);
+			}else {
+				this.activeLarge.useMovement(dist);
+			}
 		removeMovements();
 		highLightActive();
 		setSelectPlayerEvent(PlayableCharacter.class.cast(this.activeLarge), x, y,currentX,currentY);
 		this.tiles[y][x].onEnter(this.activeLarge);
 		refreshVision();
-		
+	}
+	private boolean isFree(Entity e, int x, int y) {
+		if(e.hasAbility(SkillLibrary.WOOD_WALK)) {
+			if(this.tiles[y][x].hasEnhancement(Resources.TALLGRASS)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	private void removeTheDead() {
 		List<Entity> operatedList = new ArrayList<>();
@@ -914,7 +932,7 @@ public class Arena {
 				if(highlights[x][y]!=null &&
 						(highlights[x][y].equals(Highlight.SKLL_GREEN)||
 								highlights[x][y].equals(Highlight.SKILL_SELECT))) {
-					tiles.add(this.tiles[x][y]);
+					tiles.add(this.tiles[y][x]);
 				}
 			}
 		}

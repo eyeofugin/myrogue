@@ -16,14 +16,14 @@ public class Baumbart extends PlayableCharacter{
 		this.tier=			3;
 		this.name=			"Baumbart";
 		this.portraitId=	Resources.P_BAUMBART;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		7000;
-		this.manaRegain=	10;
+		this.maxLife=		142;
+		this.lifeRegain=	9;
+		this.maxMana=		75;
+		this.manaRegain=	12;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
-		this.maxMovement=	30;
+		this.maxActions=	1;
+		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
 		this.range=			1;
@@ -34,13 +34,13 @@ public class Baumbart extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.LETHALITY;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				73,//NORMAL
+				28,//BURNING
+				60,//DARK
+				67,//FREEZE
+				72,//LIGHT
+				66,//PSYCH
+				78);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -51,11 +51,11 @@ public class Baumbart extends PlayableCharacter{
 				1.0,//SHOCK
 				1.1);//HEAL
 		this.proficiencies=proficiencies(
-				1000,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				59,//STRENGTH
+				2, //FAITH
+				32,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				12);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.GREEN});
 	}
 }

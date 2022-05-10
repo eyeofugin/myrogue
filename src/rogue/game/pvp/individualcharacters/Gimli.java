@@ -17,13 +17,13 @@ public class Gimli extends PlayableCharacter{
 		this.tier=			3;
 		this.name=			"Gimli";
 		this.portraitId=	Resources.P_GIMLI;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
+		this.maxLife=		63;
+		this.lifeRegain=	8;
+		this.maxMana=		40;
 		this.manaRegain=	10;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -35,13 +35,13 @@ public class Gimli extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				50,//NORMAL
+				40,//BURNING
+				45,//DARK
+				41,//FREEZE
+				38,//LIGHT
+				30,//PSYCH
+				48);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -50,13 +50,13 @@ public class Gimli extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				40,//STRENGTH
+				9, //FAITH
+				34,//INTELLIGENCE
+				5, //LETHALITY
+				10);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.GREEN,DraftColor.RED});
 	}
 }

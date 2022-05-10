@@ -19,6 +19,6 @@ public class SacrificialCurse extends Skill{
 		this.accuracy=80;
 		this.actionCost=2;
 		this.manaCost=20;
-		this.lifeCost=10;
+		this.lifeCost=-1;
 	}
 }

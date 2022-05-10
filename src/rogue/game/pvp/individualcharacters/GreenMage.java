@@ -16,13 +16,13 @@ public class GreenMage extends PlayableCharacter{
 		this.tier=			1;
 		this.name=			"Green Mage";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
+		this.maxLife=		63;
+		this.lifeRegain=	4;
+		this.maxMana=		40;
 		this.manaRegain=	10;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -32,13 +32,13 @@ public class GreenMage extends PlayableCharacter{
 		this.stdDamageType=DamageType.MAGICAL;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				32,//NORMAL
+				16,//BURNING
+				38,//DARK
+				28,//FREEZE
+				35,//LIGHT
+				22,//PSYCH
+				24);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -47,13 +47,13 @@ public class GreenMage extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				38,//STRENGTH
+				19, //FAITH
+				20,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				0);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.GREEN});
 	}
 }

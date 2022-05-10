@@ -15,13 +15,13 @@ public class BlackMage extends PlayableCharacter{
 		this.tier=			1;
 		this.name=			"Black Mage";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		45;
+		this.lifeRegain=	4;
+		this.maxMana=		40;
+		this.manaRegain=	8;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -31,13 +31,13 @@ public class BlackMage extends PlayableCharacter{
 		this.stdDamageType=DamageType.MAGICAL;
 		this.stdDamageProf=Proficiency.LETHALITY;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				32,//NORMAL
+				35,//BURNING
+				38,//DARK
+				28,//FREEZE
+				18,//LIGHT
+				22,//PSYCH
+				24);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -46,13 +46,13 @@ public class BlackMage extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				26,//STRENGTH
+				35, //FAITH
+				15,//INTELLIGENCE
+				35, //LETHALITY
+				8);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLACK});
 	}
 }

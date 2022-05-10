@@ -18,13 +18,13 @@ public class LukeSkywalker extends PlayableCharacter{
 		this.tier=			5;
 		this.name=			"Luke Skywalker";
 		this.portraitId=	Resources.P_LUKE;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		50;
+		this.lifeRegain=	3;
+		this.maxMana=		70;
+		this.manaRegain=	16;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	3;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -37,13 +37,13 @@ public class LukeSkywalker extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.FAITH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
+				35,//NORMAL
+				32,//BURNING
+				30,//DARK
+				32,//FREEZE
 				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				38,//PSYCH
+				32);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -52,13 +52,13 @@ public class LukeSkywalker extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				40,//STRENGTH
+				89, //FAITH
+				31,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				34);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLUE,DraftColor.GREEN,DraftColor.WHITE});
 	}
 }

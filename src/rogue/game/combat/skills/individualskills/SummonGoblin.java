@@ -9,6 +9,7 @@ public class SummonGoblin extends Skill{
 		super(SkillLibrary.SUMMON_GOBLIN);
 		this.name="Summon Goblin";
 		this.description="Summons a Goblin";
+		this.target=TargetType.SINGLE_FREE;
 		this.distance=1;
 		this.manaCost=30;
 		this.actionCost=2;
