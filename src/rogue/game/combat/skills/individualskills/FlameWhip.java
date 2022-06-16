@@ -20,10 +20,10 @@ public class FlameWhip extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.STRENGTH,0.5)
 		});
-		this.power=20;
+		this.power=45;
 		this.accuracy=80;
 		this.distance=3;
-		this.manaCost=20;
+		this.manaCost=30;
 		this.actionCost=1;
 	}	
 }

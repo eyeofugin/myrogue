@@ -19,10 +19,10 @@ public class Psyshock extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.KNOWLEDGE,0.3)
 		});
-		this.power=20;
-		this.accuracy=80;
+		this.power=35;
+		this.accuracy=100;
 		this.distance=5;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=30;
+		this.actionCost=2;
 	}
 }

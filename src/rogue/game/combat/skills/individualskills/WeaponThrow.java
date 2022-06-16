@@ -15,10 +15,10 @@ public class WeaponThrow extends Skill{
 				new Multiplier(Proficiency.PRECISION,0.3),
 				new Multiplier(Proficiency.STRENGTH,0.3)
 		});
-		this.power=20;
+		this.power=45;
 		this.accuracy=80;
 		this.distance=3;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=35;
+		this.actionCost=2;
 	}
 }

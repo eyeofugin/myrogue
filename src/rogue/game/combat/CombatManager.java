@@ -189,7 +189,7 @@ public class CombatManager {
 		int normalMeleeDamage = (int)((attacker.getProficiency(Proficiency.STRENGTH) + attFlat)* attMult);
 		int normalMeleeDefense = (int)((defender.getResistance(attacker.getBasicDamageType()) +defFlat)*defMult);
 		
-		int damage = (int)(rdmize(normalMeleeDamage) * (10/(10+(double)rdmize(normalMeleeDefense))));
+		int damage = (int)(rdmize(normalMeleeDamage) * (100/(100+(double)rdmize(normalMeleeDefense))));
 		
 		defender.damage(damage);
 		if(attacker.hasAbility(SkillLibrary.LIFELINK)) {

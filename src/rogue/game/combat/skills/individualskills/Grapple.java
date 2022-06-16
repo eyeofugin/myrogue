@@ -13,8 +13,8 @@ public class Grapple extends Skill{
 		this.target=TargetType.SINGLE_FREE;
 		this.type=SkillType.MOVEMENT;
 		this.type=SkillType.MOVEMENT;
-		this.distance=2;
+		this.distance=3;
 		this.manaCost=20;
-		this.actionCost=1;
+		this.actionCost=2;
 	}	
 }

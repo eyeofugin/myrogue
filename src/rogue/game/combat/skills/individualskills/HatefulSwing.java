@@ -21,8 +21,9 @@ public class HatefulSwing extends Skill{
 					new Multiplier(Proficiency.FAITH,0.8)});
 		this.distance=1;
 		this.accuracy=80;
-		this.actionCost=2;
-		this.manaCost=20;
-		this.lifeCost=10;
+		this.power=60;
+		this.actionCost=1;
+		this.manaCost=35;
+		this.lifeCost=15;
 	}
 }

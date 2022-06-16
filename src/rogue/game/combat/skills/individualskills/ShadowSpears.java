@@ -19,7 +19,7 @@ public class ShadowSpears extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.FAITH,0.5)
 		});
-		this.power=20;
+		this.power=35;
 		this.accuracy=80;
 		this.distance=3;
 		this.manaCost=20;

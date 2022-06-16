@@ -12,7 +12,7 @@ public class SummonHellspawn extends Skill{
 		this.description="Summons a Hellspawn";
 		this.target=TargetType.SINGLE_FREE;
 		this.distance=1;
-		this.manaCost=30;
+		this.manaCost=35;
 		this.actionCost=2;
 		this.summonedId=Resources.FLUFFY;
 	}

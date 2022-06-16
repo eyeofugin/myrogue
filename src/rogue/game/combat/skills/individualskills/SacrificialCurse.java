@@ -15,8 +15,8 @@ public class SacrificialCurse extends Skill{
 				new Effect[] {
 					new Effect(EffectType.STATUS_INFLICTION,0,0,StatusInfliction.CLEAR,null),
 					new Effect(EffectType.STATUS_INFLICTION,2,10,StatusInfliction.CURSED,null)});
-		this.distance=1;
-		this.accuracy=80;
+		this.distance=3;
+		this.accuracy=100;
 		this.actionCost=2;
 		this.manaCost=20;
 		this.lifeCost=-1;

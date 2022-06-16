@@ -16,13 +16,13 @@ public class R2D2 extends PlayableCharacter{
 		this.tier=			2;
 		this.name=			"R2D2";
 		this.portraitId=	Resources.P_R2D2;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		21;
+		this.lifeRegain=	1;
+		this.maxMana=		40;
+		this.manaRegain=	8;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -33,13 +33,13 @@ public class R2D2 extends PlayableCharacter{
 		this.stdDamageType=DamageType.SHOCK;
 		this.stdDamageProf=Proficiency.KNOWLEDGE;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
+				24,//NORMAL
+				31,//BURNING
+				22,//DARK
+				26,//FREEZE
 				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				39,//PSYCH
+				22);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -48,13 +48,13 @@ public class R2D2 extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				12,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
+				32,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				0);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLUE});
 	}
 }

@@ -10,7 +10,7 @@ public class DuelToTheDeath extends Skill{
 		this.description="Duels with an enemy and only one can survive";
 		this.target=TargetType.SINGLE_TARGET;
 		this.distance=1;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=45;
+		this.actionCost=2;
 	}
 }

@@ -16,7 +16,7 @@ public class Condemn extends Skill{
 					new Effect(EffectType.STATUS_INFLICTION,0,0,StatusInfliction.CLEAR,null),
 					new Effect(EffectType.STATUS_INFLICTION,3,0,StatusInfliction.CURSED,null)});
 		this.distance=3;
-		this.manaCost=30;
+		this.manaCost=45;
 		this.actionCost=1;
 	}
 }

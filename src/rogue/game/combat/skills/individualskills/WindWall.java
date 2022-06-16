@@ -23,10 +23,10 @@ public class WindWall extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.KNOWLEDGE,0.3)
 		});
-		this.power=20;
+		this.power=25;
 		this.accuracy=95;
 		this.distance=1;
-		this.manaCost=20;
+		this.manaCost=25;
 		this.actionCost=1;
 	}
 }

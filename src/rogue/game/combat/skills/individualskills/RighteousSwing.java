@@ -23,11 +23,10 @@ public class RighteousSwing extends Skill{
 		this.multipliers=of(
 				new Multiplier[] {
 					new Multiplier(Proficiency.FAITH,0.8)});
-		this.power=40;
+		this.power=45;
 		this.distance=1;
-		this.accuracy=80;
-		this.actionCost=2;
-		this.manaCost=20;
-		this.lifeCost=10;
+		this.accuracy=95;
+		this.actionCost=1;
+		this.manaCost=30;
 	}
 }

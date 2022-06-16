@@ -20,9 +20,9 @@ public class Maul extends Skill{
 				new Multiplier[] {
 					new Multiplier(Proficiency.STRENGTH,0.8)});
 		this.distance=1;
-		this.accuracy=80;
-		this.actionCost=2;
+		this.accuracy=90;
+		this.actionCost=1;
 		this.manaCost=20;
-		this.lifeCost=10;
+		this.power=40;
 	}
 }

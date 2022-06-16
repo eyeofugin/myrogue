@@ -16,10 +16,10 @@ public class FireStream extends Skill{
 				new Effect(EffectType.STATUS_INFLICTION, 2, 5, StatusInfliction.BURNING, null),
 				new Effect(EffectType.TERRAIN_ENHANCEMENT,2, 0, StatusInfliction.BURNING,null)}
 				);
-		this.power=30;
+		this.power=65;
 		this.accuracy=80;
 		this.distance=3;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=45;
+		this.actionCost=2;
 	}
 }

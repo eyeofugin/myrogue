@@ -12,8 +12,8 @@ public class Trap extends Skill{
 		this.target=TargetType.SINGLE_FREE;
 		this.accuracy=100;
 		this.distance=1;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=25;
+		this.actionCost=2;
 		this.enhancementId=Resources.RUNE_TRAP;
 	}
 }

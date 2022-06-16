@@ -20,10 +20,10 @@ public class StunningSpell extends Skill{
 				new Multiplier(Proficiency.KNOWLEDGE,0.3),
 				new Multiplier(Proficiency.PRECISION,0.3)
 		});
-		this.power=20;
+		this.power=35;
 		this.accuracy=80;
-		this.distance=3;
-		this.manaCost=20;
+		this.distance=4;
+		this.manaCost=30;
 		this.actionCost=1;
 	}
 }

@@ -23,7 +23,7 @@ public class Torture extends Skill{
 		this.power=20;
 		this.accuracy=80;
 		this.distance=3;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=35;
+		this.actionCost=2;
 	}
 }

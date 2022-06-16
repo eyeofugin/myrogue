@@ -22,7 +22,7 @@ public class Enhance extends Skill{
 		});
 		this.distance=1;
 		this.accuracy=100;
-		this.manaCost=30;
-		this.actionCost=1;
+		this.manaCost=50;
+		this.actionCost=2;
 	}
 }

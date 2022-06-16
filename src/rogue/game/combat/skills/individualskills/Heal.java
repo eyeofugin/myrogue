@@ -10,9 +10,9 @@ public class Heal extends Skill{
 		this.description="Heal yourself";
 		this.target=TargetType.SELF;
 		this.damageType=DamageType.HEAL;
-		this.power=20;
+		this.power=50;
 		this.accuracy=100;
-		this.manaCost=20;
+		this.manaCost=35;
 		this.actionCost=1;
 	}	
 }

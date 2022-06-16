@@ -12,8 +12,8 @@ public class EnhancementField extends Skill{
 		this.target=TargetType.SINGLE_FREE;
 		this.accuracy=100;
 		this.distance=1;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=40;
+		this.actionCost=2;
 		this.enhancementId=Resources.ENHANCEMENT_RUNE;
 	}
 }

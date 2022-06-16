@@ -13,7 +13,7 @@ public class SmokeScreen extends Skill{
 		this.target=TargetType.SINGLE_TARGET;
 		this.distance=3;
 		this.radius=1;
-		this.manaCost=20;
+		this.manaCost=15;
 		this.actionCost=1;
 		this.enhancementId=Resources.SMOKE_SCREEN;
 	}	

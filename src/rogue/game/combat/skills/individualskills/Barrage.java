@@ -14,11 +14,11 @@ public class Barrage extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.PRECISION,0.8)
 		});
-		this.power=20;
-		this.accuracy=100;
-		this.distance=3;
+		this.power=25;
+		this.accuracy=85;
+		this.distance=4;
 		this.radius=1;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=30;
+		this.actionCost=2;
 	}	
 }

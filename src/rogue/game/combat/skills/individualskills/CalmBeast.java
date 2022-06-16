@@ -17,8 +17,8 @@ public class CalmBeast extends Skill{
 		this.distance=2;
 		this.accuracy=80;
 		this.actionCost=2;
-		this.manaCost=20;
-		this.lifeCost=10;
+		this.manaCost=55;
+		this.lifeCost=0;
 	}
 
 }

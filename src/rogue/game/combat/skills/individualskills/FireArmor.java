@@ -10,7 +10,7 @@ public class FireArmor extends Skill{
 		this.description="Foe may take burn damage on contact";
 		this.isPassive=true;
 		this.damageType=DamageType.BURNING;
-		this.power=20;
+		this.power=35;
 		this.accuracy=75;
 	}	
 }

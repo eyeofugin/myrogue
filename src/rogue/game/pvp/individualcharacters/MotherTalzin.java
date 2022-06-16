@@ -17,13 +17,13 @@ public class MotherTalzin extends PlayableCharacter{
 		this.tier=			3;
 		this.name=			"Mother Talzin";
 		this.portraitId=	Resources.P_TALZIN;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		34;
+		this.lifeRegain=	3;
+		this.maxMana=		73;
+		this.manaRegain=	11;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -35,12 +35,12 @@ public class MotherTalzin extends PlayableCharacter{
 		this.stdDamageType=DamageType.SHOCK;
 		this.stdDamageProf=Proficiency.FAITH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
+				22,//NORMAL
+				23,//BURNING
+				18,//DARK
+				24,//FREEZE
+				12,//LIGHT
+				28,//MAGIC
 				20);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
@@ -50,11 +50,11 @@ public class MotherTalzin extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
 				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				62, //FAITH
+				32,//INTELLIGENCE
 				0, //LETHALITY
 				5);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLACK,DraftColor.GREEN});

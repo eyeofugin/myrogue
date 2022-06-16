@@ -20,7 +20,7 @@ public class Explosion extends Skill{
 		this.accuracy=75;
 		this.distance=3;
 		this.radius=1;
-		this.manaCost=20;
+		this.manaCost=35;
 		this.actionCost=1;
 	}
 }

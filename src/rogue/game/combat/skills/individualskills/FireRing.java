@@ -20,10 +20,10 @@ public class FireRing extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.KNOWLEDGE,0.3)
 		});
-		this.power=20;
+		this.power=35;
 		this.accuracy=80;
 		this.distance=1;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=45;
+		this.actionCost=2;
 	}
 }

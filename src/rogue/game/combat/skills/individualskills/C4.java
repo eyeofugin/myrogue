@@ -15,9 +15,9 @@ public class C4 extends Skill{
 				new Effect[] {
 					new Effect(EffectType.TERRAIN_ENHANCEMENT,0,0,StatusInfliction.REMOVE_OBSTACLE,null)});
 		this.distance=1;
-		this.accuracy=80;
+		this.accuracy=95;
 		this.actionCost=2;
-		this.manaCost=20;
-		this.lifeCost=10;
+		this.manaCost=25;
+		this.lifeCost=0;
 	}
 }

@@ -20,10 +20,10 @@ public class PreciseShot extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.PRECISION,0.8)
 		});
-		this.power=20;
+		this.power=60;
 		this.accuracy=75;
 		this.distance=5;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=30;
+		this.actionCost=2;
 	}	
 }

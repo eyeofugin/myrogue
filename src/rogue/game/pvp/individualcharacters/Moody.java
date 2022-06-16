@@ -16,13 +16,13 @@ public class Moody extends PlayableCharacter{
 		this.tier=			2;
 		this.name=			"Moody";
 		this.portraitId=	Resources.P_MOODY;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
+		this.maxLife=		53;
+		this.lifeRegain=	3;
 		this.maxMana=		60;
 		this.manaRegain=	10;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;

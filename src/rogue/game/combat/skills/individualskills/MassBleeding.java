@@ -16,7 +16,7 @@ public class MassBleeding extends Skill{
 				new Effect(EffectType.STATUS_INFLICTION,3,5,StatusInfliction.BLEEDING,null)
 		});
 		this.power=0;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=50;
+		this.actionCost=2;
 	}
 }

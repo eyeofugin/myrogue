@@ -17,13 +17,13 @@ public class Sam extends PlayableCharacter{
 		this.tier=			2;
 		this.name=			"Samwise";
 		this.portraitId=	Resources.P_SAMWISE;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		40;
+		this.lifeRegain=	3;
+		this.maxMana=		40;
+		this.manaRegain=	4;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -34,13 +34,13 @@ public class Sam extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				32,//NORMAL
+				28,//BURNING
+				27,//DARK
+				28,//FREEZE
+				26,//LIGHT
+				17,//PSYCH
+				23);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -49,12 +49,12 @@ public class Sam extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				23,//STRENGTH
+				10, //FAITH
+				25,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				9);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.WHITE});}
 }

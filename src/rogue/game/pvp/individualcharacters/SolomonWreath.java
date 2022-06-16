@@ -16,13 +16,13 @@ public class SolomonWreath extends PlayableCharacter{
 		this.tier=			3;
 		this.name=			"Solomon Wreath";
 		this.portraitId=	Resources.P_SOLOMON;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
+		this.maxLife=		50;
+		this.lifeRegain=	2;
 		this.maxMana=		60;
 		this.manaRegain=	10;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -34,13 +34,13 @@ public class SolomonWreath extends PlayableCharacter{
 		this.stdDamageType=DamageType.DARK;
 		this.stdDamageProf=Proficiency.FAITH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
+				32,//NORMAL
+				35,//BURNING
 				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				28,//FREEZE
+				18,//LIGHT
+				23,//PSYCH
+				24);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -49,12 +49,12 @@ public class SolomonWreath extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
 				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				52, //FAITH
+				30,//INTELLIGENCE
+				5, //LETHALITY
+				10);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLACK});}
 }

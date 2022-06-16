@@ -11,8 +11,8 @@ public class Teleport extends Skill{
 		this.description="Bends Spacetime around them";
 		this.target=TargetType.SINGLE_FREE;
 		this.type=SkillType.MOVEMENT;
-		this.distance=20;
-		this.manaCost=20;
+		this.distance=6;
+		this.manaCost=35;
 		this.actionCost=1;
 	}
 }

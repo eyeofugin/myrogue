@@ -15,7 +15,7 @@ public class Shield extends Skill{
 				new Effect(EffectType.STATUS_INFLICTION,1,0,StatusInfliction.INDESCTRUCTIBLE,null)
 		});
 		this.distance=2;
-		this.manaCost=20;
+		this.manaCost=35;
 		this.actionCost=1;
 	}
 }

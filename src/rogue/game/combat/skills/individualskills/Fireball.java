@@ -16,10 +16,10 @@ public class Fireball extends Skill{
 		this.damageType=DamageType.BURNING;
 		this.effects=of(new Effect[] {
 				new Effect(EffectType.STATUS_INFLICTION, 2, 5, StatusInfliction.BURNING, null)});
-		this.power=30;
+		this.power=60;
 		this.accuracy=80;
 		this.distance=3;
-		this.manaCost=20;
+		this.manaCost=30;
 		this.actionCost=1;
 	}
 }

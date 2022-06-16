@@ -14,7 +14,7 @@ public class GrowGrass extends Skill{
 		this.accuracy=100;
 		this.distance=2;
 		this.radius=1;
-		this.manaCost=20;
+		this.manaCost=35;
 		this.actionCost=1;
 		this.enhancementId=Resources.TALLGRASS;
 	}

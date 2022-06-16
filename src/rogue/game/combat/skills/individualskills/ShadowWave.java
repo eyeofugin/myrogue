@@ -18,10 +18,10 @@ public class ShadowWave extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.FAITH,0.3)
 		});
-		this.power=20;
+		this.power=50;
 		this.accuracy=80;
 		this.distance=3;
-		this.manaCost=20;
+		this.manaCost=25;
 		this.actionCost=1;
 	}
 }

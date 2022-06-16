@@ -41,7 +41,7 @@ public class Rage extends Skill{
 								20)
 						)
 		});
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=35;
+		this.actionCost=2;
 	}
 }

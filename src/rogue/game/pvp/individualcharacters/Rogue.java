@@ -16,13 +16,13 @@ public class Rogue extends PlayableCharacter{
 		this.tier=			1;
 		this.name=			"Hada Spy Patrol";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		39;
+		this.lifeRegain=	2;
+		this.maxMana=		0;
+		this.manaRegain=	0;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -32,11 +32,11 @@ public class Rogue extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.LETHALITY;
 		this.resistances=resistance(
-				20,//NORMAL
+				34,//NORMAL
 				30,//BURNING
 				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
+				21,//FREEZE
+				22,//LIGHT
 				15,//PSYCH
 				20);//SHOCK
 		this.multipliers=multipliers(
@@ -47,13 +47,13 @@ public class Rogue extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				30,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				18,//INTELLIGENCE
+				34, //LETHALITY
+				12);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLUE});
 	}
 }

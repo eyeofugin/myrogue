@@ -15,13 +15,13 @@ public class RedMage extends PlayableCharacter {
 		this.tier=			1;
 		this.name=			"Red Mage";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		40;
+		this.lifeRegain=	1;
+		this.maxMana=		45;
+		this.manaRegain=	8;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -31,12 +31,12 @@ public class RedMage extends PlayableCharacter {
 		this.stdDamageType=DamageType.MAGICAL;
 		this.stdDamageProf=Proficiency.PRECISION;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
+				24,//NORMAL
+				72,//BURNING
+				22,//DARK
+				47,//FREEZE
+				20,//LIGHT
+				28,//MAGIC
 				20);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
@@ -46,7 +46,7 @@ public class RedMage extends PlayableCharacter {
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
 				10,//STRENGTH
 				0, //FAITH

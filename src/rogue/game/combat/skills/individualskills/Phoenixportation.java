@@ -17,11 +17,11 @@ public class Phoenixportation extends Skill{
 				new Multiplier(Proficiency.KNOWLEDGE,0.3)
 		});
 		this.type=SkillType.MOVEMENT;
-		this.power=20;
+		this.power=45;
 		this.accuracy=100;
 		this.distance=3;
 		this.radius=1;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=50;
+		this.actionCost=2;
 	}
 }

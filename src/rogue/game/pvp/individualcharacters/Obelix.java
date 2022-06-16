@@ -16,13 +16,13 @@ public class Obelix extends PlayableCharacter{
 		this.tier=			3;
 		this.name=			"Obelix";
 		this.portraitId=	Resources.P_OBELIX;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		109;
+		this.lifeRegain=	10;
+		this.maxMana=		34;
+		this.manaRegain=	12;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -34,13 +34,13 @@ public class Obelix extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				66,//NORMAL
+				49,//BURNING
+				56,//DARK
+				67,//FREEZE
+				55,//LIGHT
+				54,//PSYCH
+				60);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -49,13 +49,13 @@ public class Obelix extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
+				59,//STRENGTH
+				12, //FAITH
+				21,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				0);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.GREEN,DraftColor.RED});	
 	}
 }

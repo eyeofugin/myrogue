@@ -16,9 +16,9 @@ public class Outlast extends Skill{
 				new Effect(EffectType.STAT_CHANGE,-1,0,null,new StatChange(null, 0.0, Proficiency.STRENGTH, 20))
 		});
 		this.distance=1;
-		this.accuracy=80;
-		this.actionCost=2;
-		this.manaCost=20;
-		this.lifeCost=10;
+		this.accuracy=100;
+		this.actionCost=1;
+		this.manaCost=30;
+		
 	}
 }

@@ -19,7 +19,7 @@ public class RockThrow extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.STRENGTH,0.3)
 		});
-		this.power=20;
+		this.power=35;
 		this.accuracy=60;
 		this.distance=3;
 		this.manaCost=20;

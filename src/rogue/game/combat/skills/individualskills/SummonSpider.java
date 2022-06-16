@@ -12,7 +12,7 @@ public class SummonSpider extends Skill{
 		this.description="Summons a Spider";
 		this.target=TargetType.SINGLE_FREE;
 		this.distance=1;
-		this.manaCost=30;
+		this.manaCost=25;
 		this.actionCost=2;
 		this.summonedId=Resources.ARAGOG;
 	}

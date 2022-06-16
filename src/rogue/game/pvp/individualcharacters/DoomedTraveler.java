@@ -37,7 +37,7 @@ public class DoomedTraveler extends PlayableCharacter{
 				30,//DARK
 				32,//FREEZE
 				30,//LIGHT
-				15,//PSYCH
+				21,//PSYCH
 				32);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL

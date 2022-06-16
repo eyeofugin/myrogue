@@ -20,10 +20,10 @@ public class FistFury extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.STRENGTH,0.3)
 		});
-		this.power=20;
+		this.power=50;
 		this.accuracy=80;
 		this.distance=1;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=25;
+		this.actionCost=2;
 	}
 }

@@ -19,7 +19,7 @@ public class ThrowingWeapon extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.LETHALITY,0.3)
 		});
-		this.power=20;
+		this.power=25;
 		this.accuracy=60;
 		this.distance=5;
 		this.manaCost=20;

@@ -16,13 +16,13 @@ public class Wampa extends PlayableCharacter{
 		this.tier=			2;
 		this.name=			"Wampa";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		108;
+		this.lifeRegain=	14;
+		this.maxMana=		30;
+		this.manaRegain=	15;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -33,13 +33,13 @@ public class Wampa extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				62,//NORMAL
+				61,//BURNING
+				79,//DARK
+				88,//FREEZE
+				79,//LIGHT
+				51,//PSYCH
+				81);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -48,13 +48,13 @@ public class Wampa extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				10);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				50,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
+				12,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				0);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.GREEN});
 	}
 }

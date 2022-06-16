@@ -10,9 +10,9 @@ public class AllyHeal extends Skill{
 		this.description="Heals an Ally";
 		this.target=TargetType.SINGLE_TARGET;
 		this.damageType=DamageType.HEAL;
-		this.power=20;
+		this.power=35;
 		this.distance=2;
-		this.manaCost=20;
+		this.manaCost=30;
 		this.actionCost=1;
 	}
 }

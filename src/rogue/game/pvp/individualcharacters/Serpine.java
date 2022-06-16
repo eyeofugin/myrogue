@@ -16,13 +16,13 @@ public class Serpine extends PlayableCharacter{
 		this.tier=			3;
 		this.name=			"Serpine";
 		this.portraitId=	Resources.P_SERPINE;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		50;
+		this.lifeRegain=	2;
+		this.maxMana=		50;
+		this.manaRegain=	12;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -34,13 +34,13 @@ public class Serpine extends PlayableCharacter{
 		this.stdDamageType=DamageType.MAGICAL;
 		this.stdDamageProf=Proficiency.KNOWLEDGE;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
+				44,//NORMAL
+				31,//BURNING
+				39,//DARK
+				21,//FREEZE
 				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				21,//PSYCH
+				28);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -49,12 +49,12 @@ public class Serpine extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
-				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
+				34,//STRENGTH
+				20, //FAITH
+				41,//INTELLIGENCE
+				15, //LETHALITY
 				5);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLACK});}
 }

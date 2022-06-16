@@ -24,10 +24,10 @@ public class ForceLeap extends Skill{
 				new Multiplier(Proficiency.FAITH,0.3)
 		});
 		this.type=SkillType.MOVEMENT;
-		this.power=20;
+		this.power=55;
 		this.accuracy=100;
 		this.distance=1;
-		this.manaCost=20;
-		this.actionCost=1;
+		this.manaCost=45;
+		this.actionCost=2;
 	}
 }

@@ -498,7 +498,7 @@ public class Entity {
 		String result = "";
 		for(DraftColor c : this.colors) {
 			if(c.equals(DraftColor.BLACK)) {
-				result+="ï¿½";
+				result+="°";
 			}
 			if(c.equals(DraftColor.BLUE)) {
 				result+="~";

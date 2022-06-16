@@ -10,7 +10,7 @@ public class Cerebro extends Skill{
 		this.description="Reveals all Enemies";
 		this.target=TargetType.ALL_ENEMY;
 		this.type=SkillType.VISION;
-		this.manaCost=30;
-		this.actionCost=1;
+		this.manaCost=50;
+		this.actionCost=2;
 	}
 }

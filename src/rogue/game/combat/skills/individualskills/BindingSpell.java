@@ -15,10 +15,10 @@ public class BindingSpell extends Skill{
 		this.effects=of(new Effect[] {
 				new Effect(EffectType.STATUS_INFLICTION,3,0,StatusInfliction.ROOTED,null)
 		});
-		this.power=20;
+		this.power=15;
 		this.accuracy=80;
 		this.distance=3;
-		this.manaCost=20;
+		this.manaCost=30;
 		this.actionCost=1;
 	}
 }

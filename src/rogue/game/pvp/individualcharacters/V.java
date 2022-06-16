@@ -17,13 +17,13 @@ public class V extends PlayableCharacter{
 		this.tier=			2;
 		this.name=			"V";
 		this.portraitId=	Resources.P_V;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		43;
+		this.lifeRegain=	2;
+		this.maxMana=		43;
+		this.manaRegain=	7;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -34,13 +34,13 @@ public class V extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.LETHALITY;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				42,//NORMAL
+				46,//BURNING
+				22,//DARK
+				30,//FREEZE
+				23,//LIGHT
+				39,//PSYCH
+				32);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -49,12 +49,12 @@ public class V extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				38,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				31,//INTELLIGENCE
+				30, //LETHALITY
+				6);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.WHITE,DraftColor.BLACK});}
 }

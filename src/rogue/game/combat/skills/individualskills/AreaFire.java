@@ -14,11 +14,11 @@ public class AreaFire extends Skill{
 		this.multipliers=of(new Multiplier[] {
 				new Multiplier(Proficiency.FAITH,0.8)
 		});
-		this.power=20;
+		this.power=50;
 		this.accuracy=100;
-		this.distance=3;
+		this.distance=2;
 		this.radius=1;
-		this.manaCost=20;
+		this.manaCost=50;
 		this.actionCost=1;
 //		this.summonedId
 	}	

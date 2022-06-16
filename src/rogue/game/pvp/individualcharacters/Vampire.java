@@ -16,13 +16,13 @@ public class Vampire extends PlayableCharacter {
 		this.tier=			1;
 		this.name=			"Vampire";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		34;
+		this.lifeRegain=	0;
+		this.maxMana=		0;
+		this.manaRegain=	0;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	1;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -32,13 +32,13 @@ public class Vampire extends PlayableCharacter {
 		this.stdDamageType=DamageType.DARK;
 		this.stdDamageProf=Proficiency.LETHALITY;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				34,//NORMAL
+				1,//BURNING
+				23,//DARK
+				30,//FREEZE
+				9,//LIGHT
+				41,//PSYCH
+				36);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -47,13 +47,13 @@ public class Vampire extends PlayableCharacter {
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				36,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
-				0, //LETHALITY
-				5);//PRECISION
+				25,//INTELLIGENCE
+				10, //LETHALITY
+				0);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLACK});
 	}
 }

@@ -38,7 +38,7 @@ public class ArenaState extends State{
 	private int maxPointer;
 	private int round = 1;
 	private boolean inChangeTeam=false;
-	private boolean inDraft = false;
+	private boolean inDraft = true;
 	private boolean inMenu = false;
 	
 	private PlayableCharacter activeCharacter;
@@ -60,8 +60,8 @@ public class ArenaState extends State{
 		this.activePointer=1;
 		this.maxPointer=teams.size();
 		this.hud=new HUD(connector);
-//		startDraft();
-		startArena();
+		startDraft();
+//		startArena();
 	}
 	private void startArena() {
 		this.activePointer=0;

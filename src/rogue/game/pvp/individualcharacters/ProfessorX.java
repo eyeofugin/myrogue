@@ -16,13 +16,13 @@ public class ProfessorX extends PlayableCharacter{
 		this.tier=			4;
 		this.name=			"Professor X";
 		this.portraitId=	Resources.P_PROF_X;
-		this.maxLife=		200;
-		this.lifeRegain=	15;
-		this.maxMana=		60;
-		this.manaRegain=	10;
+		this.maxLife=		28;
+		this.lifeRegain=	1;
+		this.maxMana=		72;
+		this.manaRegain=	18;
 		this.currentLife 	= this.maxLife;
 		this.currentMana 	= this.maxMana;
-		this.maxActions=	4;
+		this.maxActions=	2;
 		this.maxMovement=	2;
 		this.currentActions=this.maxActions;
 		this.currentMovement=this.maxMovement;
@@ -35,13 +35,13 @@ public class ProfessorX extends PlayableCharacter{
 		this.stdDamageType=DamageType.NORMAL;
 		this.stdDamageProf=Proficiency.STRENGTH;
 		this.resistances=resistance(
-				20,//NORMAL
-				30,//BURNING
-				20,//DARK
-				20,//FREEZE
-				30,//LIGHT
-				15,//PSYCH
-				20);//SHOCK
+				16,//NORMAL
+				24,//BURNING
+				18,//DARK
+				24,//FREEZE
+				20,//LIGHT
+				27,//MAGIC
+				14);//SHOCK
 		this.multipliers=multipliers(
 				1.0,//NORMAL
 				1.0,//BURNING
@@ -50,13 +50,13 @@ public class ProfessorX extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				1.1);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
-				10,//STRENGTH
+				5,//STRENGTH
 				0, //FAITH
-				35,//INTELLIGENCE
+				82,//INTELLIGENCE
 				0, //LETHALITY
-				5);//PRECISION
+				10);//PRECISION
 		this.colors=Arrays.asList(new DraftColor[] {DraftColor.BLUE,DraftColor.WHITE});	
 	}
 }
