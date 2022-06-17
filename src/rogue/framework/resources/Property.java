@@ -62,8 +62,8 @@ public class Property {
 	public static final int LOG_WIDTH = 400;
 	public static final int LOG_HEIGHT= 500;
 	
-	public static final int LOG_Y_FROM = 24;
-	public static final int LOG_Y_UNTIL= 524;
+	public static final int LOG_Y_FROM = 556;
+	public static final int LOG_Y_UNTIL= 1056;
 	public static final int LOG_X_FROM = 10;
 	public static final int LOG_X_UNTIL= 410;
 	
@@ -77,6 +77,8 @@ public class Property {
 	public static final int LOG_BUTTON_DOWN_Y_FROM=463;
 	public static final int LOG_BUTTON_DOWN_Y_UNTIL=495;
 	
+	public static final int TEAMS_INFO_Y_FROM = 24;
+	public static final int TEAMS_INFO_X_FROM = 24;
 	
 	public static final int ROOM_VIEW_TILE_COUNT = 16;
 	

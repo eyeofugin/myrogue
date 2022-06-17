@@ -311,7 +311,7 @@ public class EntityInformationContainer extends InformationContainer{
 			int yf = C_SKILLS_ICONS_Y_FROM;
 			int yu = C_SKILLS_ICONS_Y_UNTIL;
 			for(Skill s : characterSkills) {
-				fillWithGraphics(xf, xu-1, yf, yf+ICON_SIZE-1, Resources.ICONSx32.get(s.getId()), true);
+				fillWithGraphics(xf, xu-1, yf, yf+ICON_SIZE-1, Resources.getIcon(s.getId()), true);
 				writeLine(s.getName(), NEW_DESCR_X_FROM, C_SKILLS_ICONS_X_UNTIL, yf, yf+ICON_SIZE-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
 				if(!s.isPassive()) {
 					this.connector.addEvent(xf+this.offsetLeft,+yf+this.offsetTop, ICON_SIZE, ICON_SIZE, s.getEvent());

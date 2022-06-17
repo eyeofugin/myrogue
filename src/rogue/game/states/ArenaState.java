@@ -23,6 +23,8 @@ import rogue.game.world.Menu;
 import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import util.DraftColor;
+import util.StndColumn;
+import util.StndTable;
 import util.TextEditor;
 
 public class ArenaState extends State{
@@ -36,10 +38,11 @@ public class ArenaState extends State{
 	private Map<Integer,List<DraftColor>> draftColors = new HashMap<>();
 	private int activePointer;
 	private int maxPointer;
-	private int round = 1;
+	private int round = 0;
 	private boolean inChangeTeam=false;
 	private boolean inDraft = true;
 	private boolean inMenu = false;
+	private boolean inEnd = false;
 	
 	private PlayableCharacter activeCharacter;
 	private EntityInformationContainer activeCharacterCanvas;
@@ -65,8 +68,8 @@ public class ArenaState extends State{
 	}
 	private void startArena() {
 		this.activePointer=0;
-		this.arena = new Arena(Init.ROOMS[1],this.connector);
-		mockTeams();
+		this.arena = new Arena(Init.ROOMS[2],this.connector);
+		//mockTeams();
 		this.arena.initTeams(teams);
 		nextArena();
 	}
@@ -74,14 +77,20 @@ public class ArenaState extends State{
 		getNextTeamNr();
 		this.arena.openViewForTeamNr(this.activePointer);
 	}
-	private void endArena() {
+	private void endArena(int winner) {
 		this.inDraft=true;
+		getTeam(winner).addPoints(round);
+		if(round==7) {
+			showEndScreen();
+		}else {
 		refreshTeams();
-		startDraft();
+		startDraft();			
+		}
 	}
 	
 	private void startDraft() {
 		this.activePointer=1;
+		this.round++;
 		fillDraftColors();
 		nextDraft();
 	}
@@ -97,6 +106,10 @@ public class ArenaState extends State{
 			this.inDraft=false;
 			startArena();
 		}
+	}
+	private void showEndScreen() {
+		this.inEnd=true;
+		this.hud.winnderDialog(getWinner());
 	}
 
 
@@ -118,7 +131,7 @@ public class ArenaState extends State{
 		pixels = backGround(pixels);
 		if(inMenu) {
 			
-		}if(inDraft){
+		}else if(inDraft){
 			List<int[]>  draftPixels = this.draft.render();
 			
 			int[] options = draftPixels.get(0);
@@ -182,6 +195,19 @@ public class ArenaState extends State{
 					logIndex++;
 				}
 			}
+			
+			int[] teamOverView = renderTeamInfo();
+			int infoCounter = 0;
+			for(int i = Property.TEAMS_INFO_Y_FROM; i < Property.END_OF_Y; i++) {
+				for(int j = Property.TEAMS_INFO_X_FROM; j < Property.TEAMS_INFO_X_FROM + 260; j++) {
+					if(infoCounter==teamOverView.length) {
+						break;
+					}
+					pixels[j+i*Property.END_OF_X] = teamOverView[infoCounter];
+					infoCounter++;
+				}
+			}
+			
 		}
 		
 		if(this.hud.active){
@@ -201,6 +227,27 @@ public class ArenaState extends State{
 		}
 		
 		return pixels;
+	}
+	private int[] renderTeamInfo() {
+		StndColumn[] columns = new StndColumn[this.teams.size()+1];
+		StndColumn header = new StndColumn(new String[] {
+				"Team",
+				"Points"
+		});
+		columns[0] = header;
+		int index = 1;
+		for(Team t : this.teams) {
+			StndColumn col = new StndColumn(new String[] {
+				"Team"+t.getTeamNr(),
+				""+t.getPoints()
+			});
+			columns[index++]=col;
+		}
+		
+		StndTable infotable = new StndTable(columns,new TextEditor(Resources.textEditorConfig),new int[] {200,50});
+		infotable.finish();
+		
+		return infotable.getPixels();
 	}
 	private PlayableCharacter getCharacter(String name) {
 		for(PlayableCharacter p : teams.get(0).getCharacters()) {
@@ -313,6 +360,25 @@ public class ArenaState extends State{
 	private void confirmationDialog(Event confirm) {
 		this.hud.confirmationDialog(confirm);
 	}
+	private int getWinner() {
+		int points = 0;
+		int team = 0;
+		for(Team t : this.teams) {
+			if(t.getPoints()>points) {
+				points = t.getPoints();
+				team = t.getTeamNr();
+			}
+		}
+		return team;
+	}
+	private Team getTeam(int teamNr) {
+		for(Team t : this.teams) {
+			if(t.getTeamNr()==teamNr) {
+				return t;
+			}
+		}
+		return new Team();
+	}
 
 	@Override
 	protected void mouseClicked(Event e) {
@@ -323,7 +389,7 @@ public class ArenaState extends State{
 			this.hud.mouseClicked(e);
 		}
 		if(e.getEventId().equals(Connector.TEAM_WON_ROUND)) {
-			endArena();
+			endArena(e.getTeamNr());
 		}
 		if(e.getEventId().equals("selectPlayerEvent")) {
 			activeCharacter = getCharacter(e.getEntity().getName());

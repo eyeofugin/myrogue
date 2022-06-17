@@ -12,6 +12,6 @@ public class Frosted extends Enhancement{
 		this.visEnemy=true;
 		this.solid=false;
 		this.blockVis=true;
-		this.duration=2;
+		this.duration=5;
 	}
 }

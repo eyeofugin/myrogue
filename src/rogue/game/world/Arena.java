@@ -76,6 +76,8 @@ public class Arena {
 	//---------------------------------------------------------------------------------------------------------------------------------------//
 	public Arena(RoomData data, Connector connector) {
 		this.data = data;
+		this.teamPlacements[1] = data.getTeamPlacement(1);
+		this.teamPlacements[2] = data.getTeamPlacement(2);
 		this.connector = connector;
 		this.width=data.getTileData().length;
 		this.height=data.getTileData()[0].length;
@@ -1211,6 +1213,12 @@ public class Arena {
 				xOffset++;
 				this.connector.incrementXOffset();
 			}
+		}
+		if(e.getKeyCode() == KeyEvent.VK_M) {
+			showMovementOptions();
+		}
+		if(e.getKeyCode() == KeyEvent.VK_X) {
+			showAttackOptions();
 		}
 	}
 	public void mouseClicked(Event e) {

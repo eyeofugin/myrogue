@@ -48,7 +48,7 @@ public class Wampa extends PlayableCharacter{
 				1.0,//LIGHT
 				1.0,//PSYCH
 				1.0,//SHOCK
-				10);//HEAL
+				1.0);//HEAL
 		this.proficiencies=proficiencies(
 				50,//STRENGTH
 				0, //FAITH

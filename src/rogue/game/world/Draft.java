@@ -32,9 +32,12 @@ public class Draft {
 		turnProbabilities.put(3, new double[] {0.5, 0.35,0.15,0.0, 0.0});
 		turnProbabilities.put(4, new double[] {0.25,0.6, 0.2, 0.05,0.0});
 		turnProbabilities.put(5, new double[] {0.0, 0.5, 0.25,0.2, 0.05});
+		turnProbabilities.put(6, new double[] {0.0, 0.2, 0.4, 0.3, 0.10});
+		turnProbabilities.put(7, new double[] {0.0, 0.0, 0.2, 0.55,0.25});
 	}
 	
 	public void buildDraftFor(int teamNr, List<Team> teams,List<DraftColor> enemyDraftColors, int turn) {
+		System.out.println("draft starts for round " + turn);
 		this.ownTeam = getTeam(teams,teamNr);
 		teamOverview = new TeamOverview(this.ownTeam,Property.START_OF_ACTIVE_CHAR_X,Property.START_OF_ACTIVE_CHAR_Y,this.connector);
 		cardOverview = new CardOverview(Property.START_OF_ROOM_X,Property.START_OF_ROOM_Y,this.connector);

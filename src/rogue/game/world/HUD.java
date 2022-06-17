@@ -6,6 +6,7 @@ import rogue.framework.resources.Property;
 import rogue.graphics.InformationContainer;
 import util.ConfirmationDialog;
 import util.MyColor;
+import util.WinnerDialog;
 
 public class HUD extends InformationContainer{
 	
@@ -15,7 +16,7 @@ public class HUD extends InformationContainer{
 	private static int CONFIRM_Y_UNTIL = CONFIRM_Y+ConfirmationDialog.HEIGHT;
 	public boolean active=false;
 	
-	
+	WinnerDialog winDia;
 	ConfirmationDialog confDia;
 	
 	public HUD(Connector connector) {
@@ -35,11 +36,19 @@ public class HUD extends InformationContainer{
 		if(this.confDia!=null) {
 			fillWithGraphics(CONFIRM_X, CONFIRM_X_UNTIL-1, CONFIRM_Y, CONFIRM_Y_UNTIL-1, this.confDia.render(), false);
 		}
+		if(this.winDia!=null) {
+			fillWithGraphics(CONFIRM_X, CONFIRM_X_UNTIL-1, CONFIRM_Y, CONFIRM_Y_UNTIL-1, this.winDia.render(), false);
+		}
 		return this.pixels;
 	}
 	public void confirmationDialog(Event confirm) {
 		confDia = new ConfirmationDialog(CONFIRM_X,CONFIRM_Y,connector);
 		this.confDia.setConfirm(confirm);
+		this.active=true;
+	}
+	public void winnderDialog(int winner) {
+		winDia = new WinnerDialog(CONFIRM_X,CONFIRM_Y,connector);
+		this.winDia.setWinner(winner);
 		this.active=true;
 	}
 	public void mouseClicked(Event e) {

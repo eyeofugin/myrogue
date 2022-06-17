@@ -13,6 +13,8 @@ public class Team {
 	public static int TIER_THRESHHOLD = 15;
 	private boolean turn;
 	
+	private int points=0; 
+	
 	private int teamNr;
 	
 	private List<PlayableCharacter> characters = new ArrayList<PlayableCharacter>();
@@ -104,6 +106,17 @@ public class Team {
 
 	public void setBench(List<PlayableCharacter> bench) {
 		this.bench = bench;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	public void addPoints(int points) {
+		this.points+=points;
 	}
 	
 }

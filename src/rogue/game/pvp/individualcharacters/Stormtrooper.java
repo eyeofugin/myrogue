@@ -30,7 +30,7 @@ public class Stormtrooper extends PlayableCharacter{
 		this.setSkills(getSkills(
 				SkillLibrary.HIT_OR_MISS,0,0,0,0,0));
 		this.stdDamageType=DamageType.NORMAL;
-		this.stdDamageProf=Proficiency.FAITH;
+		this.stdDamageProf=Proficiency.PRECISION;
 		this.resistances=resistance(
 				35,//NORMAL
 				32,//BURNING

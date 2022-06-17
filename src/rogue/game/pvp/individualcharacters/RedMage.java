@@ -15,7 +15,7 @@ public class RedMage extends PlayableCharacter {
 		this.tier=			1;
 		this.name=			"Red Mage";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		40;
+		this.maxLife=		30;
 		this.lifeRegain=	1;
 		this.maxMana=		45;
 		this.manaRegain=	8;

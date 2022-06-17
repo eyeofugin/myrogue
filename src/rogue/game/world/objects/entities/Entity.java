@@ -169,6 +169,7 @@ public class Entity {
 		return proficiencies;
 	}
 	public void endOfTurn(BattleLog log) {
+		refresh();
 		for(Effect effect : this.currentEffects) {
 			effect.turn();
 			if(effect.getType().equals(EffectType.STATUS_INFLICTION)) 
@@ -498,7 +499,7 @@ public class Entity {
 		String result = "";
 		for(DraftColor c : this.colors) {
 			if(c.equals(DraftColor.BLACK)) {
-				result+="°";
+				result+="ï¿½";
 			}
 			if(c.equals(DraftColor.BLUE)) {
 				result+="~";

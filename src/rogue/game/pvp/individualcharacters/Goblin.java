@@ -16,7 +16,7 @@ public class Goblin extends PlayableCharacter{
 		this.tier=			1;
 		this.name=			"Goblin";
 		this.portraitId=	Resources.P_BALROG;
-		this.maxLife=		30;
+		this.maxLife=		33;
 		this.lifeRegain=	2;
 		this.maxMana=		40;
 		this.manaRegain=	2;

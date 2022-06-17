@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import rogue.game.combat.skills.SkillLibrary;
 import util.TextEditor;
 import util.TextEditor.TextEditorConfig;
 
@@ -132,4 +133,9 @@ public class Resources {
 	
 	public static final TextEditorConfig textEditorConfig = TextEditor.conf5x8;
 	
+	
+	public static int[] getIcon(int id) {
+		int[] result = ICONSx32.get(id);
+		return result!=null?result:ICONSx32.get(SkillLibrary.NONE);
+	}
 }
