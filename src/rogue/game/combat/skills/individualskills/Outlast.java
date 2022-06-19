@@ -10,7 +10,7 @@ public class Outlast extends Skill{
 	public Outlast() {
 		super(SkillLibrary.OUTLAST);
 		this.name="Outlast";
-		this.description="Strengthens themself";
+		this.description="It strengthens itself permanently";
 		this.target=TargetType.SELF;
 		this.effects=of(new Effect[] {
 				new Effect(EffectType.STAT_CHANGE,-1,0,null,new StatChange(null, 0.0, Proficiency.STRENGTH, 20))

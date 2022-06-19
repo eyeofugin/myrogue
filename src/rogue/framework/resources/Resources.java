@@ -128,6 +128,7 @@ public class Resources {
 	public static final int DOWN = 307;
 	public static final int SWITCH = 308;
 	public static final int DELETE = 309;
+	public static final int CHOICE = 310;
 	//!!!!! -- 0-300 reserved for skills
 	public static final Map<Integer,int[]> ICONSx32 = new HashMap<>();
 	

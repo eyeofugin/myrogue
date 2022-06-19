@@ -2,6 +2,7 @@ package util;
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
 import rogue.framework.resources.Resources;
+import rogue.game.combat.skills.Skill;
 import rogue.game.world.objects.entities.Entity;
 import rogue.graphics.InformationContainer;
 public class CharacterCard extends InformationContainer{
@@ -10,6 +11,7 @@ public class CharacterCard extends InformationContainer{
 	public static int CARD_HEIGHT = 400;
 	private static int ICON_X = 0;
 	private static int ICON_Y = 22;
+	private static int ICON_SMALL = 32;
 	private static int ICON_SIZE = 256;
 	private static int TIER_BORDER_X = 225;
 	private static int INFO_BORDER_Y = 300;
@@ -17,6 +19,19 @@ public class CharacterCard extends InformationContainer{
 	private static int COLORS_X_UNTIL = 251;
 	private static int COLORS_Y_FROM = 273;
 	private static int COLORS_Y_UNTIL = 296;
+	
+	private static int SKILL_X_FROM = 10;
+	private static int SKILL_X_UNTIL = 246;
+	private static int SKILL_Y_FROM = 310;
+	
+	private static int SKILLS_X_FROM_1 = 10;
+	private static int SKILLS_X_UNTIL_1 = 127;
+	private static int SKILLS_X_FROM_2 = 128;
+	private static int SKILLS_X_UNTIL_2 = 246;
+	private static int SKILLS_Y_FROM_1 = 310;
+	private static int SKILLS_Y_UNTIL_1 = 349;
+	private static int SKILLS_Y_FROM_2 = 350;
+	private static int SKILLS_Y_UNTIL_2= 389;
 	
 	private Entity entity;
 	private Event event;
@@ -38,7 +53,9 @@ public class CharacterCard extends InformationContainer{
 			icon();
 			tier();
 			colors();
+			skills();
 			cardBorders();
+			
 			event();
 		}
 	}
@@ -64,6 +81,29 @@ public class CharacterCard extends InformationContainer{
 	}
 	private void colors() {
 		writeLine(this.entity.getColorIcons()+"", COLORS_X_FROM, COLORS_X_UNTIL, COLORS_Y_FROM, COLORS_Y_UNTIL,0,TextAlignment.RIGHT,MyColor.VOID,MyColor.WHITE);
+	}
+	private void skills() {
+		int yoff = SKILL_Y_FROM;
+		for(Skill s : this.entity.getSkills()) {
+			writeLine(s.getDescription(),SKILL_X_FROM,SKILL_X_UNTIL,yoff,yoff+12,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+			yoff+=15;
+		}
+//		if(this.entity.getSkills().size()>0) {
+//			Skill s = this.entity.getSkills().get(0);
+//			fillWithGraphics(SKILLS_X_FROM_1,SKILLS_X_FROM_1+ICON_SMALL-1,SKILLS_Y_FROM_1,SKILLS_Y_FROM_1+ICON_SMALL-1,Resources.ICONSx32.get(s.getId()),true);
+//		}
+//		if(this.entity.getSkills().size()>1) {
+//			Skill s = this.entity.getSkills().get(1);
+//			fillWithGraphics(SKILLS_X_FROM_2,SKILLS_X_FROM_2+ICON_SMALL-1,SKILLS_Y_FROM_1,SKILLS_Y_FROM_1+ICON_SMALL-1,Resources.ICONSx32.get(s.getId()),true);
+//		}
+//		if(this.entity.getSkills().size()>2) {
+//			Skill s = this.entity.getSkills().get(2);
+//			fillWithGraphics(SKILLS_X_FROM_1,SKILLS_X_FROM_1+ICON_SMALL-1,SKILLS_Y_FROM_2,SKILLS_Y_FROM_2+ICON_SMALL-1,Resources.ICONSx32.get(s.getId()),true);
+//		}
+//		if(this.entity.getSkills().size()>3) {
+//			Skill s = this.entity.getSkills().get(3);
+//			fillWithGraphics(SKILLS_X_FROM_2,SKILLS_X_FROM_2+ICON_SMALL-1,SKILLS_Y_FROM_2,SKILLS_Y_FROM_2+ICON_SMALL-1,Resources.ICONSx32.get(s.getId()),true);
+//		}
 	}
 	private void cardBorders() {
 		for(int i = 0; i < this.width; i++) {

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.resources.Property;
+import rogue.framework.resources.Resources;
 import rogue.game.pvp.CharacterLibrary;
 import rogue.game.pvp.Team;
 import rogue.game.pvp.individualcharacters.Batman;
@@ -37,6 +38,8 @@ public class CardOverview extends InformationContainer{
 		turnProbabilities.put(3, new double[] {0.5, 0.35,0.15,0.0, 0.0});
 		turnProbabilities.put(4, new double[] {0.25,0.6, 0.2, 0.05,0.0});
 		turnProbabilities.put(5, new double[] {0.0, 0.5, 0.25,0.2, 0.05});
+		turnProbabilities.put(6, new double[] {0.0, 0.25,0.4, 0.25,0.1});
+		turnProbabilities.put(7, new double[] {0.0, 0.0, 0.5,0.35, 0.15});
 	}
 	public void buildDraft(Team t, List<DraftColor> enemyDraftColors,int turn) {
 		List<DraftColor> ownDraftColors = t.getDraftColors();
@@ -113,7 +116,9 @@ public class CardOverview extends InformationContainer{
 		return draftColors.stream().distinct().collect(Collectors.toList());
 	}
 	public int[] finish() {
+		this.pixels =new int[Property.ROOM_SIZE*Property.ROOM_SIZE];
 		renderOptions();
+		renderAmntChoices();
 		return this.pixels;
 	}
 	private void renderOptions() {
@@ -194,6 +199,23 @@ public class CardOverview extends InformationContainer{
 	private void calcMargins(int rows, int columns) {
 		this.hMargin = (Property.ROOM_SIZE-CharacterCard.CARD_WIDTH*columns) / (columns+1);
 		this.vMargin = (Property.ROOM_SIZE-CharacterCard.CARD_HEIGHT*rows) / (rows+1);
+	}
+	private void renderAmntChoices() {
+		int xoff =10;
+		for(int i = 0; i < this.nrChoices; i++) {
+			int[] graphics = Resources.getIcon(Resources.CHOICE);
+			int index = 0;
+			for(int y = 10; y <=25; y++) {
+				for(int x = xoff; x <= xoff+15; x++) {
+				
+					if(graphics[index]!=-12450784) {
+						this.pixels[x + y * Property.ROOM_SIZE] = graphics[index];
+					}
+					index++;
+				}
+			}
+			xoff+=25;
+		}
 	}
 	public int getChoices() {
 		return this.nrChoices;

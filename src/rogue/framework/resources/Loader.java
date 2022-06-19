@@ -129,6 +129,7 @@ public class Loader {
 		Resources.ICONSx32.put(Resources.DOWN,new Sprite("res/icons/down.png",32,32).getPixels());
 		Resources.ICONSx32.put(Resources.SWITCH,new Sprite("res/icons/switch.png",16,16).getPixels());
 		Resources.ICONSx32.put(Resources.DELETE,new Sprite("res/icons/delete.png",16,16).getPixels());
+		Resources.ICONSx32.put(Resources.CHOICE,new Sprite("res/icons/choice.png",16,16).getPixels());
 
 		Resources.ICONSx32.put(SkillLibrary.NONE,new Sprite("res/skills/lockedskill.png",32,32).getPixels());
 		Resources.ICONSx32.put(SkillLibrary.HATEFUL_SWING,new Sprite("res/skills/hatefulswing.png",32,32).getPixels());	

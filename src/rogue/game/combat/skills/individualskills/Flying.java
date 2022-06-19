@@ -7,7 +7,7 @@ public class Flying extends Skill{
 	public Flying() {
 		super(SkillLibrary.ALL_TERRAIN);
 		this.name="Flying";
-		this.description="Can pass several more Objects";
+		this.description="Can move on high terrain";
 		this.isPassive=true;
 	}	
 }

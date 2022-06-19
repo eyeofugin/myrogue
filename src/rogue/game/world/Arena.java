@@ -520,8 +520,10 @@ public class Arena {
 		refreshVision();
 	}
 	private boolean isFree(Entity e, int x, int y) {
+		if(e.usedFreeMovement()) {return false;}
 		if(e.hasAbility(SkillLibrary.WOOD_WALK)) {
 			if(this.tiles[y][x].hasEnhancement(Resources.TALLGRASS)) {
+				e.setUsedFreeMovement(true);
 				return true;
 			}
 		}
@@ -1000,8 +1002,12 @@ public class Arena {
 		return null;
 	}
 	private boolean isFreeMovement(Entity c) {
+		if(c.usedFreeMovement()) {
+			return false;
+		}
 		Tile t = this.data.getTileData()[c.getY()][c.getX()];
 		if(t.getId()==(Resources.TALLGRASS) && c.isWoodWalk()) {
+			c.setUsedFreeMovement(true);
 			return true;
 		}
 		return false;

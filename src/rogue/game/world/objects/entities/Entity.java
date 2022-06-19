@@ -67,6 +67,8 @@ public class Entity {
 	protected int currentMovement;
 	protected int maxMovement;
 	
+	protected boolean usedFreeMovement = false;
+	
 	public Entity() {
 		this.unique=counter++;
 	}
@@ -299,6 +301,7 @@ public class Entity {
 	public void refresh() {
 		this.currentActions=this.maxActions-actionInfliction();
 		this.currentMovement=this.maxMovement-movementInfliction();
+		this.usedFreeMovement=false;
 	}
 	public boolean useAction(int amnt) {
 		if(amnt<=this.currentActions) {
@@ -810,6 +813,12 @@ public class Entity {
 		}
 		public void setUnique(int unique) {
 			this.unique = unique;
+		}
+		public boolean usedFreeMovement() {
+			return usedFreeMovement;
+		}
+		public void setUsedFreeMovement(boolean usedFreeMovement) {
+			this.usedFreeMovement = usedFreeMovement;
 		}
 
 

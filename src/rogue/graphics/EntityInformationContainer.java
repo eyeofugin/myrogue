@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import rogue.framework.eventhandling.Connector;
 import rogue.framework.eventhandling.Event;
+import rogue.framework.resources.Property;
 import rogue.framework.resources.Resources;
 import rogue.game.combat.skills.Skill;
 import rogue.game.combat.skills.Skill.Effect;
@@ -312,13 +313,55 @@ public class EntityInformationContainer extends InformationContainer{
 			int yu = C_SKILLS_ICONS_Y_UNTIL;
 			for(Skill s : characterSkills) {
 				fillWithGraphics(xf, xu-1, yf, yf+ICON_SIZE-1, Resources.getIcon(s.getId()), true);
-				writeLine(s.getName(), NEW_DESCR_X_FROM, C_SKILLS_ICONS_X_UNTIL, yf, yf+ICON_SIZE-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+				writeLine(s.getName(), NEW_DESCR_X_FROM, C_SKILLS_ICONS_X_UNTIL, yf, yf+STANDARD_PADDING-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+				writeLine(s.getDescription(),NEW_DESCR_X_FROM, C_SKILLS_ICONS_X_UNTIL,yf+STANDARD_PADDING,yf+(STANDARD_PADDING*2),1,TextAlignment.LEFT, MyColor.BLACK,MyColor.WHITE);
 				if(!s.isPassive()) {
 					this.connector.addEvent(xf+this.offsetLeft,+yf+this.offsetTop, ICON_SIZE, ICON_SIZE, s.getEvent());
 				}else {
 					this.connector.removeEvent(xf+this.offsetLeft,+yf+this.offsetTop, ICON_SIZE, ICON_SIZE);
 				}
-				yf+=C_SKILLS_HEIGHT;
+				yf+=ICON_SIZE;
+				
+				int furtherDescriptionXfrom = NEW_DESCR_X_FROM;
+				if(s.isPassive()) {
+					//anything?
+				}else {
+					if(s.getPower()!=0) {
+						String powerString = "Power " + s.getSkillDamage(this.copy);
+						writeLine(powerString,furtherDescriptionXfrom,furtherDescriptionXfrom+65,yf,yf+STANDARD_PADDING-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+						furtherDescriptionXfrom+=65;
+					}
+					if(s.getAccuracy()!=100) {
+						String accuracyStrig = "Accuracy " + s.getAccuracy();
+						writeLine(accuracyStrig,furtherDescriptionXfrom,furtherDescriptionXfrom+85,yf,yf+STANDARD_PADDING-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+						furtherDescriptionXfrom+=85;						
+					}
+					if(s.getManaCost()!=0) {
+						String string = "Mana " + s.getManaCost();
+						writeLine(string,furtherDescriptionXfrom,furtherDescriptionXfrom+60,yf,yf+STANDARD_PADDING-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+						furtherDescriptionXfrom+=60;
+					}
+					if(s.getActionCost()!=0) {
+						String string = "Action " + s.getActionCost();
+						writeLine(string,furtherDescriptionXfrom,furtherDescriptionXfrom+65,yf,yf+STANDARD_PADDING-1,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+						furtherDescriptionXfrom+=65;
+					}
+					if(s.getEffects()!=null&& !s.getEffects().isEmpty()) {
+						for(Effect e : s.getEffects()) {
+							if(e.getType().equals(EffectType.STATUS_INFLICTION)) {
+								String intensity = e.getIntensity()!=0?e.getIntensity()+" ":" ";
+								String turns = e.getTurns()!=-1?e.getTurns()+"":"";
+								String effectString = e.getStatus().value()+" "+intensity+turns;
+								writeLine(effectString, furtherDescriptionXfrom, C_SKILLS_ICONS_X_UNTIL, yf, yf+STANDARD_PADDING,1,TextAlignment.LEFT,MyColor.BLACK,MyColor.WHITE);
+								furtherDescriptionXfrom+=60;
+							}
+							
+						}
+					}
+
+					
+					yf+=ICON_SIZE;
+				}
 			}
 //			int[] skillIds = new int[characterSkills.size()];
 //			Event[] skillEvents = new Event[characterSkills.size()];

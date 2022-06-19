@@ -20,6 +20,7 @@ import rogue.game.world.Arena;
 import rogue.game.world.Draft;
 import rogue.game.world.HUD;
 import rogue.game.world.Menu;
+import rogue.game.world.generation.RoomData;
 import rogue.game.world.objects.entities.PlayableCharacter;
 import rogue.graphics.EntityInformationContainer;
 import util.DraftColor;
@@ -68,7 +69,7 @@ public class ArenaState extends State{
 	}
 	private void startArena() {
 		this.activePointer=0;
-		this.arena = new Arena(Init.ROOMS[2],this.connector);
+		this.arena = new Arena(getRoomDataFor(this.round),this.connector);
 		//mockTeams();
 		this.arena.initTeams(teams);
 		nextArena();
@@ -348,6 +349,15 @@ public class ArenaState extends State{
 		this.teams.add(t2);
 		
 	}
+	private RoomData getRoomDataFor(int round) {
+		if(round<3) {
+			return Init.ROOMS[Init.PVP_3];
+		}
+		if(round<7) {
+			return Init.ROOMS[Init.PVP_2];
+		}	
+		return Init.ROOMS[Init.PVP_3];
+	}
 	private int getNextTeamNr() {
 		if(this.activePointer<this.maxPointer) {
 			this.activePointer++;
@@ -417,7 +427,10 @@ public class ArenaState extends State{
 
 	@Override
 	protected void keyPressed(KeyEvent e) {
-		arena.keyPressed(e);
+		if(arena!=null) {
+			arena.keyPressed(e);
+		}
+		
 		
 	}
 
