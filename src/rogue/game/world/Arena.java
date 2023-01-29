@@ -58,10 +58,10 @@ public class Arena {
 	private List<Entity> theDead = new ArrayList<Entity>();
 	private Highlight[][] highlights;
 	private boolean[][] visionField;
-	private int[][] sprites;
+	private final int[][] sprites;
 
-	private EntityInformationContainer largeCanvas;
-	private EntityInformationContainer smallCanvas;
+	private final EntityInformationContainer largeCanvas;
+	private final EntityInformationContainer smallCanvas;
 	private PlayableCharacter activeLarge;
 	private Entity activeSmall;
 	private int activeTeam=0;

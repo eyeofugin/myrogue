@@ -1,5 +1,6 @@
 package rogue.framework.eventhandling;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,15 +122,18 @@ public class Connector {
 		}
 	}
 	
-	public Event getEvent(MouseEvent e) {
-		if(e.getX()>Property.START_OF_ROOM_X && e.getX()<Property.END_OF_ROOM_X&&
-				e.getY()>Property.START_OF_ROOM_Y && e.getY()<Property.END_OF_ROOM_Y) {
-			return this.events[e.getX()+xOffset*Property.TILE_SIZE][e.getY()+yOffset*Property.TILE_SIZE];
+	public Event getEvent(Point e) {
+		int x = (int)e.getX();
+		int y = (int)e.getY();
+		if(x>Property.START_OF_ROOM_X && x<Property.END_OF_ROOM_X&&
+				y>Property.START_OF_ROOM_Y && y<Property.END_OF_ROOM_Y) {
+			return this.events[x+xOffset*Property.TILE_SIZE][y+yOffset*Property.TILE_SIZE];
 		}
-		return this.events[e.getX()][e.getY()];
+		return this.events[x][y];
 	}
-	public Event getContext(MouseEvent e) {
-		return this.context[e.getX()+xOffset*Property.TILE_SIZE][e.getY()+yOffset*Property.TILE_SIZE];
+	public Event getContext(Point e) {
+		int x = (int)e.getX(), y = (int)e.getY();
+		return this.context[x+xOffset*Property.TILE_SIZE][y+yOffset*Property.TILE_SIZE];
 	}
 	
 	public void cleanAll() {

@@ -1,5 +1,6 @@
 package rogue.framework.states;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.EmptyStackException;
@@ -48,12 +49,14 @@ public class StateManager {
 	
 	public void mouseClicked(MouseEvent e) {
 		Event event = new Event();
+		System.out.println("x"+e.getX()+ " y"+e.getY());
+		Point eventPointer = new Point((int)(e.getX()*1.25), (int)(e.getY()*1.25));
 
 		if(e.getButton()== MOUSE_BUTTON_L) {
-			event = this.connector.getEvent(e);
+			event = this.connector.getEvent(eventPointer);
 		}
 		if(e.getButton() == MOUSE_BUTTON_R) {
-			event = this.connector.getContext(e);
+			event = this.connector.getContext(eventPointer);
 		}
 		if(event!=null && event.getEventId()!=null) {
 

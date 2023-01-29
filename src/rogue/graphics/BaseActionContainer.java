@@ -80,7 +80,7 @@ public class BaseActionContainer extends InformationContainer{
 		}
 		this.connector.cleanButtonPanel();
 		for(Event e : row.getEvents()) {
-			this.connector.addEvent(Property.BUTTON_PANEL_X_FROM+e.getX()+this.offsetLeft,Property.BUTTON_PANEL_Y_FROM+e.getY()+this.offsetTop, Property.TILE_SIZE, Property.TILE_SIZE, e);
+			this.connector.addEvent(Property.BUTTON_PANEL_X_FROM+e.getX()+this.offsetLeft,Property.BUTTON_PANEL_Y_FROM+e.getY()+this.offsetTop, 64, 64, e);
 		}
 	}
 	public void addEvent(String key, Event e, int icon) {
