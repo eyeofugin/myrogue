@@ -47,10 +47,10 @@ public class StateManager {
 		return this.states.peek().hasSprite();
 	}
 	
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e, double deviceRatio) {
 		Event event = new Event();
 		System.out.println("x"+e.getX()+ " y"+e.getY());
-		Point eventPointer = new Point((int)(e.getX()*1.25), (int)(e.getY()*1.25));
+		Point eventPointer = new Point((int)(e.getX()*deviceRatio), (int)(e.getY()*deviceRatio));
 
 		if(e.getButton()== MOUSE_BUTTON_L) {
 			event = this.connector.getEvent(eventPointer);

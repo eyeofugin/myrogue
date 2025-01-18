@@ -109,7 +109,6 @@ public class InformationContainer {
 		int result[] = editor.getTextLine(text, (xUntil-xFrom+1),(yUntil-yFrom+1),fontSize,alignment,backGround, font);
 		if(text.equals("this is a test of my current battlelog"))
 			print(result,(xUntil-xFrom+1),(yUntil-yFrom+1));
-//		print(result,(xUntil-xFrom+1),(yUntil-yFrom+1));
 		int index = 0;
 		for(int y = yFrom; y <= yUntil; y++) {
 			for(int x = xFrom; x <= xUntil; x++) {

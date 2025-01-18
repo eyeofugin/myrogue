@@ -20,7 +20,7 @@ public class Engine {
 	private static final int MAP_X_FROM = 420;
 	private static final int MAP_X_UNTIL = 1499;
 	public static int turn=0; 
-	
+	public static double deviceRatio = 1.0; // 1 or 1.25 on laptop without monitor
 
 	public static void init() {	
 		stateManager = new StateManager(X,Y,MAP_X_FROM,MAP_X_UNTIL);
@@ -56,7 +56,7 @@ public class Engine {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			turn++;
-			stateManager.mouseClicked(e);
+			stateManager.mouseClicked(e,deviceRatio);
 			loop();
 		}
 		@Override
